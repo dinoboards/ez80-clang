@@ -1,3 +1,4 @@
-main.o
-main.com
-main.map
+*.o
+*.com
+*.map
+main.s

@@ -7,9 +7,12 @@ source "$SCRIPT_DIR/version.sh"
 
 # Aliases to be added
 ALIASES=$(cat << 'EOF'
-alias ez80-clang="docker run -v \${PWD}:/src/ -u \$\(id -u \${USER}\):\$\(id -g \${USER}\) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} clang -target ez80-none-elf -nostdinc"
-alias ez80-objdump="docker run -v \${PWD}:/src/ -u \$\(id -u \${USER}\):\$\(id -g \${USER}\) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-objdump"
-alias ez80-ld="docker run -v \${PWD}:/src/ -u \$\(id -u \${USER}\):\$\(id -g \${USER}\) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ld"
+alias ez80-tool-chain=\"docker run -v \${PWD}:/src/ -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION}\"
+alias ez80-clang=\"docker run -v \${PWD}:/src/ -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} clang -target ez80-none-elf -nostdinc\"
+alias ez80-objdump=\"docker run -v \${PWD}:/src/ -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-objdump\"
+alias ez80-ld=\"docker run -v \${PWD}:/src/ -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ld\"
+alias ez80-as=\"docker run -v \${PWD}:/src/ -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-as\"
+alias ez80-ar=\"docker run -v \${PWD}:/src/ -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ar\"
 EOF
 )
 

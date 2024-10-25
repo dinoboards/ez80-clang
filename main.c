@@ -5,12 +5,16 @@
 
 // float b = 45.0;
 
+extern void exit();
+
 int main()
 {
 	int a = 1;
 	int b = 2;
 
 	int c = a + b;
+
+	// exit(0);
 
 	return c;
 	// float aa = (float) b;
@@ -20,5 +24,6 @@ int main()
 
 
 	// printf("Hello, World!\n");
+
 }
 
