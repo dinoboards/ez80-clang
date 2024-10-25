@@ -14,6 +14,7 @@
 ; .endif
 
 	section	.startup, "ax", @progbits
+	global	__start
 __start:
 ; Call main function
 ; ------------------

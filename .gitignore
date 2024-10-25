@@ -1,6 +1,7 @@
 *.o
 *.com
 *.map
+*.a
 main.s
 tmp
 working

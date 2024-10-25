@@ -9,6 +9,8 @@ RAM_SIZE        = 0x00FFFF;     /* 64K for CP/M limit */
 /* Check if the environment variable is set, otherwise use the default value */
 CRT_ORG_CODE = START_OF_RAM + 0x0100;
 
+EXTERN(__start)
+
 MEMORY
 {
     RAM (rwx) : ORIGIN = START_OF_RAM, LENGTH = RAM_SIZE
