@@ -34,6 +34,10 @@ SECTIONS
     .text : { *(.text) } > RAM
     end_of_text = . ;
 
+    start_of_rodata = . ;
+    .rodata : { *(.rodata) } > RAM
+    end_of_rodata = . ;
+
     start_of_data = . ;
     .data : { *(.data) } > RAM
     end_of_data = . ;

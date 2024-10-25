@@ -5,7 +5,7 @@
 # docker run -v ${PWD}:/src/ -u $(id -u ${USER}):$(id -g ${USER}) -it dinoboards/llvmez80:0.0.3
 
 
-FROM ubuntu:focal-20240530 AS builder
+FROM ubuntu:focal-20240530 AS platform
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -31,10 +31,15 @@ RUN apt install cmake ninja-build -y
 WORKDIR /src
 RUN adduser --disabled-password --gecos "" builder
 
-# COPY ./llvm-project /src/llvm-project
+FROM platform AS builder
+
 RUN git clone --depth 1 --branch ez80-for-rc-clang-tool-chain https://github.com/dinoboards/llvm-project.git
 
 WORKDIR /src/llvm-project
+# ARG COMMIT_SHA=365875982bd3e1ee0d572d4d8d34cb45870ee742
+RUN git fetch --depth 1 origin 365875982bd3e1ee0d572d4d8d34cb45870ee742
+# $COMMIT_SHA
+RUN git checkout 365875982bd3e1ee0d572d4d8d34cb45870ee742
 
 RUN cmake -S llvm -B build -G Ninja \
     -DLLVM_ENABLE_PROJECTS="clang" \
@@ -48,12 +53,13 @@ RUN cmake -S llvm -B build -G Ninja \
 
 RUN cmake --build build
 
-# COPY binutils-2.37.tar.gz ./  # What about version 2.43???
+# RUN ls -lartsh /src/llvm-project/build/lib/clang/15.0.0/include
+# What about version 2.43???
+
 WORKDIR /src
 ADD https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.gz ./binutils-2.37.tar.gz
 RUN tar xf binutils-2.37.tar.gz
 WORKDIR /src/binutils-2.37
-RUN pwd
 RUN ./configure --target=z80-none-elf --program-prefix=ez80-none-elf- --prefix=/opt/ez80-none-elf
 RUN make -j
 RUN make install
@@ -65,15 +71,9 @@ RUN adduser --disabled-password --gecos "" builder
 WORKDIR /src
 COPY --from=builder /opt/ez80-none-elf/bin /usr/local/bin/
 COPY --from=builder /src/llvm-project/build/bin /usr/local/bin/
-COPY --from=builder /src/llvm-project/build/lib/clang/15.0.0/include/stdint.h /usr/local/lib/clang/15.0.0/stdint.h
-COPY --from=builder /src/llvm-project/build/lib/clang/15.0.0/include/stddef.h /usr/local/lib/clang/15.0.0/stddef.h
-COPY --from=builder /src/llvm-project/build/lib/clang/15.0.0/include/stdarg.h /usr/local/lib/clang/15.0.0/stdarg.h
-COPY --from=builder /src/llvm-project/build/lib/clang/15.0.0/include/stdbool.h /usr/local/lib/clang/15.0.0/stdbool.h
-COPY --from=builder /src/llvm-project/build/lib/clang/15.0.0/include/__stddef_max_align_t.h /usr/local/lib/clang/15.0.0/__stddef_max_align_t.h
-COPY --from=builder /src/llvm-project/build/lib/clang/15.0.0/include/float.h /usr/local/lib/clang/15.0.0/float.h
 
-ENV C_INCLUDE_PATH=/usr/local/lib/clang/15.0.0
+# ENV C_INCLUDE_PATH=/usr/local/lib/clang/15.0.0
 
 
-## compiling: clang -target ez80-none-elf -mllvm -z80-print-zero-offset -Wa,-march=ez80, -nostdinc main.c -c -o main.o
-## ez80-none-elf-objdump -d main.o
+# compiling: clang -target ez80-none-elf -mllvm -z80-print-zero-offset -Wa,-march=ez80, -nostdinc main.c -c -o main.o
+# ez80-none-elf-objdump -d main.o

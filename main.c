@@ -1,5 +1,5 @@
-// #include <stdint.h>
-// #include <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
 // extern void print_something(const char *str, float aa);
 
@@ -9,12 +9,14 @@ extern void exit();
 
 int main()
 {
-	int a = 1;
-	int b = 2;
+	uint24_t a = 1;
+	uint24_t b = 2;
 
-	int c = a + b;
+	uint24_t c = a + b;
 
 	// exit(0);
+
+	printf("Hello, World!\n");
 
 	return c;
 	// float aa = (float) b;
@@ -23,7 +25,6 @@ int main()
 	// print_something("Hello, World!\n", aa);
 
 
-	// printf("Hello, World!\n");
 
 }
 

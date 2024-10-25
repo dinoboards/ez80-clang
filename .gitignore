@@ -2,3 +2,7 @@
 *.com
 *.map
 main.s
+tmp
+working
+
+includes/clang
