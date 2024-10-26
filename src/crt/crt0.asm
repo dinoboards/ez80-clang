@@ -28,9 +28,14 @@ __start:
 	add	hl, sp
 	ld	(__restore_sp_onexit+1), hl	;Save SPS stack
 						; What about SPL stack
+
+	XOR	A
+	LD	B,7
+	RST.L	$10
+
 	call	crt0_init
 
-	call.lil	__startadl ; 02 0018
+	call.lil	__startadl ; 03 0018
 
 __Exit:
 	ld	(0x80),	hl			;Save exit value for CP/M 2.2
@@ -49,7 +54,7 @@ __startadl:
 	call	_main				; int main(int argc, char *argv[])
 	pop	bc				; kill argv
 	pop	bc				; kill argc
-	RET
+	RET.L
 
 	.assume	adl = 0
 

@@ -9,18 +9,19 @@ extern void bob();
 
 extern void exit(int);
 
+
 int main()
 {
-	uint24_t a = 1;
-	uint24_t b = 2;
+	// uint24_t a = 1;
+	// uint24_t b = 2;
 
-	uint24_t c = a + b;
+	// uint24_t c = a + b;
 
 	// bob();
 
-	printf("Hello, World!, %d\n", c);
+	printf("Hello, World!\r\n");
 
-	return c;
+	return 0;
 	// float aa = (float) b;
 	// aa *= 3.2;
 

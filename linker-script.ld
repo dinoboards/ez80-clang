@@ -3,7 +3,7 @@
     https://github.com/wntrblm/Castor_and_Pollux/blob/main/firmware/scripts/samd21g18a.ld
 */
 
-START_OF_RAM    = 0x020000;
+START_OF_RAM    = 0x030000;
 RAM_SIZE        = 0x00FFFF;     /* 64K for CP/M limit */
 
 /* Check if the environment variable is set, otherwise use the default value */
@@ -19,7 +19,7 @@ MEMORY
 SECTIONS
 {
     start_of_header = . ;
-    .header 0x020100  : AT(0x020100) { *(.header) } > RAM
+    .header 0x030100  : AT(0x030100) { *(.header) } > RAM
     end_of_header = . ;
 
     start_of_startup = . ;
