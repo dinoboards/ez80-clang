@@ -36,12 +36,11 @@ typedef struct
 __BEGIN_DECLS
 
 /* weak user-defined functions */
-int inchar(void);
+char inchar(void);
 
 void outchar(char character);
 
-FILE *fopen(const char *__restrict filename,
-    const char *__restrict mode);
+FILE *fopen(const char *__restrict filename, const char *__restrict mode);
 
 int fclose(FILE *stream);
 
@@ -104,6 +103,19 @@ int sprintf(char *__restrict buffer,
     const char *__restrict format, ...)
     __attribute__ ((format (__printf__, 2, 3)));
 
-__END_DECLS
+    int fprintf(FILE *stream, const char *__restrict format, ...)
+    __attribute__((format(__printf__, 2, 3)));
+
+int vfprintf(FILE *stream, const char *__restrict format, va_list va)
+    __attribute__((format(__printf__, 2, 0)));
+
+typedef size_t rsize_t;
+
+char *gets_s( char *__restrict str, rsize_t n );
+int scanf( const char *format, ...);
+int sscanf( const char *s, const char *format, ...);
+int fscanf( FILE *fp, const char *fmt,...);
+FILE *freopen( const char *__restrict filename, const char *__restrict mode, FILE *stream );
+int ungetc(int c, FILE *stream);__END_DECLS
 
 #endif /* _STDIO_H */

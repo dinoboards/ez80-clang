@@ -37,9 +37,9 @@ RUN git clone --depth 1 --branch ez80-for-rc-clang-tool-chain https://github.com
 
 WORKDIR /src/llvm-project
 # ARG COMMIT_SHA=365875982bd3e1ee0d572d4d8d34cb45870ee742
-RUN git fetch --depth 1 origin 365875982bd3e1ee0d572d4d8d34cb45870ee742
+RUN git fetch --depth 1 origin 610487e5a2606567dc472eab6af41c09d7412837
 # $COMMIT_SHA
-RUN git checkout 365875982bd3e1ee0d572d4d8d34cb45870ee742
+RUN git checkout 610487e5a2606567dc472eab6af41c09d7412837
 
 RUN cmake -S llvm -B build -G Ninja \
     -DLLVM_ENABLE_PROJECTS="clang" \

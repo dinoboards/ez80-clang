@@ -5,6 +5,8 @@
 
 // float b = 45.0;
 
+extern void bob();
+
 extern void exit(int);
 
 int main()
@@ -14,8 +16,9 @@ int main()
 
 	uint24_t c = a + b;
 
+	// bob();
 
-	// printf("Hello, World!\n");
+	printf("Hello, World!, %d\n", c);
 
 	return c;
 	// float aa = (float) b;

@@ -1,28 +1,36 @@
 #!/bin/bash
 
-
-
 # Source the version.sh file from the same directory
 SCRIPT_DIR=$(dirname "$0")
-source "$SCRIPT_DIR/version.sh"
+SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
+BIN_DIR="${SCRIPT_DIR}bin/"
 
+source "$SCRIPT_DIR/bin/ez80-clang-env.sh"  "${BIN_DIR}"
 
-CLANG_INCLUDE_PATH=$(cd "${SCRIPT_DIR}/includes/" && pwd)/
-CLANG_SYSTEM_INCLUDE_PATH=${CLANG_INCLUDE_PATH}clang/15.0.0/
+# CLANG_INCLUDE_PATH="${SCRIPT_DIR}includes/"
+# CLANG_SYSTEM_INCLUDE_PATH="${CLANG_INCLUDE_PATH}clang/15.0.0/"
 
-export VOL_MAPS="-v \${CLANG_SYSTEM_INCLUDE_PATH}:\${CLANG_SYSTEM_INCLUDE_PATH} -v \${CLANG_INCLUDE_PATH}:\${CLANG_INCLUDE_PATH} -v \${PWD}:/src/ "
+export VOL_MAPS="-v \${CLANG_SYSTEM_INCLUDE_PATH}:\${CLANG_SYSTEM_INCLUDE_PATH} -v \${CLANG_INCLUDE_PATH}:\${CLANG_INCLUDE_PATH} -v /:/host/ -w /host/\\\${PWD}"
+export USER_MAP="-u \\\$(id -u \\\${USER}):\\\$(id -g \\\${USER})"
+
+# alias ez80-as=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-as\"
+# alias ez80-ar=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ar\"
+# alias ez80-clang=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} clang -target ez80-none-elf -nostdinc -isystem \${CLANG_INCLUDE_PATH} -isystem \${CLANG_SYSTEM_INCLUDE_PATH}\"
+# alias ez80-ld=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ld\"
 
 # Aliases to be added
 ALIASES=$(cat << 'EOF'
-alias ez80-tool-chain=\"docker run ${VOL_MAPS} -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION}\"
-alias ez80-clang=\"docker run ${VOL_MAPS} -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} clang -target ez80-none-elf -nostdinc -isystem \${CLANG_INCLUDE_PATH} -isystem \${CLANG_SYSTEM_INCLUDE_PATH}\"
-alias ez80-objdump=\"docker run ${VOL_MAPS} -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-objdump\"
-alias ez80-ld=\"docker run ${VOL_MAPS} -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ld\"
-alias ez80-as=\"docker run ${VOL_MAPS} -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-as\"
-alias ez80-ar=\"docker run ${VOL_MAPS} -u \$(id -u \${USER}):\$(id -g \${USER}) -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ar\"
+alias ez80-tool-chain=\"docker run ${VOL_MAPS} ${USER_MAP} -it ${EZ80_CLANG_TOOLCHAIN_VERSION}\"
+alias ez80-objdump=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-objdump\"
 
 export CLANG_SYSTEM_INCLUDE_PATH=${CLANG_SYSTEM_INCLUDE_PATH}
 export CLANG_INCLUDE_PATH=${CLANG_INCLUDE_PATH}
+
+if [[ ":\$PATH:" != *":${BIN_DIR}:"* ]]; then
+    export PATH="\${PATH}:${BIN_DIR}"
+fi
+
+
 EOF
 )
 

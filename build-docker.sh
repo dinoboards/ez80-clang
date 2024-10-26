@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-
 # Source the version.sh file from the same directory
 SCRIPT_DIR=$(dirname "$0")
-source "$SCRIPT_DIR/version.sh"
+SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
+BIN_DIR="${SCRIPT_DIR}bin/"
+
+source "$SCRIPT_DIR/bin/ez80-clang-env.sh"  "${BIN_DIR}"
 
 docker build --progress plain -t ${EZ80_CLANG_TOOLCHAIN_VERSION} .
 
