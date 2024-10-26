@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
 echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
 echo
-docker build --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
+docker build --progress plain --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
 
 # echo
 # echo "Building ${EZ80_CLANG_TOOLCHAIN_IMAGE}"

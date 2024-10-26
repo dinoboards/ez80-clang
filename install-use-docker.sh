@@ -1,12 +1,13 @@
 #!/bin/bash
 
 # Set up the clang tool chain required for compling for the ez80 on the RCBus/RC2014 platform
+# uses a docker image with local shims
 # requires docker
 # and probably bash
 # not test on osx
 # works on WSL2 (Ubuntu)
 
-# Check if the script isgt run as root or with sudo
+# Check if the script is run as root or with sudo
 if [ "$EUID" -ne 0 ]; then
   echo "Please run this script as root or with sudo."
   exit 1

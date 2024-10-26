@@ -68,9 +68,15 @@ COPY docker-shims /src/docker-shims
 COPY version.sh /src/docker-shims/version.sh
 
 # want a sym link call ez80-ar that points to ez80-none-elf-ar
-RUN ln -s /opt/ez80-none-elf/bin/ez80-none-elf-ar /usr/local/bin/ez80-ar
-RUN ln -s /opt/ez80-none-elf/bin/ez80-none-elf-as /usr/local/bin/ez80-as
-RUN ln -s /src/llvm-project/build/bin/clang-15 /usr/local/bin/ez80-clang
+RUN cp /opt/ez80-none-elf/bin/ez80-none-elf-ar /usr/local/bin/ez80-ar
+RUN cp /opt/ez80-none-elf/bin/ez80-none-elf-as /usr/local/bin/ez80-as
+RUN cp /opt/ez80-none-elf/bin/ez80-none-elf-ld /usr/local/bin/ez80-ld
+RUN cp /src/llvm-project/build/bin/clang-15 /usr/local/bin/ez80-clang-15
+COPY direct-shims /usr/local/bin/
+
+RUN ls /usr/local/bin/
+
+# RUN error
 
 COPY Makefile /src/Makefile
 COPY src /src/src

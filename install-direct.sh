@@ -1,148 +1,89 @@
 #!/bin/bash
 
+# Set up the clang tool chain required for compling for the ez80 on the RCBus/RC2014 platform
+# install binaries in /opt/clang-for-rc
+# assume compatible distro (ubuntu)
+# requires docker
+# and probably bash
+# not test on osx
+# works on WSL2 (Ubuntu)
+# TODO: update to retrieve files from CI artifacts, and remove need for docker
 
-# install the actual clang tools into the host system
-# install to /opt/clang-for-rc/bin
-# install headers to /opt/clang-for-rc/includes
-# install libs /opt/clang-for-rc/lib
-# add to path /opt/clang-for-rc/bin
-# set env vars for includes and libs
-
+# Check if the script is run as root or with sudo
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run this script as root or with sudo."
+  exit 1
+fi
 
 SCRIPT_DIR=$(dirname "$0")
 SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
-BIN_DIR="${SCRIPT_DIR}bin/"
 
-source "$SCRIPT_DIR/bin/ez80-clang-env.sh"  "${BIN_DIR}"
+source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
-# CLANG_INCLUDE_PATH="${SCRIPT_DIR}includes/"
-# CLANG_SYSTEM_INCLUDE_PATH="${CLANG_INCLUDE_PATH}clang/15.0.0/"
+docker rm -f temp-llvmez80 > /dev/null 2>&1
+trap 'docker rm -f temp-llvmez80  > /dev/null 2>&1' EXIT
+docker create --name temp-llvmez80 ${EZ80_CLANG_TOOLCHAIN_BUILDER} > /dev/null 2>&1
 
-export VOL_MAPS="-v \${CLANG_SYSTEM_INCLUDE_PATH}:\${CLANG_SYSTEM_INCLUDE_PATH} -v \${CLANG_INCLUDE_PATH}:\${CLANG_INCLUDE_PATH} -v /:/host/ -w /host/\\\${PWD}"
-export USER_MAP="-u \\\$(id -u \\\${USER}):\\\$(id -g \\\${USER})"
+CLANG_BIN_DIR="/opt/clang-for-rc/bin/"
+CLANG_LIB_DIR="/opt/clang-for-rc/lib/"
+CLANG_INCLUDE_DIR="/opt/clang-for-rc/include/"
 
-# alias ez80-as=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-as\"
-# alias ez80-ar=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ar\"
-# alias ez80-clang=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} clang -target ez80-none-elf -nostdinc -isystem \${CLANG_INCLUDE_PATH} -isystem \${CLANG_SYSTEM_INCLUDE_PATH}\"
-# alias ez80-ld=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-ld\"
+cd /tmp
 
-# Aliases to be added
+set -e
+sudo rm -rf ${CLANG_BIN_DIR}
+sudo rm -rf ${CLANG_LIB_DIR}
+sudo rm -rf ${CLANG_INCLUDE_DIR}
+
+sudo mkdir -p ${CLANG_BIN_DIR}
+sudo mkdir -p ${CLANG_LIB_DIR}
+sudo mkdir -p ${CLANG_INCLUDE_DIR}
+
+docker cp "temp-llvmez80:/usr/local/bin/." "${CLANG_BIN_DIR}"
+docker cp "temp-llvmez80:/src/lib/." "${CLANG_LIB_DIR}"
+docker cp "temp-llvmez80:/src/include/." "${CLANG_INCLUDE_DIR}"
+
+# ENV vars required
 ALIASES=$(cat << 'EOF'
-alias ez80-tool-chain=\"docker run ${VOL_MAPS} ${USER_MAP} -it ${EZ80_CLANG_TOOLCHAIN_VERSION}\"
-alias ez80-objdump=\"docker run ${VOL_MAPS} ${USER_MAP}  -it ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-objdump\"
+export EZ80_CLANG_SYSTEM_INCLUDE_PATH=${CLANG_INCLUDE_DIR}
+export EZ80_CLANG_LIB_PATH=${CLANG_LIB_DIR}
 
-export CLANG_SYSTEM_INCLUDE_PATH=${CLANG_SYSTEM_INCLUDE_PATH}
-export CLANG_INCLUDE_PATH=${CLANG_INCLUDE_PATH}
-
-if [[ ":\$PATH:" != *":${BIN_DIR}:"* ]]; then
-    export PATH="\${PATH}:${BIN_DIR}"
+if [[ ":\$PATH:" != *":${CLANG_BIN_DIR}:"* ]]; then
+    export PATH="\${PATH}:${CLANG_BIN_DIR}"
 fi
-
 
 EOF
 )
 
-# Function to add aliases to a file if they don't already exist
-add_aliases() {
-    local file=$1
-    if ! grep -q "ez80-clang" "$file"; then
-        eval "echo \"$ALIASES\"" >> "$file"
-        echo "Aliases added to $file"
-    else
-        eval "echo \"$ALIASES\"" > "$file"
-        echo "Aliases updated in $file"
-    fi
-}
+USER_HOME=$(eval echo "~$SUDO_USER")
+ENV_FILE="${USER_HOME}/.ez80-clang"
+
+eval "echo \"$ALIASES\"" > "$ENV_FILE"
+chown "$SUDO_USER:$SUDO_USER" "$ENV_FILE"
+chmod 644 "$ENV_FILE"
+
+echo "Environrment variables defined in: $ENV_FILE"
 
 # Ensure ~/ez80-clang-aliases is sourced in the appropriate shell configuration files
 ensure_aliases_sourced() {
     local file=$1
-    if ! grep -q "source ~/.ez80-clang-aliases" "$file"; then
-        echo -e "\nsource ~/.ez80-clang-aliases" >> "$file"
-        echo "Added source ~/.ez80-clang-aliases to $file"
+    if ! grep -q "source ${ENV_FILE}" "$file"; then
+        echo -e "\nsource ${ENV_FILE}" >> "$file"
+        echo "Added source ${ENV_FILE} to $file"
     fi
 }
-
-CLANG_INCLUDE_FILES=(
-    "stdint.h"
-    "stddef.h"
-    "stdarg.h"
-    "stdbool.h"
-    "__stddef_max_align_t.h"
-    "float.h"
-)
-
-CLANG_BIN_FILES=(
-    "clang"
-    "clang-15"
-)
-
-function copy_bin_file() {
-    docker cp -q "temp-llvmez80:/src/llvm-project/build/bin/${file}" "${BIN_DIR}${file}"
-}
-
-install_system_include_files() {
-     # Set an exit trap to remove the temporary container
-    trap 'docker rm -f temp-llvmez80 > /dev/null 2>&1' EXIT
-
-    # Build the Docker image up to the intermediate stage named "builder"
-    docker build --target builder -t llvmez80-builder .  > /dev/null 2>&1
-
-    docker create --name temp-llvmez80 llvmez80-builder  > /dev/null 2>&1
-
-    rm -rf ${CLANG_SYSTEM_INCLUDE_PATH}
-    mkdir -p ${CLANG_SYSTEM_INCLUDE_PATH}
-    # Copy each file from the container to the host
-    for file in "${CLANG_INCLUDE_FILES[@]}"; do
-        docker cp -q "temp-llvmez80:/src/llvm-project/build/lib/clang/15.0.0/include/${file}" "${CLANG_SYSTEM_INCLUDE_PATH}${file}"
-    done
-
-    for file in "${CLANG_BIN_FILES[@]}"; do
-        docker cp -q "temp-llvmez80:/src/llvm-project/build/bin/${file}" "${BIN_DIR}${file}"
-    done
-}
-
-
-# Add aliases to ~/ez80-clang-aliases
-add_aliases "$HOME/.ez80-clang-aliases"
 
 # Determine the OS and ensure ~/ez80-clang-aliases is sourced in the appropriate file
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     if [ -n "$ZSH_VERSION" ]; then
-        ensure_aliases_sourced "$HOME/.zshrc"
+        ensure_aliases_sourced "$USER_HOME/.zshrc"
     else
-        ensure_aliases_sourced "$HOME/.bashrc"
+        ensure_aliases_sourced "$USER_HOME/.bashrc"
     fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    ensure_aliases_sourced "$HOME/.bash_profile"
-    ensure_aliases_sourced "$HOME/.zshrc"
+    ensure_aliases_sourced "$USER_HOME/.bash_profile"
+    ensure_aliases_sourced "$USER_HOME/.zshrc"
 else
     echo "Unsupported OS: $OSTYPE"
     exit 1
 fi
-
-# Source the updated file to apply changes
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    if [ -n "$ZSH_VERSION" ]; then
-        source "$HOME/.zshrc"
-    else
-        source "$HOME/.bashrc"
-    fi
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    if [ -n "$ZSH_VERSION" ]; then
-        source "$HOME/.zshrc"
-    else
-        source "$HOME/.bash_profile"
-    fi
-fi
-
-install_system_include_files
-
-echo "Aliases added: "
-echo "  ez80-clang"
-echo "  ez80-objdump"
-echo "  ez80-ld"
-echo "  ez80-as"
-echo "  ez80-ar"
-echo ""
-echo "Open a new terminal or run 'source ~/.bashrc' or 'source ~/.zshrc' to apply changes."
