@@ -28,11 +28,6 @@ __start:
 	add	hl, sp
 	ld	(__restore_sp_onexit+1), hl	;Save SPS stack
 						; What about SPL stack
-
-	XOR	A
-	LD	B,7
-	RST.L	$10
-
 	call	crt0_init
 
 	call.lil	__startadl ; 03 0018

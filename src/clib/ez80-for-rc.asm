@@ -8,11 +8,18 @@ __bdos	= 0x5;
 
 ; int putchar(int character) {
 _putchar:
-	ld	iy, 0
-	add	iy, sp
-	ld	de, (iy + 3)
+	push	ix
+	ld	ix, 0
+	add	ix, sp
+	ld	de, (ix + 6)
+
+	XOR	A
+	LD	B,7
+	RST.L	$10
 
 	CALL.SIS	_putchar_z80 & 0xFFFF
+
+	pop	ix
 	RET
 
 	.assume	adl = 0

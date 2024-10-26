@@ -12,16 +12,16 @@ extern void exit(int);
 
 int main()
 {
-	// uint24_t a = 1;
-	// uint24_t b = 2;
+	uint24_t a = 1;
+	uint24_t b = 2;
 
-	// uint24_t c = a + b;
+	uint24_t c = a + b;
 
 	// bob();
 
-	printf("Hello, World!\r\n");
+	printf("Hello, World! %d\r\n", c);
 
-	return 0;
+	return c;
 	// float aa = (float) b;
 	// aa *= 3.2;
 
