@@ -1,6 +1,14 @@
 #!/bin/bash
 
-# Source the version.sh file from the same directory
+
+# install the actual clang tools into the host system
+# install to /opt/clang-for-rc/bin
+# install headers to /opt/clang-for-rc/includes
+# install libs /opt/clang-for-rc/lib
+# add to path /opt/clang-for-rc/bin
+# set env vars for includes and libs
+
+
 SCRIPT_DIR=$(dirname "$0")
 SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
 BIN_DIR="${SCRIPT_DIR}bin/"
@@ -64,6 +72,15 @@ CLANG_INCLUDE_FILES=(
     "float.h"
 )
 
+CLANG_BIN_FILES=(
+    "clang"
+    "clang-15"
+)
+
+function copy_bin_file() {
+    docker cp -q "temp-llvmez80:/src/llvm-project/build/bin/${file}" "${BIN_DIR}${file}"
+}
+
 install_system_include_files() {
      # Set an exit trap to remove the temporary container
     trap 'docker rm -f temp-llvmez80 > /dev/null 2>&1' EXIT
@@ -77,7 +94,11 @@ install_system_include_files() {
     mkdir -p ${CLANG_SYSTEM_INCLUDE_PATH}
     # Copy each file from the container to the host
     for file in "${CLANG_INCLUDE_FILES[@]}"; do
-       docker cp -q "temp-llvmez80:/src/llvm-project/build/lib/clang/15.0.0/include/${file}" "${CLANG_SYSTEM_INCLUDE_PATH}${file}"
+        docker cp -q "temp-llvmez80:/src/llvm-project/build/lib/clang/15.0.0/include/${file}" "${CLANG_SYSTEM_INCLUDE_PATH}${file}"
+    done
+
+    for file in "${CLANG_BIN_FILES[@]}"; do
+        docker cp -q "temp-llvmez80:/src/llvm-project/build/bin/${file}" "${BIN_DIR}${file}"
     done
 }
 

@@ -4,6 +4,7 @@ set -e
 
 # Source the version.sh file from the same directory
 SCRIPT_DIR=$(dirname "$0")
+source "$SCRIPT_DIR/version.sh" "${SCRIPT_DIR}"
 source "$SCRIPT_DIR/ez80-clang-env.sh" "${SCRIPT_DIR}"
 
 # Run the docker command with the provided arguments
@@ -12,4 +13,4 @@ docker run -v "${CLANG_SYSTEM_INCLUDE_PATH}:${CLANG_SYSTEM_INCLUDE_PATH}" \
            -v /:/host/ \
            -w "/host/${PWD}" \
            -u "$(id -u ${USER}):$(id -g ${USER})" \
-           -t ${EZ80_CLANG_TOOLCHAIN_VERSION} ez80-none-elf-as "$@"
+           -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} ez80-none-elf-as "$@"

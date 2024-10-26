@@ -64,6 +64,27 @@ RUN ./configure --target=z80-none-elf --program-prefix=ez80-none-elf- --prefix=/
 RUN make -j
 RUN make install
 
+COPY docker-shims /src/docker-shims
+COPY version.sh /src/docker-shims/version.sh
+
+# want a sym link call ez80-ar that points to ez80-none-elf-ar
+RUN ln -s /opt/ez80-none-elf/bin/ez80-none-elf-ar /usr/local/bin/ez80-ar
+RUN ln -s /opt/ez80-none-elf/bin/ez80-none-elf-as /usr/local/bin/ez80-as
+RUN ln -s /src/llvm-project/build/bin/clang-15 /usr/local/bin/ez80-clang
+
+COPY Makefile /src/Makefile
+COPY src /src/src
+COPY include /src/include
+RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdint.h /src/include/stdint.h
+RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stddef.h /src/include/stddef.h
+RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/__stddef_max_align_t.h /src/include/__stddef_max_align_t.h
+RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdarg.h /src/include/stdarg.h
+
+WORKDIR /src
+ENV C_INCLUDE_PATH=/src/include
+RUN make -B -j #1
+RUN ls /src/lib #3
+
 FROM ubuntu:focal-20240530
 
 RUN adduser --disabled-password --gecos "" builder

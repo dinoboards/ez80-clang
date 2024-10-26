@@ -4,8 +4,8 @@ source ~/.ez80-clang-aliases
 
 set -e
 
-pushd ./
-make
+# pushd ./
+# make
 # pwd
 # alias | grep ez80-as
 # echo "Assembling crt0.asm -> crt0.o"
@@ -14,7 +14,7 @@ make
 # echo "Adding crt0.o to libcrt.a"
 # ez80-ar rcs ../lib/libcrt.a crt0.o
 
-popd
+# popd
 
 # echo "Compiling nanoprintf.c -> nanoprintf.s"
 # ez80-clang -nostdinc -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S nanoprintf.c -c -o nanoprintf.s
