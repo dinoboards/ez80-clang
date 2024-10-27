@@ -89,7 +89,8 @@ RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdarg.h /src/include/st
 
 WORKDIR /src
 ENV C_INCLUDE_PATH=/src/include
-RUN make -B -j #1
+
+RUN make -B
 RUN ls /src/lib #3
 
 FROM ubuntu:focal-20240530

@@ -20,50 +20,26 @@ SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
 
 source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
-docker rm -f temp-llvmez80 > /dev/null 2>&1
-trap 'docker rm -f temp-llvmez80  > /dev/null 2>&1' EXIT
-docker create --name temp-llvmez80 ${EZ80_CLANG_TOOLCHAIN_BUILDER} > /dev/null 2>&1
+ZIP_FILE=$1
 
-CLANG_BIN_DIR="/opt/clang-for-rc/bin/"
-CLANG_LIB_DIR="/opt/clang-for-rc/lib/"
-CLANG_INCLUDE_DIR="/opt/clang-for-rc/include/"
-CLANG_LS_DIR="/opt/clang-for-rc/linker-scripts/"
+EZ80_CLANG_DIR="/opt/clang-for-rc/"
 
-cd /tmp
-
+# cd /tmp
 set -e
-sudo rm -rf ${CLANG_BIN_DIR}
-sudo rm -rf ${CLANG_LIB_DIR}
-sudo rm -rf ${CLANG_INCLUDE_DIR}
-sudo rm -rf ${CLANG_LS_DIR}
 
-sudo mkdir -p ${CLANG_BIN_DIR}
-sudo mkdir -p ${CLANG_LIB_DIR}
-sudo mkdir -p ${CLANG_INCLUDE_DIR}
-sudo mkdir -p ${CLANG_LS_DIR}
+pushd /tmp
+rm -rf ${EZ80_CLANG_DIR}
+popd
 
-docker cp "temp-llvmez80:/usr/local/bin/." "${CLANG_BIN_DIR}"
-docker cp "temp-llvmez80:/src/lib/." "${CLANG_LIB_DIR}"
-docker cp "temp-llvmez80:/src/include/." "${CLANG_INCLUDE_DIR}"
-docker cp "temp-llvmez80:/src/linker-scripts/." "${CLANG_LS_DIR}"
+#unzip the the zip file to /opt/clang-for-rc
+unzip -q $ZIP_FILE -d ${EZ80_CLANG_DIR}
 
-# ENV vars required
-ALIASES=$(cat << 'EOF'
-export EZ80_CLANG_SYSTEM_INCLUDE_PATH=${CLANG_INCLUDE_DIR}
-export EZ80_CLANG_LIB_PATH=${CLANG_LIB_DIR}
-export EZ80_CLANG_LS_PATH=${CLANG_LS_DIR}
-
-if [[ ":\$PATH:" != *":${CLANG_BIN_DIR}:"* ]]; then
-    export PATH="\${PATH}:${CLANG_BIN_DIR}"
-fi
-
-EOF
-)
+#move file ${EZ80_CLANG_DIR}/ez80-clang to SUDO_USER/.ez80-clang
 
 USER_HOME=$(eval echo "~$SUDO_USER")
 ENV_FILE="${USER_HOME}/.ez80-clang"
 
-eval "echo \"$ALIASES\"" > "$ENV_FILE"
+mv ${EZ80_CLANG_DIR}/ez80-clang $ENV_FILE
 chown "$SUDO_USER:$SUDO_USER" "$ENV_FILE"
 chmod 644 "$ENV_FILE"
 

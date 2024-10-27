@@ -5,7 +5,7 @@ source ~/.ez80-clang
 set -e
 
 echo "Compiling main.c -> main.s"
-ez80-clang -nostdinc -O3 -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S main.c -c -o main.s
+ez80-clang -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} -O3 -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S main.c -c -o main.s
 
 echo "Compiling main.s -> main.o"
 ez80-as -march=ez80+full -a=./crt.lst ./main.s -o ./main.o

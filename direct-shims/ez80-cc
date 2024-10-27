@@ -8,7 +8,7 @@ LINKER_SCRIPT=${EZ80_CLANG_LS_PATH}/cpm-64k.ld
 
 set -e
 ASFLAGS="-march=ez80+full"
-CFLAGS="-mllvm -z80-print-zero-offset -nostdinc -Wall -Wextra -Wunreachable-code -Werror -Wa,-march=ez80"
+CFLAGS="-mllvm -z80-print-zero-offset -target ez80-none-elf -nostdinc -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} -nostdinc -Wall -Wextra -Wunreachable-code -Werror -Wa,-march=ez80"
 LDFLAGS="-T ${LINKER_SCRIPT} --relax -O1 --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt"
 
 # Check if at least one argument is provided
