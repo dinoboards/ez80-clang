@@ -7,14 +7,17 @@ SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
 
 source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
+export BUILD_THREADS=$(nproc) && BUILD_THREADS=$((BUILD_THREADS * 8 / 10)) && [ "$BUILD_THREADS" -lt 1 ] && BUILD_THREADS=1 || true
+
+
 echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
 echo
-docker build --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
+docker build --build-arg BUILD_THREADS=${BUILD_THREADS} --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
 
 echo
 echo "Building ${EZ80_CLANG_TOOLCHAIN_IMAGE}"
 echo
-docker build -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
+docker build --build-arg BUILD_THREADS=${BUILD_THREADS} -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
 
 
 CLANG_BIN_DIR="opt/clang-for-rc/bin/"
@@ -58,7 +61,7 @@ function make_direct_zip() {
   eval "echo \"$ALIASES\"" > "$ENV_FILE"
 
   cd opt/clang-for-rc
-  zip -r ../../../ez80-clang-direct.zip ./*
+  zip -r -0 ../../../ez80-clang-direct.zip ./*
 }
 
 function main_docker_zip() {

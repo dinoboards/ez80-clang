@@ -18,11 +18,13 @@ CFLAGS := -nostdinc -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-z
 
 # Find all .asm files in the src directory
 CRT_ASM_FILES := $(wildcard $(CRT_DIR)/*.asm)
-CLIB_C_FILES := $(wildcard $(CLIB_DIR)/*.c)
+CRT_C_FILES := $(wildcard $(CRT_DIR)/*.c)
 CLIB_ASM_FILES := $(wildcard $(CLIB_DIR)/*.asm)
+CLIB_C_FILES := $(wildcard $(CLIB_DIR)/*.c)
 
 # Generate .s and .o file names
-CRT_O_FILES := $(CRT_ASM_FILES:.asm=.o)
+CRT_S_FILES := $(CRT_C_FILES:.c=.s)
+CRT_O_FILES := $(CRT_C_FILES:.c=.o) $(CRT_ASM_FILES:.asm=.o)
 CLIB_S_FILES := $(CLIB_C_FILES:.c=.s)
 CLIB_O_FILES := $(CLIB_C_FILES:.c=.o) $(CLIB_ASM_FILES:.asm=.o)
 
@@ -32,6 +34,14 @@ CLIB_LIB_FILE := $(LIB_DIR)/libclib.a
 
 # Default target
 all: $(CRT_LIB_FILE) $(CLIB_LIB_FILE)
+
+# Rule to compile .c files to .s files for clib
+$(CRT_DIR)/%.s: $(CRT_DIR)/%.c
+	$(CLANG) $(CFLAGS) $< -o $@
+
+# Rule to compile .asm files to .o files for clib
+$(CRT_DIR)/%.o: $(CRT_DIR)/%.s
+	$(AS) $(ASFLAGS) $< -o $@
 
 # Rule to compile .asm files to .o files for crt
 $(CRT_DIR)/%.o: $(CRT_DIR)/%.asm
@@ -52,40 +62,23 @@ $(CLIB_DIR)/%.s: $(CLIB_DIR)/%.c
 $(CLIB_DIR)/%.o: $(CLIB_DIR)/%.s
 	$(AS) $(ASFLAGS) $< -o $@
 
-# Rule to compile .asm files to .o files for crt
+# Rule to compile .asm files to .o files for clib
 $(CLIB_DIR)/%.o: $(CLIB_DIR)/%.asm
 	$(AS) $(ASFLAGS) $< -o $@
 
-# Rule to create the crt library file
+# Rule to create the clib library file
 $(CLIB_LIB_FILE): $(CLIB_O_FILES)
 	@mkdir -p $(LIB_DIR)
 	$(AR) rcs $@ $^
 
 .SECONDARY: $(CLIB_S_FILES)
+.SECONDARY: $(CRT_S_FILES)
 
 
 # Clean up generated files
 clean:
-	rm -f $(CRT_O_FILES) $(CLIB_O_FILES) $(CRT_LIB_FILE) $(CLIB_LIB_FILE)
+	@rm -f $(CRT_O_FILES) $(CLIB_O_FILES) $(CRT_LIB_FILE) $(CLIB_LIB_FILE) $(CLIB_S_FILES) $(CRT_S_FILES)
 
 
-
-
-# # Rule to create the library file
-# $(LIB_FILE): $(O_FILES)
-# 	@mkdir -p $(LIB_DIR)
-# 	$(AR) rcs $@ $^
-
-# # # Rule to assemble .s files to .o files
-# # %.o: %.s
-# # 	$(AS) $(ASFLAGS) $< -o $@
-
-# # Rule to compile .asm files to .s files
-# %.o: %.asm
-# 	$(AS) $(ASFLAGS) $< -o $@
-
-# # Clean up generated files
-# clean:
-# 	rm -f $(SRC_DIR)/*.s $(SRC_DIR)/*.o $(LIB_FILE)
 
 .PHONY: all clean

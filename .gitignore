@@ -2,7 +2,7 @@
 *.com
 *.map
 *.a
-main.s
+*.s
 tmp
 working
 

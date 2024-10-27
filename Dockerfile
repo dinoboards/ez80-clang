@@ -37,9 +37,9 @@ RUN git clone --depth 1 --branch ez80-for-rc-clang-tool-chain https://github.com
 
 WORKDIR /src/llvm-project
 # ARG COMMIT_SHA=365875982bd3e1ee0d572d4d8d34cb45870ee742
-RUN git fetch --depth 1 origin 610487e5a2606567dc472eab6af41c09d7412837
+RUN git fetch --depth 1 origin 11bc9fe1fa8553b4b375141b9d4d32be9025a4b9
 # $COMMIT_SHA
-RUN git checkout 610487e5a2606567dc472eab6af41c09d7412837
+RUN git checkout 11bc9fe1fa8553b4b375141b9d4d32be9025a4b9
 
 RUN cmake -S llvm -B build -G Ninja \
     -DLLVM_ENABLE_PROJECTS="clang" \
@@ -51,7 +51,8 @@ RUN cmake -S llvm -B build -G Ninja \
     -DLLVM_TARGETS_TO_BUILD="" \
     -DLLVM_DEFAULT_TARGET_TRIPLE=ez80-none-elf
 
-RUN cmake --build build
+ARG BUILD_THREADS=1
+RUN cmake --build build -j $BUILD_THREADS
 
 # What about version 2.43???
 

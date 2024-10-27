@@ -2,15 +2,36 @@
 
 source ~/.ez80-clang
 
+SCRIPT_DIR=$(dirname "$0")
+SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
+
+export EZ80_CLANG_SYSTEM_INCLUDE_PATH=${SCRIPT_DIR}/include
+export EZ80_CLANG_LIB_PATH=${SCRIPT_DIR}/lib/
+export EZ80_CLANG_LS_PATH=${SCRIPT_DIR}/linker-scripts/
+
+export INCLUDE_PATHS="-isystem ${SCRIPT_DIR}/include -isystem ${SCRIPT_DIR}/working/llvm-project/build/lib/clang/15.0.0/include/"
+PATH="${SCRIPT_DIR}working/llvm-project/build/bin:${SCRIPT_DIR}working/opt/ez80-none-elf/bin/:${PATH}"
+
+shopt -s expand_aliases
+alias ez80-clang="clang -nostdinc"
+alias ez80-as="ez80-none-elf-as"
+alias ez80-ld="ez80-none-elf-ld"
+
+
 set -e
 
 echo "Compiling main.c -> main.s"
-ez80-clang -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} -O3 -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S main.c -c -o main.s
+ez80-clang ${INCLUDE_PATHS} -isystem  -O3 -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S main.c -c -o main.s
+
+echo "Compiling stdlib_exit.c -> stdlib_exit.s"
+ez80-clang ${INCLUDE_PATHS} -O3 -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S stdlib_exit.c -c -o stdlib_exit.s
+
+echo "Compiling stdlib_exit.s -> stdlib_exit.o"
+ez80-as -march=ez80+full -a=./stdlib_exit.lst ./stdlib_exit.s -o ./stdlib_exit.o
 
 echo "Compiling main.s -> main.o"
-ez80-as -march=ez80+full -a=./crt.lst ./main.s -o ./main.o
-# ez80-clang  -mllvm -z80-print-zero-offset -Wa,-march=ez80 main.c -c -o main.o
+ez80-as -march=ez80+full -a=./main.lst ./main.s -o ./main.o
 
 echo "Linking libcrt.a main.o -> main.com"
-ez80-ld -T linker-script.ld --relax -O1 --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt ./main.o -lclib -lcrt --oformat binary -o main.com
+ez80-ld -T linker-script.ld --relax -O1 --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt ./main.o ./stdlib_exit.o -lclib -lcrt --oformat binary -o main.com
 

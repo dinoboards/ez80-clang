@@ -13,10 +13,6 @@ _putchar:
 	add	ix, sp
 	ld	de, (ix + 6)
 
-	XOR	A
-	LD	B,7
-	RST.L	$10
-
 	CALL.SIS	_putchar_z80 & 0xFFFF
 
 	pop	ix
