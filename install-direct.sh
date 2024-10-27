@@ -27,6 +27,7 @@ docker create --name temp-llvmez80 ${EZ80_CLANG_TOOLCHAIN_BUILDER} > /dev/null 2
 CLANG_BIN_DIR="/opt/clang-for-rc/bin/"
 CLANG_LIB_DIR="/opt/clang-for-rc/lib/"
 CLANG_INCLUDE_DIR="/opt/clang-for-rc/include/"
+CLANG_LS_DIR="/opt/clang-for-rc/linker-scripts/"
 
 cd /tmp
 
@@ -34,19 +35,23 @@ set -e
 sudo rm -rf ${CLANG_BIN_DIR}
 sudo rm -rf ${CLANG_LIB_DIR}
 sudo rm -rf ${CLANG_INCLUDE_DIR}
+sudo rm -rf ${CLANG_LS_DIR}
 
 sudo mkdir -p ${CLANG_BIN_DIR}
 sudo mkdir -p ${CLANG_LIB_DIR}
 sudo mkdir -p ${CLANG_INCLUDE_DIR}
+sudo mkdir -p ${CLANG_LS_DIR}
 
 docker cp "temp-llvmez80:/usr/local/bin/." "${CLANG_BIN_DIR}"
 docker cp "temp-llvmez80:/src/lib/." "${CLANG_LIB_DIR}"
 docker cp "temp-llvmez80:/src/include/." "${CLANG_INCLUDE_DIR}"
+docker cp "temp-llvmez80:/src/linker-scripts/." "${CLANG_LS_DIR}"
 
 # ENV vars required
 ALIASES=$(cat << 'EOF'
 export EZ80_CLANG_SYSTEM_INCLUDE_PATH=${CLANG_INCLUDE_DIR}
 export EZ80_CLANG_LIB_PATH=${CLANG_LIB_DIR}
+export EZ80_CLANG_LS_PATH=${CLANG_LS_DIR}
 
 if [[ ":\$PATH:" != *":${CLANG_BIN_DIR}:"* ]]; then
     export PATH="\${PATH}:${CLANG_BIN_DIR}"

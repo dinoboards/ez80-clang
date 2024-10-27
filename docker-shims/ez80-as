@@ -8,8 +8,4 @@ source "$SCRIPT_DIR/version.sh" "${SCRIPT_DIR}"
 source "$SCRIPT_DIR/ez80-clang-env.sh" "${SCRIPT_DIR}"
 
 # Run the docker command with the provided arguments
-docker run -v "${EZ80_CLANG_SYSTEM_INCLUDE_PATH}:${EZ80_CLANG_SYSTEM_INCLUDE_PATH}" \
-           -v /:/host/ \
-           -w "/host/${PWD}" \
-           -u "$(id -u ${USER}):$(id -g ${USER})" \
-           -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} ez80-none-elf-as "$@"
+docker run ${CLANG_DOCKER_OPTIONS} -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} ez80-none-elf-as  "$@"

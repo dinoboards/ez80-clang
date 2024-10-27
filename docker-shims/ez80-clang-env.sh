@@ -1,4 +1,4 @@
 
-export EZ80_CLANG_SYSTEM_INCLUDE_PATH=/opt/clang-for-rc/include/
+source ~/.ez80-clang
 
-export CLANG_DOCKER_OPTIONS="-v ${EZ80_CLANG_SYSTEM_INCLUDE_PATH}:${EZ80_CLANG_SYSTEM_INCLUDE_PATH} -w /host/${PWD} -v /:/host/ -u $(id -u ${USER}):$(id -g ${USER})"
+export CLANG_DOCKER_OPTIONS="-v ${EZ80_CLANG_LIB_PATH}:${EZ80_CLANG_LIB_PATH} -v ${EZ80_CLANG_LS_PATH}:${EZ80_CLANG_LS_PATH} -v ${EZ80_CLANG_SYSTEM_INCLUDE_PATH}:${EZ80_CLANG_SYSTEM_INCLUDE_PATH} -w /host/${PWD} -v /:/host/ -u $(id -u ${USER}):$(id -g ${USER})"

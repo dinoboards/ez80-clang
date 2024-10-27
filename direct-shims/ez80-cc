@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Define the assembler and archiver
+AS=ez80-as
+AR=ez80-ar
+CLANG=ez80-clang
+LINKER_SCRIPT=${EZ80_CLANG_LS_PATH}/cpm-64k.ld
+
+set -e
+ASFLAGS="-march=ez80+full"
+CFLAGS="-mllvm -z80-print-zero-offset -nostdinc -Wall -Wextra -Wunreachable-code -Werror -Wa,-march=ez80"
+LDFLAGS="-T ${LINKER_SCRIPT} --relax -O1 --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt"
+
+# Check if at least one argument is provided
+if [ "$#" -lt 1 ]; then
+  echo "Usage: $0 output_binary input_files..."
+  exit 1
+fi
+
+# Output binary file
+OUTPUT_BINARY=$1
+
+EXT="${OUTPUT_BINARY##*.}"
+if [ "$EXT" != "com" ]; then
+  OUTPUT_BINARY="${OUTPUT_BINARY%.*}.com"
+else
+  shift
+fi
+
+# Check file extension
+FILE_TYPES_OK=1
+for FILE in "$@"; do
+  EXT="${FILE##*.}"
+
+  if [ "$EXT" != "c" ] && [ "$EXT" != "asm" ]; then
+    echo "Unsupported file type: ${FILE}"
+    FILE_TYPES_OK=0
+  fi
+done
+
+if [ "$FILE_TYPES_OK" -eq 0 ]; then
+  exit 1
+fi
+
+# Arrays to hold object files
+OBJECT_FILES=()
+
+# Compile and assemble each input file
+for FILE in "$@"; do
+  EXT="${FILE##*.}"
+  BASENAME="${FILE%.*}"
+
+  if [ "$EXT" == "c" ]; then
+    echo "Compiling $FILE -> $BASENAME.o"
+    ez80-clang ${CFLAGS} "$FILE"  -c -o  "$BASENAME.o"
+    OBJECT_FILES+=("$BASENAME.o")
+  elif [ "$EXT" == "asm" ]; then
+    echo "Assembling $FILE -> $BASENAME.o"
+    ez80-as -march=ez80+full ${FILE} -o "$BASENAME.o"
+    OBJECT_FILES+=("$BASENAME.o")
+  else
+    echo "Unsupported file type: $FILE"
+    exit 1
+  fi
+done
+
+# Link object files into the final executable binary
+echo "Linking ${OBJECT_FILES[*]} -> $OUTPUT_BINARY"
+
+ez80-ld ${LDFLAGS} "${OBJECT_FILES[@]}" -lclib -lcrt --oformat binary -o "$OUTPUT_BINARY"
+
+echo "Build complete: $OUTPUT_BINARY"

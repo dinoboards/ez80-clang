@@ -2,4 +2,4 @@
 
 set -e
 
-ez80-clang-15 -target ez80-none-elf -nostdinc -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} "$@"
+clang -target ez80-none-elf -nostdinc -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} "$@"

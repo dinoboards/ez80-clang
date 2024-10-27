@@ -53,7 +53,6 @@ RUN cmake -S llvm -B build -G Ninja \
 
 RUN cmake --build build
 
-# RUN ls -lartsh /src/llvm-project/build/lib/clang/15.0.0/include
 # What about version 2.43???
 
 WORKDIR /src
@@ -65,18 +64,20 @@ RUN make -j
 RUN make install
 
 COPY docker-shims /src/docker-shims
+COPY direct-shims /src/direct-shims
+COPY linker-scripts /src/linker-scripts
+
 COPY version.sh /src/docker-shims/version.sh
 
 # want a sym link call ez80-ar that points to ez80-none-elf-ar
-RUN cp /opt/ez80-none-elf/bin/ez80-none-elf-ar /usr/local/bin/ez80-ar
-RUN cp /opt/ez80-none-elf/bin/ez80-none-elf-as /usr/local/bin/ez80-as
-RUN cp /opt/ez80-none-elf/bin/ez80-none-elf-ld /usr/local/bin/ez80-ld
-RUN cp /src/llvm-project/build/bin/clang-15 /usr/local/bin/ez80-clang-15
+RUN cp /opt/ez80-none-elf/bin/* /usr/local/bin/
+RUN ln -s ez80-none-elf-ar /usr/local/bin/ez80-ar
+RUN ln -s ez80-none-elf-as /usr/local/bin/ez80-as
+RUN ln -s ez80-none-elf-ld /usr/local/bin/ez80-ld
+RUN cp /src/llvm-project/build/bin/clang-15 /usr/local/bin/clang-15
+RUN ln -s clang-15 /usr/local/bin/clang
 COPY direct-shims /usr/local/bin/
 
-RUN ls /usr/local/bin/
-
-# RUN error
 
 COPY Makefile /src/Makefile
 COPY src /src/src
@@ -99,7 +100,6 @@ WORKDIR /src
 COPY --from=builder /opt/ez80-none-elf/bin /usr/local/bin/
 COPY --from=builder /src/llvm-project/build/bin /usr/local/bin/
 
-# ENV C_INCLUDE_PATH=/usr/local/lib/clang/15.0.0
 
 
 # compiling: clang -target ez80-none-elf -mllvm -z80-print-zero-offset -Wa,-march=ez80, -nostdinc main.c -c -o main.o
