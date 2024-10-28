@@ -8,15 +8,51 @@ LINKER_SCRIPT=${EZ80_CLANG_LS_PATH}/cpm-64k.ld
 
 set -e
 ASFLAGS="-march=ez80+full"
-CFLAGS="-mllvm -z80-print-zero-offset -target ez80-none-elf -nostdinc -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} -O3 -Wall -Wextra -Wunreachable-code -Werror -Wa,-march=ez80"
-LDFLAGS="-T ${LINKER_SCRIPT} --relax -O1 --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt"
+CFLAGS="-mllvm -z80-print-zero-offset -target ez80-none-elf -nostdinc -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} -Oz -Wall -Wextra -Wunreachable-code -Werror -Wa,-march=ez80"
+LDFLAGS="-T ${LINKER_SCRIPT} --relax -O1 --strip-discarded --orphan-handling=error -L${EZ80_CLANG_LIB_PATH} -lcrt"
+
+# Initialize output directory
+OUTPUT_DIR=""
+
+# Temporary array to hold non-option arguments
+ARGS=()
+
+# First pass: parse options
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    --output-dir)
+      OUTPUT_DIR="$2"
+      shift 2
+      ;;
+    --help)
+      echo "Usage: $0 [--output-dir dir] [output] source-files..."
+      echo "Options:"
+      echo "  --output-dir dir  Specify the output directory for the binary file."
+      echo "  --help            Display this help message."
+      echo
+      echo "Arguments:"
+      echo "  output            The name of the output .com file. If not supplied,"
+      echo "                    the name is inferred from the name of the first source-file."
+      echo "  source-files      The input files to be compiled or assembled. Must be"
+      echo "                    .asm or .c files."
+      exit 0
+      ;;
+    *)
+      ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# Restore positional parameters
+set -- "${ARGS[@]}"
+
 
 # Check if at least one argument is provided
 if [ "$#" -lt 1 ]; then
-  echo "Usage: $0 output_binary input_files..."
+  echo "Usage: $0 [--output-dir dir] output_binary input_files..."
   exit 1
 fi
-
 # Output binary file
 OUTPUT_BINARY=$1
 
@@ -25,6 +61,10 @@ if [ "$EXT" != "com" ]; then
   OUTPUT_BINARY="${OUTPUT_BINARY%.*}.com"
 else
   shift
+fi
+
+if [ -n "$OUTPUT_DIR" ]; then
+  OUTPUT_BINARY="${OUTPUT_DIR%/}/$(basename "$OUTPUT_BINARY")"
 fi
 
 # Check file extension
@@ -44,6 +84,12 @@ fi
 
 # Arrays to hold object files
 OBJECT_FILES=()
+
+cleanup() {
+  rm -f "${OBJECT_FILES[@]}"
+}
+
+trap cleanup EXIT
 
 # Compile and assemble each input file
 for FILE in "$@"; do
