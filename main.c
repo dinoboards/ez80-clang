@@ -17,23 +17,29 @@ void maybe_exit(uint24_t c) {
   }
 }
 
+uint32_t some_larg_numer() { return 0x12345678; }
+
 void exit_hook1(void) { printf("exit hook 1 called\n"); }
 
 int main() {
-  uint24_t a = 1;
-  uint24_t b = 2;
-  uint24_t c = a + b;
+  // uint24_t a = 1;
+  // uint24_t b = 2;
+  uint32_t d = some_larg_numer();
 
-  if (atexit(exit_hook1) != 0) {
-    printf("Failed to register exit hook\n");
-    return EXIT_FAILURE;
-  }
+  printf("d is %ld\n", d);
 
-  printf("Hello, World! %d\r\n", c);
+  // uint24_t c = a + b;
 
-  maybe_exit(c);
+  // if (atexit(exit_hook1) != 0) {
+  //   printf("Failed to register exit hook\n");
+  //   return EXIT_FAILURE;
+  // }
 
-  printf("Should not be here\r\n");
+  // printf("Hello, World! %d\r\n", c);
 
-  return c;
+  // maybe_exit(c);
+
+  // printf("Should not be here\r\n");
+
+  return 0;
 }
