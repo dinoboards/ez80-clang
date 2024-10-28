@@ -19,12 +19,13 @@ MEMORY
 SECTIONS
 {
     start_of_header = . ;
-    .header 0x030100  : AT(0x030100) { *(.header) } > RAM
+    .header 0x030100  : AT(0x030100) { *(.header_z80) } > RAM
     end_of_header = . ;
 
     start_of_startup = . ;
     .startup  : {
-        *(.startup)
+        *(.startup_z80)
+        *(.startup_adl)
         *(code_crt_init)
         *(code_crt_init_exit)
         *(code_crt_exit)
@@ -33,23 +34,31 @@ SECTIONS
     end_of_startup = . ;
 
     start_of_text = . ;
-    .text : { *(.text) } > RAM
+    .text : {
+         *(.text)
+         *(.text.*)
+          } > RAM
     end_of_text = . ;
 
     start_of_rodata = . ;
-    .rodata : { *(.rodata) } > RAM
+    .rodata : {
+        *(.rodata)
+        *(.rodata.*)
+     } > RAM
     end_of_rodata = . ;
 
     start_of_data = . ;
     .data : { *(.data) } > RAM
     end_of_data = . ;
 
-    start_of_bss = . ;
+    _start_of_bss = . ;
     .bss(NOLOAD) : {
         *(bss_crt)
         *(.bss)
+        *(.bss.*)
     }
-    end_of_bss = . ;
+    _end_of_bss = . ;
+    _length_of_bss = _end_of_bss - _start_of_bss;
 
     .comment(NOLOAD) : { *(.comment) }
 }

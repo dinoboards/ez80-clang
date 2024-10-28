@@ -49,6 +49,7 @@ SECTIONS
     .bss(NOLOAD) : {
         *(bss_crt)
         *(.bss)
+        *(.bss.*)
     }
     _end_of_bss = . ;
     _length_of_bss = _end_of_bss - _start_of_bss;

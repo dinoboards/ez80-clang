@@ -21,17 +21,17 @@ alias ez80-ld="ez80-none-elf-ld"
 set -e
 
 echo "Compiling main.c -> main.s"
-ez80-clang ${INCLUDE_PATHS} -isystem  -O3 -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S main.c -c -o main.s
+ez80-clang ${INCLUDE_PATHS} -nostdinc -ffunction-sections -fdata-sections -Oz -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S main.c -c -o main.s
 
-echo "Compiling stdlib_exit.c -> stdlib_exit.s"
-ez80-clang ${INCLUDE_PATHS} -O3 -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S stdlib_exit.c -c -o stdlib_exit.s
+echo "Compiling nanoprintf.c -> nanoprintf.s"
+ez80-clang ${INCLUDE_PATHS} -nostdinc -ffunction-sections -fdata-sections -Oz -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S nanoprintf.c -c -o nanoprintf.s
 
-echo "Compiling stdlib_exit.s -> stdlib_exit.o"
-ez80-as -march=ez80+full -a=./stdlib_exit.lst ./stdlib_exit.s -o ./stdlib_exit.o
+echo "Compiling nanoprintf.s -> nanoprintf.o"
+ez80-as -march=ez80+full -a=./nanoprintf.lst ./nanoprintf.s -o ./nanoprintf.o
 
 echo "Compiling main.s -> main.o"
 ez80-as -march=ez80+full -a=./main.lst ./main.s -o ./main.o
 
 echo "Linking libcrt.a main.o -> main.com"
-ez80-ld -T linker-script.ld --relax -O1 --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt ./main.o ./stdlib_exit.o -lclib -lcrt --oformat binary -o main.com
+ez80-ld -T linker-script.ld --relax -O1  --gc-sections --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt ./main.o  -lclib -lcrt --oformat binary -o main.com
 

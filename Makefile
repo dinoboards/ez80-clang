@@ -14,7 +14,7 @@ CLANG := ez80-clang
 
 # Define the assembler flags
 ASFLAGS := -march=ez80+full -a=./crt.lst
-CFLAGS := -nostdinc -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S -O3
+CFLAGS  := -ffunction-sections -fdata-sections -nostdinc -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S  -Oz
 
 # Find all .asm files in the src directory
 CRT_ASM_FILES := $(wildcard $(CRT_DIR)/*.asm)

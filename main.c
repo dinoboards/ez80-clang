@@ -23,6 +23,7 @@ void exit_hook1(void) {
    printf("exit hook 1 called\n");
 }
 
+
 int main()
 {
 	uint24_t a = 1;

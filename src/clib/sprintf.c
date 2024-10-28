@@ -35,7 +35,7 @@
    NANOPRINTF_IMPLEMENTATION is defined. In a multi-file library what follows would
    be nanoprintf.c. */
 
-#include "nanoprintf.h"
+#include "nanoprintf-min.h"
 
 #undef NPF_PUTC
 #undef NPF_EXTRACT

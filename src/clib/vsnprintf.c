@@ -35,7 +35,7 @@
    NANOPRINTF_IMPLEMENTATION is defined. In a multi-file library what follows would
    be nanoprintf.c. */
 
-#include "nanoprintf.h"
+#include "nanoprintf-min.h"
 
 #undef NPF_PUTC
 #undef NPF_EXTRACT
@@ -56,11 +56,8 @@ int vsnprintf(char *buffer, size_t bufsz, char const *format, va_list vlist) {
   int const n = npf_vpprintf(pc, &bufputc_ctx, format, vlist);
   pc('\0', &bufputc_ctx);
 
-#ifdef NANOPRINTF_SNPRINTF_SAFE_EMPTY_STRING_ON_OVERFLOW
   if (bufsz && (n >= (int)bufsz)) { buffer[0] = '\0'; }
-#elif defined(NANOPRINTF_SNPRINTF_SAFE_TRIM_STRING_ON_OVERFLOW)
   if (bufsz && (n >= (int)bufsz)) { buffer[bufsz - 1] = '\0'; }
-#endif
 
   return n;
 }

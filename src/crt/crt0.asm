@@ -22,6 +22,10 @@ __start:
 
 	call.lil __startadl
 
+	; XOR	A
+	; LD	B,7
+	; RST.L	$10
+
 	; Restore default disc
 	PUSH	HL
 	ld	a, (defltdsk & $FFFF)
@@ -46,6 +50,7 @@ __restore_sps_onexit:
 	jr	z, do_exit_v3
 	ld	a, 255				;Indicate error
 do_exit_v3:
+
 	ld	d, a
 	ld	c, 108
 	call	5				;Report error
@@ -72,10 +77,6 @@ __startadl:
 	call	_main				; int main(int argc, char *argv[])
 
 __crt_exit:
-	; XOR	A
-	; LD	B,7
-	; RST.L	$10
-
 	PUSH	HL				; save return value
 	call	crt0_exit
 	POP	HL
