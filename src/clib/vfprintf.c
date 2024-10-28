@@ -45,7 +45,4 @@
 //
 // called by fprintf which has dealt with the variable list of arguements
 
-int vfprintf(FILE *stream, const char *format, va_list vlist)
-{
-  return npf_vpprintf(npf_fputc_std, (void *)stream, format, vlist);
-}
+int vfprintf(FILE *stream, const char *format, va_list vlist) { return npf_vpprintf(npf_fputc_std, (void *)stream, format, vlist); }

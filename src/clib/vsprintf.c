@@ -43,7 +43,4 @@
 
 // vsprintf()
 
-int vsprintf(char *buffer, const char *format, va_list vlist)
-{
-  return vsnprintf(buffer, (size_t)-1, format, vlist);
-}
+int vsprintf(char *buffer, const char *format, va_list vlist) { return vsnprintf(buffer, (size_t)-1, format, vlist); }

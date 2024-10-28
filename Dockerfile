@@ -76,6 +76,7 @@ RUN ln -s ez80-none-elf-ar /usr/local/bin/ez80-ar
 RUN ln -s ez80-none-elf-as /usr/local/bin/ez80-as
 RUN ln -s ez80-none-elf-ld /usr/local/bin/ez80-ld
 RUN cp /src/llvm-project/build/bin/clang-15 /usr/local/bin/clang-15
+RUN cp /src/llvm-project/build/bin/clang-format /usr/local/bin/clang-format
 RUN ln -s clang-15 /usr/local/bin/clang
 COPY direct-shims /usr/local/bin/
 

@@ -50,4 +50,3 @@ int snprintf(char *buffer, size_t bufsz, const char *format, ...) {
   va_end(val);
   return rv;
 }
-

@@ -7,16 +7,15 @@
 #ifdef HAS_CUSTOM_FILE
 #include CUSTOM_FILE_FILE
 #else
-typedef struct
-{
-    unsigned char slot;
-    unsigned char eof;
-    unsigned char err;
+typedef struct {
+  unsigned char slot;
+  unsigned char eof;
+  unsigned char err;
 } FILE;
-#define FOPEN_MAX  5
-#define stdin      ((FILE*)1)
-#define stdout     ((FILE*)2)
-#define stderr     ((FILE*)2)
+#define FOPEN_MAX 5
+#define stdin     ((FILE *)1)
+#define stdout    ((FILE *)2)
+#define stderr    ((FILE *)2)
 #endif
 
 #ifndef EOF
@@ -24,13 +23,13 @@ typedef struct
 #endif
 
 #ifndef SEEK_CUR
-#define SEEK_CUR  1
+#define SEEK_CUR 1
 #endif
 #ifndef SEEK_END
-#define SEEK_END  2
+#define SEEK_END 2
 #endif
 #ifndef SEEK_SET
-#define SEEK_SET  0
+#define SEEK_SET 0
 #endif
 
 __BEGIN_DECLS
@@ -56,8 +55,7 @@ int fputs(const char *__restrict str, FILE *__restrict stream);
 
 size_t fread(void *ptr, size_t size, size_t count, FILE *__restrict stream);
 
-size_t fwrite(const void *__restrict ptr, size_t size, size_t count,
-    FILE *__restrict stream);
+size_t fwrite(const void *__restrict ptr, size_t size, size_t count, FILE *__restrict stream);
 
 long int ftell(FILE *stream) __attribute__((__warn_unused_result__));
 
@@ -82,40 +80,30 @@ int putchar(int character);
 
 int puts(const char *str);
 
-int printf(const char *__restrict format, ...)
-    __attribute__((format(__printf__, 1, 2)));
+int printf(const char *__restrict format, ...) __attribute__((format(__printf__, 1, 2)));
 
-int vprintf(const char *__restrict format, va_list va)
-    __attribute__((format(__printf__, 1, 0)));
+int vprintf(const char *__restrict format, va_list va) __attribute__((format(__printf__, 1, 0)));
 
-int vsprintf(char *__restrict buffer, const char *__restrict format,
-    va_list va)
-    __attribute__((format(__printf__, 1, 0)));
+int vsprintf(char *__restrict buffer, const char *__restrict format, va_list va) __attribute__((format(__printf__, 1, 0)));
 
-int snprintf(char* buffer, size_t count, const char *__restrict format, ...)
-    __attribute__((format(__printf__, 3, 4)));
+int snprintf(char *buffer, size_t count, const char *__restrict format, ...) __attribute__((format(__printf__, 3, 4)));
 
-int vsnprintf(char* buffer, size_t count, const char *__restrict format,
-    va_list va)
-    __attribute__((format(__printf__, 3, 0)));
+int vsnprintf(char *buffer, size_t count, const char *__restrict format, va_list va) __attribute__((format(__printf__, 3, 0)));
 
-int sprintf(char *__restrict buffer,
-    const char *__restrict format, ...)
-    __attribute__ ((format (__printf__, 2, 3)));
+int sprintf(char *__restrict buffer, const char *__restrict format, ...) __attribute__((format(__printf__, 2, 3)));
 
-    int fprintf(FILE *stream, const char *__restrict format, ...)
-    __attribute__((format(__printf__, 2, 3)));
+int fprintf(FILE *stream, const char *__restrict format, ...) __attribute__((format(__printf__, 2, 3)));
 
-int vfprintf(FILE *stream, const char *__restrict format, va_list va)
-    __attribute__((format(__printf__, 2, 0)));
+int vfprintf(FILE *stream, const char *__restrict format, va_list va) __attribute__((format(__printf__, 2, 0)));
 
 typedef size_t rsize_t;
 
-char *gets_s( char *__restrict str, rsize_t n );
-int scanf( const char *format, ...);
-int sscanf( const char *s, const char *format, ...);
-int fscanf( FILE *fp, const char *fmt,...);
-FILE *freopen( const char *__restrict filename, const char *__restrict mode, FILE *stream );
-int ungetc(int c, FILE *stream);__END_DECLS
+char *gets_s(char *__restrict str, rsize_t n);
+int   scanf(const char *format, ...);
+int   sscanf(const char *s, const char *format, ...);
+int   fscanf(FILE *fp, const char *fmt, ...);
+FILE *freopen(const char *__restrict filename, const char *__restrict mode, FILE *stream);
+int   ungetc(int c, FILE *stream);
+__END_DECLS
 
 #endif /* _STDIO_H */

@@ -41,12 +41,8 @@
 #undef NPF_EXTRACT
 #undef NPF_WRITEBACK
 
-
 // vprintf()
 //
 // called by printf which has dealt with the variable list of arguments
 
-int vprintf(const char *format, va_list vlist)
-{
-  return npf_vpprintf(npf_putc_std, NULL, format, vlist);
-}
+int vprintf(const char *format, va_list vlist) { return npf_vpprintf(npf_putc_std, NULL, format, vlist); }

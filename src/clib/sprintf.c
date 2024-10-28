@@ -43,8 +43,7 @@
 
 // sprintf()
 
-int sprintf(char *buffer, const char *format, ...)
-{
+int sprintf(char *buffer, const char *format, ...) {
   va_list va;
   va_start(va, format);
   const int ret = vsnprintf(buffer, (size_t)-1, format, va);

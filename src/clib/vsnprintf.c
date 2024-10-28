@@ -41,7 +41,6 @@
 #undef NPF_EXTRACT
 #undef NPF_WRITEBACK
 
-
 // vsnprintf()
 //
 // called by sprintf() once it has dealt with the variable list of arguements
@@ -53,11 +52,15 @@ int vsnprintf(char *buffer, size_t bufsz, char const *format, va_list vlist) {
   bufputc_ctx.cur = 0;
 
   npf_putc const pc = buffer ? npf_bufputc : npf_bufputc_nop;
-  int const n = npf_vpprintf(pc, &bufputc_ctx, format, vlist);
+  int const      n  = npf_vpprintf(pc, &bufputc_ctx, format, vlist);
   pc('\0', &bufputc_ctx);
 
-  if (bufsz && (n >= (int)bufsz)) { buffer[0] = '\0'; }
-  if (bufsz && (n >= (int)bufsz)) { buffer[bufsz - 1] = '\0'; }
+  if (bufsz && (n >= (int)bufsz)) {
+    buffer[0] = '\0';
+  }
+  if (bufsz && (n >= (int)bufsz)) {
+    buffer[bufsz - 1] = '\0';
+  }
 
   return n;
 }
