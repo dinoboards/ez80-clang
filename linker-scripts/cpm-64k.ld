@@ -34,15 +34,24 @@ SECTIONS
     end_of_startup = . ;
 
     start_of_text = . ;
-    .text : { *(.text) } > RAM
+    .text : {
+        *(.text)
+        *(.text.*)
+    } > RAM
     end_of_text = . ;
 
     start_of_rodata = . ;
-    .rodata : { *(.rodata) } > RAM
+    .rodata : {
+        *(.rodata)
+        *(.rodata.*)
+    } > RAM
     end_of_rodata = . ;
 
     start_of_data = . ;
-    .data : { *(.data) } > RAM
+    .data : {
+        *(.data)
+        *(.data.*)
+    } > RAM
     end_of_data = . ;
 
     _start_of_bss = . ;

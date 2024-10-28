@@ -37,9 +37,9 @@ RUN git clone --depth 1 --branch ez80-for-rc-clang-tool-chain https://github.com
 
 WORKDIR /src/llvm-project
 # ARG COMMIT_SHA=365875982bd3e1ee0d572d4d8d34cb45870ee742
-RUN git fetch --depth 1 origin 11bc9fe1fa8553b4b375141b9d4d32be9025a4b9
+RUN git fetch --depth 1 origin da4c66ccd1e01a212c4f07af91749e16a12f6423
 # $COMMIT_SHA
-RUN git checkout 11bc9fe1fa8553b4b375141b9d4d32be9025a4b9
+RUN git checkout da4c66ccd1e01a212c4f07af91749e16a12f6423
 
 RUN cmake -S llvm -B build -G Ninja \
     -DLLVM_ENABLE_PROJECTS="clang" \
@@ -84,6 +84,7 @@ COPY direct-shims /usr/local/bin/
 COPY Makefile /src/Makefile
 COPY src /src/src
 COPY include /src/include
+RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdbool.h /src/include/stdbool.h
 RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdint.h /src/include/stdint.h
 RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stddef.h /src/include/stddef.h
 RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/__stddef_max_align_t.h /src/include/__stddef_max_align_t.h
