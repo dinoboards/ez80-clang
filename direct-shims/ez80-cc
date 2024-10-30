@@ -65,7 +65,7 @@ fi
 OUTPUT_BINARY=$1
 
 EXT="${OUTPUT_BINARY##*.}"
-if [ "$EXT" != "com" ]; then
+if [ "$(echo "$EXT" | tr '[:upper:]' '[:lower:]')" != "com" ]; then
   OUTPUT_BINARY="${OUTPUT_BINARY%.*}.com"
 else
   shift
