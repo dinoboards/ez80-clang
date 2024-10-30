@@ -111,9 +111,9 @@ for FILE in "$@"; do
   BASENAME="${FILE%.*}"
 
   if [ "$EXT" == "c" ]; then
-    echo "Compiling $FILE -> $BASENAME.o"
-    ez80-clang ${CFLAGS} "$FILE"  -c -o  "$BASENAME.o"
-    OBJECT_FILES+=("$BASENAME.o")
+    echo "Compiling $FILE -> $BASENAME.c.o"
+    ez80-clang ${CFLAGS} "$FILE"  -c -o  "$BASENAME.c.o"
+    OBJECT_FILES+=("$BASENAME.c.o")
   elif [ "$EXT" == "asm" ]; then
     echo "Assembling $FILE -> $BASENAME.o"
     ez80-as -march=ez80+full ${FILE} -o "$BASENAME.o"
@@ -127,6 +127,6 @@ done
 # Link object files into the final executable binary
 echo "Linking ${OBJECT_FILES[*]} -> $OUTPUT_BINARY"
 
-ez80-ld ${LDFLAGS} "${OBJECT_FILES[@]}" -lclib -lcrt --oformat binary -o "$OUTPUT_BINARY"
+ez80-ld ${LDFLAGS} "${OBJECT_FILES[@]}" -lclib -lcrt -lcpm --oformat binary -o "$OUTPUT_BINARY"
 
 echo "Build complete: $OUTPUT_BINARY"

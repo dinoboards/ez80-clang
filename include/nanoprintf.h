@@ -667,7 +667,7 @@ static void npf_putc_std(int c, void *ctx) {
   putchar(c);
 }
 
-static void npf_fputc_std(int c, void *ctx) { fputc(c, (FILE *)ctx); }
+void npf_fputc_std(int c, void *ctx) { fputc(c, (FILE *)ctx); }
 
 typedef struct npf_cnt_putc_ctx {
   npf_putc pc;

@@ -13,21 +13,10 @@ _putchar:
 	add	ix, sp
 	ld	de, (ix + 6)
 
-	CALL.SIS	_putchar_z80 & 0xFFFF
+	ld      c,2
+	CALL	cpm_bdos
 
 	pop	ix
 	RET
 
-	.assume	adl = 0
-_putchar_z80:
-
-	ld      c,2
-	CALL	__bdos
-	RET.L
-
-	.assume	adl = 1
-
-	.global	_fputc
-; int fputc(int c, FILE *stream)
-_fputc:
-	RET
+	extern	cpm_bdos

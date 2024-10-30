@@ -5,33 +5,33 @@
 extern "C" {
 #endif
 
-#define NAN          __builtin_nanf("")
-#define INFINITY     __builtin_inff()
+#define NAN      __builtin_nanf("")
+#define INFINITY __builtin_inff()
 
-#define HUGE_VALF    __builtin_inff()
-#define HUGE_VAL     __builtin_inf()
+#define HUGE_VALF __builtin_inff()
+#define HUGE_VAL  __builtin_inf()
 
-#define M_E           2.71828182845904523536     /* e              */
-#define M_LOG2E       1.44269504088896340736     /* log2(e)        */
-#define M_LOG10E      0.434294481903251827651    /* log10(e)       */
-#define M_LN2         0.693147180559945309417    /* ln(2)          */
-#define M_LN10        2.30258509299404568402     /* ln(10)         */
-#define M_PI          3.14159265358979323846     /* pi             */
-#define M_PI_2        1.57079632679489661923     /* pi/2           */
-#define M_PI_4        0.785398163397448309616    /* pi/4           */
-#define M_1_PI        0.318309886183790671538    /* 1/pi           */
-#define M_2_PI        0.636619772367581343076    /* 2/pi           */
-#define M_2_SQRTPI    1.12837916709551257390     /* 2/sqrt(pi)     */
-#define M_SQRT2       1.41421356237309504880     /* sqrt(2)        */
-#define M_SQRT1_2     0.707106781186547524401    /* 1/sqrt(2)      */
-#define M_LOG_2M_PI   1.83787706640934548        /* log2(M_PI)     */
+#define M_E         2.71828182845904523536  /* e              */
+#define M_LOG2E     1.44269504088896340736  /* log2(e)        */
+#define M_LOG10E    0.434294481903251827651 /* log10(e)       */
+#define M_LN2       0.693147180559945309417 /* ln(2)          */
+#define M_LN10      2.30258509299404568402  /* ln(10)         */
+#define M_PI        3.14159265358979323846  /* pi             */
+#define M_PI_2      1.57079632679489661923  /* pi/2           */
+#define M_PI_4      0.785398163397448309616 /* pi/4           */
+#define M_1_PI      0.318309886183790671538 /* 1/pi           */
+#define M_2_PI      0.636619772367581343076 /* 2/pi           */
+#define M_2_SQRTPI  1.12837916709551257390  /* 2/sqrt(pi)     */
+#define M_SQRT2     1.41421356237309504880  /* sqrt(2)        */
+#define M_SQRT1_2   0.707106781186547524401 /* 1/sqrt(2)      */
+#define M_LOG_2M_PI 1.83787706640934548     /* log2(M_PI)     */
 
-#define FP_ILOGB0     (~__INT_MAX__)
-#define FP_ILOGBNAN     __INT_MAX__
+#define FP_ILOGB0   (~__INT_MAX__)
+#define FP_ILOGBNAN __INT_MAX__
 
 #define FP_NORMAL    0x1
 #define FP_ZERO      0x2
-#define FP_SUBNORMAL (FP_NORMAL | FP_ZERO)     /* 0x3 */
+#define FP_SUBNORMAL (FP_NORMAL | FP_ZERO) /* 0x3 */
 #define FP_INFINITE  0x4
 #define FP_NAN       (FP_NORMAL | FP_INFINITE) /* 0x5 */
 
@@ -49,21 +49,11 @@ int _isnormalf(float n);
 int _isfinitef(float n);
 int _fpclassifyf(float n);
 
-#define isinf(x) ( \
-	sizeof((x)) == sizeof(float) ? _isinff((x)) : \
-	0)
-#define isnan(x) ( \
-	sizeof((x)) == sizeof(float) ? _isnanf((x)) : \
-	0)
-#define isnormal(x) ( \
-	sizeof((x)) == sizeof(float) ? _isnormalf((x)) : \
-	(x) != 0)
-#define isfinite(x) ( \
-	sizeof((x)) == sizeof(float) ? _isfinitef((x)) : \
-	1)
-#define fpclassify(x) ( \
-	sizeof((x)) == sizeof(float) ? _fpclassifyf((x)) : \
-	0)
+#define isinf(x)      (sizeof((x)) == sizeof(float) ? _isinff((x)) : 0)
+#define isnan(x)      (sizeof((x)) == sizeof(float) ? _isnanf((x)) : 0)
+#define isnormal(x)   (sizeof((x)) == sizeof(float) ? _isnormalf((x)) : (x) != 0)
+#define isfinite(x)   (sizeof((x)) == sizeof(float) ? _isfinitef((x)) : 1)
+#define fpclassify(x) (sizeof((x)) == sizeof(float) ? _fpclassifyf((x)) : 0)
 
 double      acos(double);
 float       acosf(float);
@@ -169,9 +159,9 @@ double      hypot(double, double);
 float       hypotf(float, float);
 long double hypotl(long double, long double);
 
-int         ilogb(double);
-int         ilogbf(float);
-int         ilogbl(long double);
+int ilogb(double);
+int ilogbf(float);
+int ilogbl(long double);
 
 double      ldexp(double, int);
 float       ldexpf(float, int);
@@ -181,13 +171,13 @@ double      lgamma(double);
 float       lgammaf(float);
 long double lgammal(long double);
 
-long long   llrint(double);
-long long   llrintf(float);
-long long   llrintl(long double);
+long long llrint(double);
+long long llrintf(float);
+long long llrintl(long double);
 
-long long   llround(double);
-long long   llroundf(float);
-long long   llroundl(long double);
+long long llround(double);
+long long llroundf(float);
+long long llroundl(long double);
 
 double      log(double);
 float       logf(float);
@@ -209,13 +199,13 @@ double      logb(double);
 float       logbf(float);
 long double logbl(long double);
 
-long        lrint(double);
-long        lrintf(float);
-long        lrintl(long double);
+long lrint(double);
+long lrintf(float);
+long lrintl(long double);
 
-long        lround(double);
-long        lroundf(float);
-long        lroundl(long double);
+long lround(double);
+long lroundf(float);
+long lroundl(long double);
 
 double      modf(double, double *);
 float       modff(float, float *);
