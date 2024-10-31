@@ -51,8 +51,7 @@ RUN cmake -S llvm -B build -G Ninja \
     -DLLVM_TARGETS_TO_BUILD="" \
     -DLLVM_DEFAULT_TARGET_TRIPLE=ez80-none-elf
 
-ARG BUILD_THREADS=1
-RUN cmake --build build -j $BUILD_THREADS
+RUN BUILD_THREADS=$(nproc) && BUILD_THREADS=$((BUILD_THREADS * 7 / 10)) && [ "$BUILD_THREADS" -lt 4 ] && BUILD_THREADS=1 || true && cmake --build build -j $BUILD_THREADS
 
 # What about version 2.43???
 

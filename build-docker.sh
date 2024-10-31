@@ -7,17 +7,19 @@ SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
 
 source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
-export BUILD_THREADS=$(nproc) && BUILD_THREADS=$((BUILD_THREADS * 8 / 10)) && [ "$BUILD_THREADS" -lt 1 ] && BUILD_THREADS=1 || true
-
-
-echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
-echo
-docker build --cache-from ${EZ80_CLANG_TOOLCHAIN_BUILDER_PREV} --build-arg BUILD_THREADS=${BUILD_THREADS} --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
-
+set -x
 echo
 echo "Building ${EZ80_CLANG_TOOLCHAIN_IMAGE}"
 echo
-docker build --cache-from ${EZ80_CLANG_TOOLCHAIN_IMAGE_PREV} --build-arg BUILD_THREADS=${BUILD_THREADS} -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM} -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
+
+echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
+echo
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM} --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
+
+echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
+echo
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM} --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
 
 
 CLANG_BIN_DIR="opt/ez80-clang/bin"
