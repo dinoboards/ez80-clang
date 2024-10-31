@@ -7,19 +7,21 @@ SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
 
 source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
+export  DOCKER_BUILDKIT=1
+
 set -x
 echo
 echo "Building ${EZ80_CLANG_TOOLCHAIN_IMAGE}"
 echo
-docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM} -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
 
 echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
 echo
-docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM} --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
 
 echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
 echo
-docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM} --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
 
 
 CLANG_BIN_DIR="opt/ez80-clang/bin"
