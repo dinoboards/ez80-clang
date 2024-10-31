@@ -7,3 +7,5 @@ tmp
 working
 
 includes/clang
+ez80-clang-*.tar.gz
+ez80-clang-*.zip

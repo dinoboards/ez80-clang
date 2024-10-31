@@ -12,19 +12,19 @@ export BUILD_THREADS=$(nproc) && BUILD_THREADS=$((BUILD_THREADS * 8 / 10)) && [ 
 
 echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
 echo
-docker build --build-arg BUILD_THREADS=${BUILD_THREADS} --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
+docker build --cache-from ${EZ80_CLANG_TOOLCHAIN_BUILDER_PREV} --build-arg BUILD_THREADS=${BUILD_THREADS} --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
 
 echo
 echo "Building ${EZ80_CLANG_TOOLCHAIN_IMAGE}"
 echo
-docker build --build-arg BUILD_THREADS=${BUILD_THREADS} -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
+docker build --cache-from ${EZ80_CLANG_TOOLCHAIN_IMAGE_PREV} --build-arg BUILD_THREADS=${BUILD_THREADS} -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
 
 
-CLANG_BIN_DIR="opt/clang-for-rc/bin/"
-CLANG_LIB_DIR="opt/clang-for-rc/lib/"
-CLANG_INCLUDE_DIR="opt/clang-for-rc/include/"
-CLANG_LS_DIR="opt/clang-for-rc/linker-scripts/"
-ENV_FILE="opt/clang-for-rc/ez80-clang"
+CLANG_BIN_DIR="opt/ez80-clang/bin"
+CLANG_LIB_DIR="opt/ez80-clang/lib/"
+CLANG_INCLUDE_DIR="opt/ez80-clang/include/"
+CLANG_LS_DIR="opt/ez80-clang/linker-scripts/"
+ENV_FILE="ez80-clang"
 
 docker rm -f temp-llvmez80 > /dev/null 2>&1
 trap 'docker rm -f temp-llvmez80  > /dev/null 2>&1' EXIT
@@ -45,8 +45,8 @@ EOF
 
 function make_direct_zip() {
   rm -rf tmp/direct
-  mkdir -p tmp/direct
-  cd tmp/direct
+  mkdir -p tmp/direct/ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}
+  cd tmp/direct/ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}
 
   mkdir -p ${CLANG_BIN_DIR}
   mkdir -p ${CLANG_LIB_DIR}
@@ -59,36 +59,15 @@ function make_direct_zip() {
   docker cp "temp-llvmez80:/src/linker-scripts/." "${CLANG_LS_DIR}"
 
   eval "echo \"$ALIASES\"" > "$ENV_FILE"
+  cp ../../../install.sh .
 
-  cd opt/clang-for-rc
-  zip -r -0 ../../../ez80-clang-direct.zip ./*
+  cd ..
+  zip -r -0 ../../ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}.zip ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}/*
+  tar -czvf ../../ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}.tar.gz ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}/*
 }
 
-function main_docker_zip() {
-  rm -rf tmp/docker
-  mkdir -p tmp/docker
-  cd tmp/docker
+# tar -xzvf ez80-clang-0.0.5.tar.gz
+# cd ez80-clang-0.0.5
+# sudo ./install.sh
 
-  mkdir -p ${CLANG_BIN_DIR}
-  mkdir -p ${CLANG_LIB_DIR}
-  mkdir -p ${CLANG_INCLUDE_DIR}
-  mkdir -p ${CLANG_LS_DIR}
-
-  docker cp "temp-llvmez80:/src/docker-shims/." "${CLANG_BIN_DIR}"
-  docker cp "temp-llvmez80:/src/direct-shims/." "${CLANG_BIN_DIR}"
-  docker cp "temp-llvmez80:/src/lib/." "${CLANG_LIB_DIR}"
-  docker cp "temp-llvmez80:/src/include/." "${CLANG_INCLUDE_DIR}"
-  docker cp "temp-llvmez80:/src/linker-scripts/." "${CLANG_LS_DIR}"
-
-  eval "echo \"$ALIASES\"" > "$ENV_FILE"
-
-  cd opt/clang-for-rc
-  zip -r ../../../ez80-clang-docker.zip ./*
-}
-
-# Run functions in parallel
-make_direct_zip &
-main_docker_zip &
-
-# Wait for both functions to complete
-wait
+make_direct_zip
