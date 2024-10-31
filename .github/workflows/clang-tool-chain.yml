@@ -1,0 +1,40 @@
+name: clang-tool-chain
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+    paths:
+      - 'clang-tool-chain/**'
+      - .github/workflows/clang-tool-chain.yml
+
+jobs:
+  clang-tool-chain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: pull previous version to get docker layers
+        run: |
+          docker pull ubuntu:focal-20240530
+          docker pull dinoboards/llvmez80-platform:0.0.4
+          docker pull dinoboards/llvmez80-builder:0.0.4
+          docker pull dinoboards/llvmez80:0.0.4
+
+      - name: build clang within docker image
+        run: |
+          ./build-docker.sh
+
+      - name: Zip tools
+        uses: actions/upload-artifact@v4
+        with:
+          name: ez80-clang-0.0.4
+          path: |
+            tmp/direct
+
