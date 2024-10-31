@@ -9,12 +9,6 @@ source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
 export  DOCKER_BUILDKIT=1
 
-set -x
-echo
-echo "Building ${EZ80_CLANG_TOOLCHAIN_IMAGE}"
-echo
-docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 -t ${EZ80_CLANG_TOOLCHAIN_IMAGE} .
-
 echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
 echo
 docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
@@ -47,7 +41,7 @@ fi
 EOF
 )
 
-function make_direct_zip() {
+function make_direct_tar() {
   rm -rf tmp/direct
   mkdir -p tmp/direct/ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}
   cd tmp/direct/ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}
@@ -57,7 +51,7 @@ function make_direct_zip() {
   mkdir -p ${CLANG_INCLUDE_DIR}
   mkdir -p ${CLANG_LS_DIR}
 
-  docker cp "temp-llvmez80:/usr/local/bin/." "${CLANG_BIN_DIR}"
+  docker cp "temp-llvmez80:/opt/ez80-clang/bin/." "${CLANG_BIN_DIR}"
   docker cp "temp-llvmez80:/src/lib/." "${CLANG_LIB_DIR}"
   docker cp "temp-llvmez80:/src/include/." "${CLANG_INCLUDE_DIR}"
   docker cp "temp-llvmez80:/src/linker-scripts/." "${CLANG_LS_DIR}"
@@ -66,7 +60,6 @@ function make_direct_zip() {
   cp ../../../install.sh .
 
   cd ..
-  zip -r -0 ../../ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}.zip ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}/*
   tar -czvf ../../ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}.tar.gz ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}/*
 }
 
@@ -74,4 +67,4 @@ function make_direct_zip() {
 # cd ez80-clang-0.0.5
 # sudo ./install.sh
 
-make_direct_zip
+make_direct_tar

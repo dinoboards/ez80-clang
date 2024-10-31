@@ -1,10 +1,3 @@
-# from within the programmer dir
-#
-# docker build --progress plain -t dinoboards/llvmez80:0.0.3 .
-#
-# docker run -v ${PWD}:/src/ -u $(id -u ${USER}):$(id -g ${USER}) -it dinoboards/llvmez80:0.0.3
-
-
 FROM ubuntu:focal-20240530 AS platform
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -69,15 +62,18 @@ COPY linker-scripts /src/linker-scripts
 
 COPY version.sh /src/docker-shims/version.sh
 
-# want a sym link call ez80-ar that points to ez80-none-elf-ar
-RUN cp /opt/ez80-none-elf/bin/* /usr/local/bin/
-RUN ln -s ez80-none-elf-ar /usr/local/bin/ez80-ar
-RUN ln -s ez80-none-elf-as /usr/local/bin/ez80-as
-RUN ln -s ez80-none-elf-ld /usr/local/bin/ez80-ld
-RUN cp /src/llvm-project/build/bin/clang-15 /usr/local/bin/clang-15
-RUN cp /src/llvm-project/build/bin/clang-format /usr/local/bin/clang-format
-RUN ln -s clang-15 /usr/local/bin/clang
-COPY direct-shims /usr/local/bin/
+
+RUN mkdir -p /opt/ez80-clang/bin
+RUN cp /opt/ez80-none-elf/bin/* /opt/ez80-clang/bin/
+RUN ln -s ez80-none-elf-ar /opt/ez80-clang/bin/ez80-ar
+RUN ln -s ez80-none-elf-as /opt/ez80-clang/bin/ez80-as
+RUN ln -s ez80-none-elf-ld /opt/ez80-clang/bin/ez80-ld
+RUN cp /src/llvm-project/build/bin/clang-15 /opt/ez80-clang/bin/clang-15
+RUN cp /src/llvm-project/build/bin/clang-format /opt/ez80-clang/bin/clang-format
+RUN ln -s clang-15 /opt/ez80-clang/bin/clang
+COPY direct-shims /opt/ez80-clang/bin/
+
+RUN ls -larts /opt/ez80-clang/bin
 
 
 COPY Makefile /src/Makefile
@@ -92,18 +88,6 @@ RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdarg.h /src/include/st
 WORKDIR /src
 ENV C_INCLUDE_PATH=/src/include
 
+ENV PATH="/opt/ez80-clang/bin:${PATH}"
+
 RUN make -B
-RUN ls /src/lib #3
-
-FROM ubuntu:focal-20240530
-
-RUN adduser --disabled-password --gecos "" builder
-
-WORKDIR /src
-COPY --from=builder /opt/ez80-none-elf/bin /usr/local/bin/
-COPY --from=builder /src/llvm-project/build/bin /usr/local/bin/
-
-
-
-# compiling: clang -target ez80-none-elf -mllvm -z80-print-zero-offset -Wa,-march=ez80, -nostdinc main.c -c -o main.o
-# ez80-none-elf-objdump -d main.o

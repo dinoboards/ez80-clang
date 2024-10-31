@@ -15,7 +15,7 @@ cp -r opt/* /opt/
 USER_HOME=$(eval echo "~$SUDO_USER")
 ENV_FILE="${USER_HOME}/.ez80-clang"
 
-mv ez80-clang $ENV_FILE
+cp ez80-clang $ENV_FILE
 chown "$SUDO_USER:$SUDO_USER" "$ENV_FILE"
 chmod 644 "$ENV_FILE"
 
