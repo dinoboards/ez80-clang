@@ -33,5 +33,5 @@ echo "Compiling main.s -> main.o"
 ez80-as -march=ez80+full -a=./main.lst ./main.s -o ./main.o
 
 echo "Linking libcrt.a main.o -> main.com"
-ez80-ld -T linker-script.ld --relax -O1  --gc-sections --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt ./main.o  -lclib -lcrt --oformat binary -o main.com
+ez80-ld -T linker-script.ld --relax -O1  --gc-sections --strip-discarded --orphan-handling=error --print-map-discarded -Map=main.map -L${EZ80_CLANG_LIB_PATH} -lcrt ./main.o  -llibc -lcrt --oformat binary -o main.com
 

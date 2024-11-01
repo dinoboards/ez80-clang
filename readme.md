@@ -1,53 +1,64 @@
 
-## CLANG based eZ80 compiler
+## Clang compiler for eZ80
 
-EXPERIMENTAL
-WIP
+VERY MUCH A WORK IN PROGRESS
 
 ### BASED ON LOTS OF OTHERS WORK:
-* https://github.com/codebje/ez80-toolchain
-* https://bitbucket.org/cocoacrumbselectronics/minimal-c-runtime/src/master/
 * https://bitbucket.org/cocoacrumbselectronics/ez80-llvm-toolchain/src/master/
+* https://bitbucket.org/cocoacrumbselectronics/minimal-c-runtime/src/master/
+* https://github.com/codebje/ez80-toolchain
 * https://github.com/jacobly0/llvm-project
+* https://github.com/pcawte/AgDev
 
 ....
 
-Docker file to build an image containing a clang compiler that can target the eZ80 CPU.
+## Clang for eZ80 on the RC platform
 
-### Create aliases:
+A cross clang-compiler tool chain.  Generating ADL eZ80 code, with a runtime to marshal the standard c runtime functions through CP/M.
 
-Run the following script to create appropriate shell aliases:
+The generated code from the compiler assumes (at this stage):
 
-```
-./install-alias.sh
-```
+* That its going to be loaded within a standard CP/M environment - loading at address $0100
+* That the code will be started in Z80 mode, with MBASE currently set to $03.  That is, the code will actually be loaded at $030100
 
-> Need to source the file ~/.ez80-clang-aliases or open a new terminal
+The compiler has been built for a Debian/ubuntu environment - other linux environments may or may not work.
 
-### Example Usage
+## Installing
 
-### Compile Main
+A build for ubuntu/debian can be installed from github's releases.
 
-```
-
-ez80-as -march=ez80+full -a=./crt.lst ./crt.asm -o ./crt.o
-
-ez80-clang  -mllvm -z80-print-zero-offset -Wa,-march=ez80 main.c -c -o main.o
-
-ez80-objdump -d main.o
-
-# Linking step
-ez80-ld -T linker-script.ld -Map=main.map ./crt.o ./main.o --oformat binary -o main.com
-```
-
-### Create assembly file
+To install:
 
 ```
-ez80-clang  -mllvm -z80-print-zero-offset -S main.c -c -o main.s
+wget http://www.dinoboards.com.au/ez80-clang/ez80-clang-0.0.5.tar.gz
+tar -xzvf ez80-clang-0.0.5.tar.gz
+cd ez80-clang-0.0.5
+sudo ./install.sh
 ```
 
-TODOS
-Lib not working???
-`ez80-ar rcsv libcrt.a crt0.o` seems to create a lib ok
+> Change version as per current release
 
-`ez80-ld -T linker-script.ld -L. -lcrt -Map=main.map  ./main.o --oformat binary -o main.com` is not linking it in
+It will be installed into `/opt/ez80-clang/...`
+
+It will also add the file `~/.ez80-clang` containing  required environment variables.
+
+Your `~/.bashrc` file will be updated to source this file.
+
+
+## Building
+
+```
+docker-build.sh
+```
+
+## Installing from local build
+
+```
+(cd tmp/direct/ez80-clang-0.0.5/ && sudo ./install.sh)
+```
+
+> Change ez80-clang-0.0.5 to the current version as per the `version.sh` file
+
+
+
+

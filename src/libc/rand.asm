@@ -13,24 +13,13 @@
 	.assume	adl=1
 
 	section	.text,"ax",@progbits
-	.global	__lladd
-__lladd:
-	push	iy
-	ld	iy, 0
-	add	iy, sp
-	push	bc
-	ld	bc, (iy + 6)
-	add	hl, bc
-	ex	de, hl
-	ld	bc, (iy + 9)
-	adc	hl, bc
-	ex	de, hl
-	pop	bc
-	jr	nc, .nc48
-	inc	bc
-.nc48:
-	ld	iy, (iy + 12)
-	add	iy, bc
-	lea	bc, iy+0
-	pop	iy
+	.global	_rand
+_rand:
+	call	_random
+	ld	de,0x800000
+	sbc	hl,de
+	ret	p
+	add	hl,de
 	ret
+
+	extern	_random

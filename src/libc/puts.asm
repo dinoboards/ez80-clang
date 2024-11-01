@@ -1,3 +1,15 @@
+;--------------------------------------------------------------
+;
+;	C RUNTIME FUNCTION
+;	For the eZ80 Clang cross compiler
+;
+;  Original file source: https://github.com/CE-Programming/toolchain
+;  License: https://github.com/CE-Programming/toolchain?tab=LGPL-3.0-1-ov-file
+;
+; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
+;
+;--------------------------------------------------------------
+
 ; Updated by Paul Cawte 13/06/2023
 ;
 ; Modifed to output CR/LF rather than just LF at end of line

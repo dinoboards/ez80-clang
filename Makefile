@@ -21,11 +21,11 @@ CRT_C_FILES := $(wildcard $(CRT_DIR)/*.c)
 CRT_S_FILES := $(CRT_C_FILES:.c=.s)
 CRT_O_FILES := $(CRT_C_FILES:.c=.o) $(CRT_ASM_FILES:.asm=.o)
 
-CLIB_DIR := $(SRC_DIR)/clib
-CLIB_ASM_FILES := $(wildcard $(CLIB_DIR)/*.asm)
-CLIB_C_FILES := $(wildcard $(CLIB_DIR)/*.c)
-CLIB_S_FILES := $(CLIB_C_FILES:.c=.s)
-CLIB_O_FILES := $(CLIB_C_FILES:.c=.o) $(CLIB_ASM_FILES:.asm=.o)
+LIBC_DIR := $(SRC_DIR)/libc
+LIBC_ASM_FILES := $(wildcard $(LIBC_DIR)/*.asm)
+LIBC_C_FILES := $(wildcard $(LIBC_DIR)/*.c)
+LIBC_S_FILES := $(LIBC_C_FILES:.c=.s)
+LIBC_O_FILES := $(LIBC_C_FILES:.c=.o) $(LIBC_ASM_FILES:.asm=.o)
 
 CPM_DIR := $(SRC_DIR)/cpm
 CPM_ASM_FILES := $(wildcard $(CPM_DIR)/*.asm)
@@ -35,11 +35,11 @@ CPM_O_FILES := $(CPM_C_FILES:.c=.o) $(CPM_ASM_FILES:.asm=.o)
 
 # Define the library file
 CRT_LIB_FILE := $(LIB_DIR)/libcrt.a
-CLIB_LIB_FILE := $(LIB_DIR)/libclib.a
+LIBC_LIB_FILE := $(LIB_DIR)/liblibc.a
 CPM_LIB_FILE := $(LIB_DIR)/libcpm.a
 
 # Default target
-all: $(CRT_LIB_FILE) $(CLIB_LIB_FILE) $(CPM_LIB_FILE)
+all: $(CRT_LIB_FILE) $(LIBC_LIB_FILE) $(CPM_LIB_FILE)
 
 .SUFFIXES:
 
@@ -66,24 +66,24 @@ $(CRT_LIB_FILE): $(CRT_O_FILES)
 .SECONDARY: $(CRT_S_FILES)
 
 
-# Rule to compile .c files to .s files for clib
-$(CLIB_DIR)/%.s: $(CLIB_DIR)/%.c
+# Rule to compile .c files to .s files for libc
+$(LIBC_DIR)/%.s: $(LIBC_DIR)/%.c
 	@$(CLANG) $(CFLAGS) $< -o $@
 
-# Rule to compile .asm files to .o files for clib
-$(CLIB_DIR)/%.o: $(CLIB_DIR)/%.s
+# Rule to compile .asm files to .o files for libc
+$(LIBC_DIR)/%.o: $(LIBC_DIR)/%.s
 	@$(AS) $(ASFLAGS) $< -o $@
 
-# Rule to compile .asm files to .o files for clib
-$(CLIB_DIR)/%.o: $(CLIB_DIR)/%.asm
+# Rule to compile .asm files to .o files for libc
+$(LIBC_DIR)/%.o: $(LIBC_DIR)/%.asm
 	@$(AS) $(ASFLAGS) $< -o $@
 
-# Rule to create the clib library file
-$(CLIB_LIB_FILE): $(CLIB_O_FILES)
+# Rule to create the libc library file
+$(LIBC_LIB_FILE): $(LIBC_O_FILES)
 	@mkdir -p $(LIB_DIR)
 	@$(AR) rcs $@ $^
 
-.SECONDARY: $(CLIB_S_FILES)
+.SECONDARY: $(LIBC_S_FILES)
 
 
 # Rule to compile .c files to .s files for cpm
@@ -108,7 +108,7 @@ $(CPM_LIB_FILE): $(CPM_O_FILES)
 # Clean up generated files
 clean:
 	@rm -f $(CRT_O_FILES) $(CRT_LIB_FILE) $(CRT_S_FILES)
-	rm -f $(CLIB_O_FILES) $(CLIB_LIB_FILE) $(CLIB_S_FILES)
+	rm -f $(LIBC_O_FILES) $(LIBC_LIB_FILE) $(LIBC_S_FILES)
 	rm -f $(CPM_O_FILES) $(CPM_LIB_FILE) $(CPM_S_FILES)
 
 

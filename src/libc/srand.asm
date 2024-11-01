@@ -9,27 +9,16 @@
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
 ;--------------------------------------------------------------
-	.assume adl=1
+
+	.assume	adl=1
 
 	section	.text,"ax",@progbits
-	.global	__fpupop1
-__fpupop1:
-	push	ix
-	ld	ix, 0
-	add	ix, sp
+	.global	_srand
+_srand:
+	pop	bc
+	ex	(sp),hl
 	push	bc
-	rlc	(ix - 1)	;move high-bit to low-bit
-	scf
-	rr	(ix - 1)	;carry = exponent low-bit, high-bit = 1
-	pop	bc		;restore modified mantissa
-	rl	a		;compute exponent, carry = sign
-	ld	d, 0
-	jr	nz, nzero	;skip if exponent non-zero
+	xor	a,a
+	jp	__setstate
 
-	ld	bc, 0		;clear mantissa
-	or	a, a		;clear carry
-nzero:
-	rl	d		;set 1 if negative operand
-	or	a, a		;set Z/NZ
-	pop	ix
-	ret
+	extern	__setstate
