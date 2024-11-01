@@ -44,6 +44,15 @@ It will also add the file `~/.ez80-clang` containing  required environment varia
 
 Your `~/.bashrc` file will be updated to source this file.
 
+## Building an CP/M eZ80 Application
+
+Once installed, you can use the `ez80-cc` wrapper command to compile, assemble and link an application
+
+eg:
+
+```
+ez80-cc HELOWRLD.COM hello-world.c
+```
 
 ## Building
 
