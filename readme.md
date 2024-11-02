@@ -30,9 +30,9 @@ A build for ubuntu/debian can be installed from github's releases.
 To install:
 
 ```
-wget http://www.dinoboards.com.au/ez80-clang/ez80-clang-0.0.5.tar.gz
-tar -xzvf ez80-clang-0.0.5.tar.gz
-cd ez80-clang-0.0.5
+wget http://www.dinoboards.com.au/ez80-clang/ez80-clang-0.0.7.tar.gz
+tar -xzvf ez80-clang-0.0.7.tar.gz
+cd ez80-clang-0.0.7
 sudo ./install.sh
 ```
 
@@ -57,16 +57,15 @@ ez80-cc HELOWRLD.COM hello-world.c
 ## Building
 
 ```
-docker-build.sh
+make package
 ```
 
 ## Installing from local build
 
 ```
-(cd tmp/direct/ez80-clang-0.0.5/ && sudo ./install.sh)
+sudo make install
 ```
 
-> Change ez80-clang-0.0.5 to the current version as per the `version.sh` file
 
 
 

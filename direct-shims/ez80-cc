@@ -141,6 +141,6 @@ done
 # Link object files into the final executable binary
 echo "Linking ${OBJECT_FILES[*]} -> $OUTPUT_BINARY"
 
-ez80-ld ${LDFLAGS} "${OBJECT_FILES[@]}" -llibc -lcrt -lcpm --oformat binary -o "$OUTPUT_BINARY"
+ez80-ld ${LDFLAGS} "${OBJECT_FILES[@]}" -llibc -lcrt -lcpm -lez80 --oformat binary -o "$OUTPUT_BINARY"
 
 echo "Build complete: $OUTPUT_BINARY"
