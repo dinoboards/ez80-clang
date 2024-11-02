@@ -32,8 +32,8 @@
 */
 
 /* The implementation of nanoprintf begins here, to be compiled only if
-   NANOPRINTF_IMPLEMENTATION is defined. In a multi-file library what follows would
-   be nanoprintf.c. */
+   NANOPRINTF_IMPLEMENTATION is defined. In a multi-file library what follows
+   would be nanoprintf.c. */
 
 #include "nanoprintf-min.h"
 

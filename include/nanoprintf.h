@@ -32,8 +32,8 @@
 */
 
 /* The implementation of nanoprintf begins here, to be compiled only if
-   NANOPRINTF_IMPLEMENTATION is defined. In a multi-file library what follows would
-   be nanoprintf.c. */
+   NANOPRINTF_IMPLEMENTATION is defined. In a multi-file library what follows
+   would be nanoprintf.c. */
 
 #ifdef NANOPRINTF_IMPLEMENTATION
 
@@ -610,12 +610,14 @@ static int npf_ftoa_rev(char *buf, float f, char case_adj, int *out_frac_chars) 
 
 #if NANOPRINTF_USE_BINARY_FORMAT_SPECIFIERS == 1
 static int npf_bin_len(npf_uint_t u) {
-  // Return the length of the binary string format of 'u', preferring intrinsics.
+  // Return the length of the binary string format of 'u', preferring
+  // intrinsics.
   if (!u) {
     return 1;
   }
 
-#ifdef _MSC_VER // Win64, use _BSR64 for everything. If x86, use _BSR when non-large.
+#ifdef _MSC_VER // Win64, use _BSR64 for everything. If x86, use _BSR when
+                // non-large.
 #ifdef _M_X64
 #define NPF_HAVE_BUILTIN_CLZ
 #define NPF_CLZ _BitScanReverse64
@@ -837,7 +839,8 @@ int npf_vpprintf(npf_putc pc, void *pc_ctx, char const *format, va_list args) {
       zero = !val;
 #endif
       if (!val && (fs.prec_opt == NPF_FMT_SPEC_OPT_LITERAL) && !fs.prec) {
-        // Zero value and explicitly-requested zero precision means "print nothing".
+        // Zero value and explicitly-requested zero precision means "print
+        // nothing".
         if ((fs.conv_spec == NPF_FMT_SPEC_CONV_OCTAL) && fs.alt_form) {
           fs.prec = 1; // octal special case, print a single '0'
         }

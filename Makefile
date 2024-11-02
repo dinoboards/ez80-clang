@@ -77,3 +77,6 @@ package: $(TARGET)
 
 install:
 	@cd tmp/direct/ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION} && ./install.sh
+
+format:
+	@./clang-format.sh

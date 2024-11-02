@@ -32,8 +32,8 @@
 */
 
 /* The implementation of nanoprintf begins here, to be compiled only if
-   NANOPRINTF_IMPLEMENTATION is defined. In a multi-file library what follows would
-   be nanoprintf.c. */
+   NANOPRINTF_IMPLEMENTATION is defined. In a multi-file library what follows
+   would be nanoprintf.c. */
 
 #define NANOPRINTF_IMPLEMENTATION
 #include "nanoprintf-min.h"
@@ -41,7 +41,8 @@
 #define NPF_CLZ(X) ((sizeof(long) * 8) - (size_t)__builtin_clzl(X))
 
 static int npf_bin_len(npf_uint_t u) {
-  // Return the length of the binary string format of 'u', preferring intrinsics.
+  // Return the length of the binary string format of 'u', preferring
+  // intrinsics.
   if (!u) {
     return 1;
   }
