@@ -1,6 +1,8 @@
 #ifndef __EZ80_H
 #define __EZ80_H
 
+#include <stdint.h>
+
 /*
  *_port_out() - Output a byte to an I/O port
  * @port: the PORT_IO variable to be assigned
@@ -22,5 +24,8 @@ extern void _port_out(const uint24_t data);
  * eZ80 in/out instructions.
  */
 #define PORT_IO(c) (*((volatile uint8_t IO_SPACE *)c))
+
+#define DI __asm__("DI")
+#define EI __asm__("EI")
 
 #endif

@@ -59,6 +59,7 @@ $(eval $(call build_lib,ez80))
 $(eval $(call build_lib,crt))
 $(eval $(call build_lib,libc))
 $(eval $(call build_lib,cpm))
+$(eval $(call build_lib,v99x8))
 
 .PHONY: all clean
 
