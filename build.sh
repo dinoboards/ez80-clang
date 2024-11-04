@@ -15,8 +15,6 @@ PATH="${SCRIPT_DIR}working/llvm-project/build/bin:${SCRIPT_DIR}working/opt/ez80-
 shopt -s expand_aliases
 alias ez80-clang="clang -nostdinc"
 alias ez80-as="ez80-none-elf-as"
-alias ez80-ld="ez80-none-elf-ld"
-
 
 set -e
 

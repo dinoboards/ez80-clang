@@ -9,7 +9,7 @@ LINKER_SCRIPT=${EZ80_CLANG_LS_PATH}/cpm-64k.ld
 set -e
 ASFLAGS="-march=ez80+full"
 CFLAGS="-mllvm -z80-print-zero-offset -target ez80-none-elf -nostdinc -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} -Wall -Wextra -Wunreachable-code -Werror -Wa,-march=ez80"
-LDFLAGS="-T ${LINKER_SCRIPT} --relax -O1 --strip-discarded --orphan-handling=error -L${EZ80_CLANG_LIB_PATH} -lcrt"
+LDFLAGS="--relax -O1 --strip-discarded --orphan-handling=error -L${EZ80_CLANG_LIB_PATH} -lcrt"
 
 # Initialize output directory
 OUTPUT_DIR=""
@@ -126,11 +126,11 @@ for FILE in "$@"; do
 
   if [ "$EXT" == "c" ]; then
     echo "Compiling $FILE -> $BASENAME.c.o"
-    ez80-clang ${CFLAGS} "$FILE"  -c -o  "$BASENAME.c.o"
+    ez80-clang ${CFLAGS} ${CLANG_DEFINES} "$FILE"  -c -o  "$BASENAME.c.o"
     OBJECT_FILES+=("$BASENAME.c.o")
   elif [ "$EXT" == "asm" ]; then
     echo "Assembling $FILE -> $BASENAME.o"
-    ez80-as -march=ez80+full ${FILE} -o "$BASENAME.o"
+    ez80-as ${CLANG_DEFINES} -march=ez80+full ${FILE} -o "$BASENAME.o"
     OBJECT_FILES+=("$BASENAME.o")
   else
     echo "Unsupported file type: $FILE"
@@ -141,6 +141,6 @@ done
 # Link object files into the final executable binary
 echo "Linking ${OBJECT_FILES[*]} -> $OUTPUT_BINARY"
 
-ez80-ld ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -lv99x8 -lez80 --end-group --oformat binary -o "$OUTPUT_BINARY"
+ez80-ld ${CLANG_DEFINES} -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -lv99x8-driver -l${LIB_TYPE} -lez80 --end-group --oformat binary -o "$OUTPUT_BINARY"
 
 echo "Build complete: $OUTPUT_BINARY"

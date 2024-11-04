@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+set -e
+
+#preprocess the linker script
+
+TEMP_LINKER_SCRIPT=$(mktemp)
+trap 'rm -f "$TEMP_LINKER_SCRIPT"' EXIT
+
+# Initialize variables
+LINKER_SCRIPT=""
+CLANG_DEFINES=()
+OTHER_ARGS=()
+
+# Extract -T, --script=, -D, --define-macro arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -T)
+      LINKER_SCRIPT="$2"
+      shift 2
+      ;;
+    --script=*)
+      LINKER_SCRIPT="${1#*=}"
+      shift
+      ;;
+    -D*)
+      CLANG_DEFINES+=("$1")
+      shift
+      ;;
+    --define-macro)
+      CLANG_DEFINES+=("-D$2")
+      shift 2
+      ;;
+    --define-macro=*)
+      CLANG_DEFINES+=("-D${1#*=}")
+      shift
+      ;;
+    --help)
+      echo "Usage: ez80-ld [options] ..."
+      echo "(pre-processing of optional linker script before forwarding to ez80-none-elf-ld)"
+      echo ""
+      echo "Options:"
+      echo "  -T <file>                Use <file> as the linker script."
+      echo "  --script=<file>          Use <file> as the linker script."
+      echo "  -D<macro>=<value>        Define a macro for the preprocessor."
+      echo "  --define-macro <arg>     Define a macro for the preprocessor."
+      echo "  --define-macro=<arg>     Define a macro for the preprocessor."
+      echo "  --help                   Display this help message and exit."
+      echo ""
+      echo "Usage: $0 [options]"
+      /opt/ez80-clang/bin/ez80-none-elf-ld --help
+      exit 0
+      ;;
+    *)
+      OTHER_ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+/opt/ez80-clang/bin/clang -E -P -x c "${CLANG_DEFINES[@]}" ${LINKER_SCRIPT}  > "$TEMP_LINKER_SCRIPT"
+
+/opt/ez80-clang/bin/ez80-none-elf-ld -T "$TEMP_LINKER_SCRIPT"  "${OTHER_ARGS[@]}"

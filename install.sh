@@ -8,6 +8,7 @@ fi
 
 set -e
 
+rm -rf /opt/ez80-clang
 cp -r opt/* /opt/
 
 #move file ${EZ80_CLANG_DIR}/ez80-clang to SUDO_USER/.ez80-clang
