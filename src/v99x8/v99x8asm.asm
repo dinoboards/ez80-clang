@@ -21,24 +21,24 @@ VDP_REGS:	equ	$FF9B		; VDP register access (write only)
 	NOP
 .endm
 
-	.global	_vmd_cmd_draw_line
-_vmd_cmd_draw_line:
+	.global	_vdp_cmd
+_vdp_cmd:
 	DI
-	; Set read register to 2 (status)
-	LD	BC, VDP_ADDR
-	LD	A, 2
-	OUT	(BC), A
-	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
-	LD	A, 0x80 | 15				; measured on CPU running @25Mhz
-	OUT	(BC), A
+; 	; Set read register to 2 (status)
+; 	LD	BC, VDP_ADDR
+; 	LD	A, 2
+; 	OUT	(BC), A
+; 	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
+; 	LD	A, 0x80 | 15				; measured on CPU running @25Mhz
+; 	OUT	(BC), A
 
-	DELAY_1_7US
+; 	DELAY_1_7US
 
-	; WAIT FOR ANY PREVIOUS COMMAND TO COMPLETE
-_vmd_cmd_draw_line_wait:
-	IN	A, (BC)
-	RRCA
-	JR	C, _vmd_cmd_draw_line_wait
+; 	; WAIT FOR ANY PREVIOUS COMMAND TO COMPLETE
+; _vdp_cmd_wait:
+; 	IN	A, (BC)
+; 	RRCA
+; 	JR	C, _vdp_cmd_wait
 
 	; SET INDIRECT REGISTER TO 36
 	LD	A, 36
@@ -123,14 +123,15 @@ _inDat:
 	IN	L, (BC)
 	RET
 
-	.global	_readStatus
-; uint8_t readStatus(uint8_t r)
-_readStatus:
+	.global	_vdp_get_status
+; uint8_t vdp_get_status(uint8_t r)
+_vdp_get_status:
 	LD	IY, 0
 	ADD	IY, SP
 	LD	L, (IY + 3)
 	LD	BC, VDP_ADDR
 
+	DI
 	; SET READ REGISTER TO 15
 	OUT	(BC), L
 	DELAY_1_7US
@@ -148,6 +149,8 @@ _readStatus:
 	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
 	LD	A, 0x80 | 15				; measured on CPU running @25Mhz
 	OUT	(BC), A
+	EI
+	LD	A, L
 	RET
 
 	.global	__vdp_reg_write
@@ -165,15 +168,34 @@ __vdp_reg_write:
 	RET
 
 
-	section	.bss,"aw",@progbits
+	section	.bss,"aw",@nobits
 
 	.global	_vdp_cmdp_from_x, _vdp_cmdp_from_y, _vdp_cmdp_color, _vdp_cmdp_operation, _vdp_cmdp_long_side, _vdp_cmdp_short_side, _vdp_cmdp_dir
+	.global	_vdp_cmdp_r36, _vdp_cmdp_r38, _vdp_cmdp_r40, _vdp_cmdp_r42, _vdp_cmdp_r44, _vdp_cmdp_r45, _vdp_cmdp_r46
+	.global	_vdp_cmdp_dx, _vdp_cmdp_dy, _vdp_cmdp_nx, _vdp_cmdp_ny
 
+_vdp_cmdp_r36:
+_vdp_cmdp_dx:
 _vdp_cmdp_from_x:	DW	0
+
+_vdp_cmdp_r38:
+_vdp_cmdp_dy:
 _vdp_cmdp_from_y:	DW	0
+
+_vdp_cmdp_r40:
+_vdp_cmdp_nx:
 _vdp_cmdp_long_side:	DW	0
+
+_vdp_vmdp_r42:
+_vdp_cmdp_ny:
 _vdp_cmdp_short_side:	DW	0
+
+_vdp_cmdp_r44:
 _vdp_cmdp_color:	DB	0
+
+_vdp_cmdp_r45:
 _vdp_cmdp_dir:		DB	0
+
+_vdp_cmdp_r46:
 _vdp_cmdp_operation:	DB	0
 

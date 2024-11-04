@@ -28,11 +28,14 @@ typedef struct {
 extern void vdp_clear_all_memory(void);
 extern void vdp_set_palette(RGB *);
 extern void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh_rate);
+extern void vdp_set_page(const uint8_t page);
 
 extern void vdp_erase_bank0(uint8_t color);
 extern void vdp_erase_bank1(uint8_t color);
 extern void _vdp_reg_write(uint16_t rd);
 extern void vdp_out_reg_int16(uint16_t b);
+
+extern uint8_t vdp_get_status(uint8_t r);
 
 #define vdp_reg_write(a, b) _vdp_reg_write((a)*256 + (b))
 
@@ -44,16 +47,33 @@ extern void vdp_out_reg_int16(uint16_t b);
 #define CMD_LOGIC_IMP   0x00
 #define CMD_LOGIC_AND   0x01
 
-void vmd_cmd_draw_line(void);
-void vdp_cmd_wait_completion(void);
+extern void vdp_cmd(void);
+extern void vdp_cmd_wait_completion(void);
 
-extern uint8_t  vdp_cmdp_dir;
-extern uint16_t vdp_cmdp_long_side;
-extern uint16_t vdp_cmdp_short_side;
 extern uint16_t vdp_cmdp_from_x;
 extern uint16_t vdp_cmdp_from_y;
+extern uint16_t vdp_cmdp_long_side;
+extern uint16_t vdp_cmdp_short_side;
 extern uint8_t  vdp_cmdp_color;
+extern uint8_t  vdp_cmdp_dir;
 extern uint8_t  vdp_cmdp_operation;
+
+#define vdp_cmdp_dx vdp_cmdp_from_x
+#define vdp_cmdp_dy vdp_cmdp_from_y
+#define vdp_cmdp_nx vdp_cmdp_long_side
+#define vdp_cmdp_ny vdp_cmdp_short_side
+
+#define vdp_cmd_vdp_to_vram(from_x, from_y, to_dx, to_dy, colour, direction) \
+  vdp_cmdp_dx    = (from_x);                                           \
+  vdp_cmdp_dy    = (from_y);                                           \
+  vdp_cmdp_nx    = (to_dx);                                            \
+  vdp_cmdp_ny    = (to_dy);                                            \
+  vdp_cmdp_color = (colour);                                           \
+  vdp_cmdp_dir   = (direction);                                        \
+  vdp_cmdp_operation      = CMD_VDP_TO_VRAM;                                    \
+  vdp_cmd_wait_completion();                                           \
+  vdp_cmd()
+
 
 #define drawLine(fromX, fromY, toX, toY, color, operation)                                                                         \
   vdp_cmdp_from_x    = (fromX);                                                                                                    \
@@ -69,6 +89,6 @@ extern void _drawLine(uint16_t toX, uint16_t toY);
   vdp_cmdp_from_y    = (y);                                                                                                        \
   vdp_cmdp_color     = (color);                                                                                                    \
   vdp_cmdp_operation = CMD_PSET((operation));                                                                                      \
-  vmd_cmd_draw_line()
+  vdp_cmd()
 
 #endif

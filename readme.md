@@ -30,9 +30,9 @@ A build for ubuntu/debian can be installed from github's releases.
 To install:
 
 ```
-wget http://www.dinoboards.com.au/ez80-clang/ez80-clang-0.0.7.tar.gz
-tar -xzvf ez80-clang-0.0.7.tar.gz
-cd ez80-clang-0.0.7
+wget http://www.dinoboards.com.au/ez80-clang/ez80-clang-0.0.8.tar.gz
+tar -xzvf ez80-clang-0.0.8.tar.gz
+cd ez80-clang-0.0.8
 sudo ./install.sh
 ```
 

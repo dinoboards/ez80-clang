@@ -54,7 +54,10 @@ static uint8_t mode_7_registers[REGISTER_COUNT] = {
     0x01  // R11 - SPRITE ATTRIBUTE TABLE -> FA00
 };
 
+static uint8_t vdp_current_mode = 255;
+
 void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh_rate) {
+  vdp_current_mode = mode;
   switch (mode) {
   case 6:
     set_video_signal(mode_6_registers, lines, refresh_rate);
@@ -63,6 +66,29 @@ void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh
   case 7:
     set_video_signal(mode_7_registers, lines, mode);
     set_base_registers(mode_7_registers);
+    break;
+  }
+}
+
+void vdp_set_page(const uint8_t page) {
+  switch (vdp_current_mode) {
+  case 6:
+    mode_6_registers[2] = page ? 0x3F : 0x1F;
+    vdp_reg_write(2, mode_6_registers[2]);                // Set Indirect register Access
+    mode_6_registers[6] = page ? 0x3E : 0x1E;
+    vdp_reg_write(6, mode_6_registers[6]);                // Set Indirect register Access
+    mode_6_registers[11] = page ? 0x03 : 0x01;
+    vdp_reg_write(11, mode_6_registers[11]);              // Set Indirect register Access
+
+    // set_base_registers(mode_6_registers);
+  case 7:
+    mode_7_registers[2] = page ? 0x3F : 0x1F;
+    vdp_reg_write(2, mode_7_registers[2]);                // Set Indirect register Access
+    mode_7_registers[6] = page ? 0x3E : 0x1E;
+    vdp_reg_write(6, mode_7_registers[6]);                // Set Indirect register Access
+    mode_7_registers[11] = page ? 0x03 : 0x01;
+    vdp_reg_write(11, mode_7_registers[11]);              // Set Indirect register Access
+    // set_base_registers(mode_7_registers);
     break;
   }
 }
@@ -91,6 +117,8 @@ void vdp_clear_all_memory(void) {
 extern void delay(void);
 
 void vdp_erase_bank0(uint8_t color) {
+  vdp_cmd_wait_completion();
+
   DI;
   // Clear bitmap data from 0x0000 to 0x3FFF
 
@@ -103,26 +131,30 @@ void vdp_erase_bank0(uint8_t color) {
   vdp_out_reg_byte(0);                  // Direction: VRAM, Right, Down
   vdp_out_reg_byte(CMD_VDP_TO_VRAM);
   EI;
-
-  vdp_cmd_wait_completion();
 }
 
 void vdp_erase_bank1(uint8_t color) {
+  vdp_cmd_wait_completion();
+
   DI;
   // Clear bitmap data from 0x0000 to 0x3FFF
 
   vdp_reg_write(17, 36);                // Set Indirect register Access
-  vdp_out_reg_int16(512);               // DX
-  vdp_out_reg_int16(212);               // DY
+  vdp_out_reg_int16(0);                 // DX
+  vdp_out_reg_int16(256);               // DY
   vdp_out_reg_int16(512);               // NX
   vdp_out_reg_int16(212);               // NY
   vdp_out_reg_byte(color * 16 + color); // COLOUR for both pixels (assuming G7 mode)
   vdp_out_reg_byte(0x0);                // Direction: ExpVRAM, Right, Down
   vdp_out_reg_byte(CMD_VDP_TO_VRAM);
   EI;
-
-  vdp_cmd_wait_completion();
 }
+
+void _vdp_cmd_vdp_to_vram() {
+
+}
+
+// extern void vdp_cmd(void);
 
 void _drawLine(uint16_t toX, uint16_t toY) {
   uint16_t t;
@@ -151,5 +183,6 @@ void _drawLine(uint16_t toX, uint16_t toY) {
     vdp_cmdp_short_side = y;
   }
 
-  vmd_cmd_draw_line();
+  vdp_cmd_wait_completion();
+  vdp_cmd();
 }
