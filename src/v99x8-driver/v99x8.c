@@ -74,20 +74,20 @@ void vdp_set_page(const uint8_t page) {
   switch (vdp_current_mode) {
   case 6:
     mode_6_registers[2] = page ? 0x3F : 0x1F;
-    vdp_reg_write(2, mode_6_registers[2]);                // Set Indirect register Access
+    vdp_reg_write(2, mode_6_registers[2]); // Set Indirect register Access
     mode_6_registers[6] = page ? 0x3E : 0x1E;
-    vdp_reg_write(6, mode_6_registers[6]);                // Set Indirect register Access
+    vdp_reg_write(6, mode_6_registers[6]); // Set Indirect register Access
     mode_6_registers[11] = page ? 0x03 : 0x01;
-    vdp_reg_write(11, mode_6_registers[11]);              // Set Indirect register Access
+    vdp_reg_write(11, mode_6_registers[11]); // Set Indirect register Access
 
     // set_base_registers(mode_6_registers);
   case 7:
     mode_7_registers[2] = page ? 0x3F : 0x1F;
-    vdp_reg_write(2, mode_7_registers[2]);                // Set Indirect register Access
+    vdp_reg_write(2, mode_7_registers[2]); // Set Indirect register Access
     mode_7_registers[6] = page ? 0x3E : 0x1E;
-    vdp_reg_write(6, mode_7_registers[6]);                // Set Indirect register Access
+    vdp_reg_write(6, mode_7_registers[6]); // Set Indirect register Access
     mode_7_registers[11] = page ? 0x03 : 0x01;
-    vdp_reg_write(11, mode_7_registers[11]);              // Set Indirect register Access
+    vdp_reg_write(11, mode_7_registers[11]); // Set Indirect register Access
     // set_base_registers(mode_7_registers);
     break;
   }
@@ -150,9 +150,7 @@ void vdp_erase_bank1(uint8_t color) {
   EI;
 }
 
-void _vdp_cmd_vdp_to_vram() {
-
-}
+void _vdp_cmd_vdp_to_vram() {}
 
 // extern void vdp_cmd(void);
 

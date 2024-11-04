@@ -59,7 +59,9 @@ $(eval $(call build_lib,ez80))
 $(eval $(call build_lib,crt))
 $(eval $(call build_lib,libc))
 $(eval $(call build_lib,cpm))
-$(eval $(call build_lib,v99x8))
+$(eval $(call build_lib,v99x8-driver))
+$(eval $(call build_lib,v99x8-hdmi))
+$(eval $(call build_lib,v99x8-standard))
 
 .PHONY: all clean
 

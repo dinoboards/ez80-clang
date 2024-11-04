@@ -63,17 +63,16 @@ extern uint8_t  vdp_cmdp_operation;
 #define vdp_cmdp_nx vdp_cmdp_long_side
 #define vdp_cmdp_ny vdp_cmdp_short_side
 
-#define vdp_cmd_vdp_to_vram(from_x, from_y, to_dx, to_dy, colour, direction) \
-  vdp_cmdp_dx    = (from_x);                                           \
-  vdp_cmdp_dy    = (from_y);                                           \
-  vdp_cmdp_nx    = (to_dx);                                            \
-  vdp_cmdp_ny    = (to_dy);                                            \
-  vdp_cmdp_color = (colour);                                           \
-  vdp_cmdp_dir   = (direction);                                        \
-  vdp_cmdp_operation      = CMD_VDP_TO_VRAM;                                    \
-  vdp_cmd_wait_completion();                                           \
+#define vdp_cmd_vdp_to_vram(from_x, from_y, to_dx, to_dy, colour, direction)                                                       \
+  vdp_cmdp_dx        = (from_x);                                                                                                   \
+  vdp_cmdp_dy        = (from_y);                                                                                                   \
+  vdp_cmdp_nx        = (to_dx);                                                                                                    \
+  vdp_cmdp_ny        = (to_dy);                                                                                                    \
+  vdp_cmdp_color     = (colour);                                                                                                   \
+  vdp_cmdp_dir       = (direction);                                                                                                \
+  vdp_cmdp_operation = CMD_VDP_TO_VRAM;                                                                                            \
+  vdp_cmd_wait_completion();                                                                                                       \
   vdp_cmd()
-
 
 #define drawLine(fromX, fromY, toX, toY, color, operation)                                                                         \
   vdp_cmdp_from_x    = (fromX);                                                                                                    \

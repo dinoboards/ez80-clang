@@ -3,7 +3,6 @@
 
 	section	.text,"ax",@progbits
 
-
 ; V9958 REGISTERS
 VDP_DATA:	equ	$FF98		; VDP data port (VRAM read/write)
 VDP_ADDR:	equ	$FF99		; VDP address (write only)
@@ -11,7 +10,7 @@ VDP_STAT:	equ	$FF99		; VDP status (read only)
 VDP_PALT:	equ	$FF9A		; VDP palette latch (write only)
 VDP_REGS:	equ	$FF9B		; VDP register access (write only)
 
-
+.ifdef ENABLE_DELAY
 .macro	DELAY_1_7US  ; approx 1.7 us @25Mhz CPU
 	PUSH	AF
 	POP	AF
@@ -20,26 +19,14 @@ VDP_REGS:	equ	$FF9B		; VDP register access (write only)
 	NOP
 	NOP
 .endm
+.else
+.macro	DELAY_1_7US
+.endm
+.endif
 
 	.global	_vdp_cmd
 _vdp_cmd:
 	DI
-; 	; Set read register to 2 (status)
-; 	LD	BC, VDP_ADDR
-; 	LD	A, 2
-; 	OUT	(BC), A
-; 	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
-; 	LD	A, 0x80 | 15				; measured on CPU running @25Mhz
-; 	OUT	(BC), A
-
-; 	DELAY_1_7US
-
-; 	; WAIT FOR ANY PREVIOUS COMMAND TO COMPLETE
-; _vdp_cmd_wait:
-; 	IN	A, (BC)
-; 	RRCA
-; 	JR	C, _vdp_cmd_wait
-
 	; SET INDIRECT REGISTER TO 36
 	LD	A, 36
 	DELAY_1_7US

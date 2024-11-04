@@ -20,6 +20,9 @@ INCLUDE_DIR=""
 # Optimisation type
 OPTIMISE_TYPE="size"
 
+# Default library type
+LIB_TYPE="v99x8-standard"
+
 # Temporary array to hold non-option arguments
 ARGS=()
 
@@ -38,12 +41,34 @@ while [[ "$#" -gt 0 ]]; do
       OPTIMISE_TYPE="$2"
       shift 2
       ;;
+    --lib)
+      if [[ "$2" == "v99x8-standard" || "$2" == "v99x8-hdmi" ]]; then
+        LIB_TYPE="$2"
+      else
+        echo "Invalid value for --lib. Allowed values are v99x8-standard or v99x8-hdmi."
+        exit 1
+      fi
+      shift 2
+      ;;
+    -D*)
+      CLANG_DEFINES+=("$1")
+      shift
+      ;;
+    --define-macro)
+      CLANG_DEFINES+=("-D$2")
+      shift 2
+      ;;
+    --define-macro=*)
+      CLANG_DEFINES+=("-D${1#*=}")
+      shift
+      ;;
     --help)
       echo "Usage: $0 [--output-dir dir] [--iquote dir] [--optimise type] [output] source-files..."
       echo "Options:"
       echo "  --output-dir dir  Specify the output directory for the binary file."
       echo "  --iquote dir      Specify an additional include directory for the compiler."
       echo "  --optimise type   Specify the optimisation type (size or speed)."
+      echo "  --lib type        Specify the library type: v99x8-standard(default) or v99x8-hdmi."
       echo "  --help            Display this help message."
       echo
       echo "Arguments:"
