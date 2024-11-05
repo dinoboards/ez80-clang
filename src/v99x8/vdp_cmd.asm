@@ -16,7 +16,7 @@ _vdp_cmd:
 	LD	A, 0x80 | 17				; measured on CPU running @25Mhz
 	OUT	(BC), A
 
-	LD	HL, _vdp_cmdp_from_x
+	LD	HL, _vdp_cmdp_r36
 	LD	BC, VDP_REGS
 	LD	A, 11
 .outs:							; loop calibrated to have appro 2us
@@ -40,3 +40,5 @@ _vdp_cmd:
 
 	EI
 	RET
+
+	extern _vdp_cmdp_r36

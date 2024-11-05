@@ -153,31 +153,19 @@ void vdp_erase_bank1(uint8_t color) {
 void _vdp_cmd_vdp_to_vram() {}
 
 void _vdp_draw_line(uint16_t toX, uint16_t toY) {
-  uint16_t t;
-  uint16_t y;
-  uint16_t x;
 
-  if (vdp_cmdp_from_y > toY) {
-    t               = vdp_cmdp_from_y;
-    vdp_cmdp_from_y = toY;
-    toY             = t;
-  };
-  if (vdp_cmdp_from_x > toX) {
-    t               = vdp_cmdp_from_x;
-    vdp_cmdp_from_x = toX;
-    toX             = t;
-  };
-  y            = toY - vdp_cmdp_from_y;
-  x            = toX - vdp_cmdp_from_x;
-  vdp_cmdp_dir = (y > x);
+  const uint16_t number_on_x_side = abs(toX - vdp_cmdp_dx);
+  const uint16_t number_on_y_side = abs(toY - vdp_cmdp_dy);
 
-  if (vdp_cmdp_dir) {
-    vdp_cmdp_long_side  = y;
-    vdp_cmdp_short_side = x;
-  } else {
-    vdp_cmdp_long_side  = x;
-    vdp_cmdp_short_side = y;
-  }
+  const bool major_direction_is_y = number_on_y_side >= number_on_x_side;
+
+  vdp_cmdp_maj = major_direction_is_y ? number_on_y_side : number_on_x_side;
+  vdp_cmdp_min = major_direction_is_y ? number_on_x_side : number_on_y_side;
+
+  const bool diy = toY < vdp_cmdp_dy;
+  const bool dix = toX < vdp_cmdp_dx;
+
+  vdp_cmdp_dir = (major_direction_is_y ? 1 : 0) + (dix ? 4 : 0) + (diy ? 8 : 0);
 
   vdp_cmd_wait_completion();
   vdp_cmd();
