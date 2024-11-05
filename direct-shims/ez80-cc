@@ -166,6 +166,6 @@ done
 # Link object files into the final executable binary
 echo "Linking ${OBJECT_FILES[*]} -> $OUTPUT_BINARY"
 
-ez80-ld ${CLANG_DEFINES} -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -lv99x8-driver -l${LIB_TYPE} -lez80 --end-group --oformat binary -o "$OUTPUT_BINARY"
+ez80-ld ${CLANG_DEFINES} -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -l${LIB_TYPE} -lez80 --end-group --oformat binary -o "$OUTPUT_BINARY"
 
 echo "Build complete: $OUTPUT_BINARY"

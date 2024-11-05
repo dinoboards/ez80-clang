@@ -152,9 +152,7 @@ void vdp_erase_bank1(uint8_t color) {
 
 void _vdp_cmd_vdp_to_vram() {}
 
-// extern void vdp_cmd(void);
-
-void _drawLine(uint16_t toX, uint16_t toY) {
+void _vdp_draw_line(uint16_t toX, uint16_t toY) {
   uint16_t t;
   uint16_t y;
   uint16_t x;

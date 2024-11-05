@@ -74,14 +74,14 @@ extern uint8_t  vdp_cmdp_operation;
   vdp_cmd_wait_completion();                                                                                                       \
   vdp_cmd()
 
-#define drawLine(fromX, fromY, toX, toY, color, operation)                                                                         \
+#define vdp_draw_line(fromX, fromY, toX, toY, color, operation)                                                                         \
   vdp_cmdp_from_x    = (fromX);                                                                                                    \
   vdp_cmdp_from_y    = (fromY);                                                                                                    \
   vdp_cmdp_color     = (color);                                                                                                    \
   vdp_cmdp_operation = CMD_LINE((operation));                                                                                      \
-  _drawLine(toX, toY)
+  _vdp_draw_line(toX, toY)
 
-extern void _drawLine(uint16_t toX, uint16_t toY);
+extern void _vdp_draw_line(uint16_t toX, uint16_t toY);
 
 #define pointSet(x, y, color, operation)                                                                                           \
   vdp_cmdp_from_x    = (x);                                                                                                        \
