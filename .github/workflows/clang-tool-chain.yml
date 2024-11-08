@@ -30,7 +30,7 @@ jobs:
       - name: Zip tools
         uses: actions/upload-artifact@v4
         with:
-          name: ez80-clang-0.0.9
+          name: ez80-clang-0.0.10
           path: |
             tmp/direct
 

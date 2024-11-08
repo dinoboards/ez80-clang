@@ -67,12 +67,9 @@ RUN mkdir -p /opt/ez80-clang/bin
 RUN cp /opt/ez80-none-elf/bin/* /opt/ez80-clang/bin/
 RUN ln -s ez80-none-elf-ar /opt/ez80-clang/bin/ez80-ar
 RUN ln -s ez80-none-elf-as /opt/ez80-clang/bin/ez80-as
-RUN cp /src/llvm-project/build/bin/clang-15 /opt/ez80-clang/bin/clang-15
-RUN cp /src/llvm-project/build/bin/clang-format /opt/ez80-clang/bin/clang-format
-RUN ln -s clang-15 /opt/ez80-clang/bin/clang
+RUN cp /src/llvm-project/build/bin/clang-15 /opt/ez80-clang/bin/ez80-clang-15
+RUN cp /src/llvm-project/build/bin/clang-format /opt/ez80-clang/bin/ez80-clang-format
 COPY direct-shims /opt/ez80-clang/bin/
-
-RUN ls -larts /opt/ez80-clang/bin
 
 
 COPY Makefile /src/Makefile
