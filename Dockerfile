@@ -46,6 +46,21 @@ RUN cmake -S llvm -B build -G Ninja \
 
 RUN BUILD_THREADS=$(nproc) && BUILD_THREADS=$((BUILD_THREADS * 7 / 10)) && [ "$BUILD_THREADS" -lt 4 ] && BUILD_THREADS=1 || true && cmake --build build -j $BUILD_THREADS
 
+# apply 2nd patch
+RUN git fetch --depth 1 origin 37bfd9c9ab67537f752be3cb377e666aa581ba07
+RUN git checkout 37bfd9c9ab67537f752be3cb377e666aa581ba07
+RUN cmake -S llvm -B build -G Ninja \
+    -DLLVM_ENABLE_PROJECTS="clang" \
+    -DCMAKE_INSTALL_PREFIX=/opt/local/z80-none-elf \
+    -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release \
+    -DCLANG_ENABLE_BOOTSTRAP=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=Z80 \
+    -DLLVM_TARGETS_TO_BUILD="" \
+    -DLLVM_DEFAULT_TARGET_TRIPLE=ez80-none-elf
+RUN BUILD_THREADS=$(nproc) && BUILD_THREADS=$((BUILD_THREADS * 7 / 10)) && [ "$BUILD_THREADS" -lt 4 ] && BUILD_THREADS=1 || true && cmake --build build -j $BUILD_THREADS
+
+
 # What about version 2.43???
 
 WORKDIR /src
