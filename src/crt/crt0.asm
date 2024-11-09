@@ -12,7 +12,8 @@
 
 	.assume	adl = 0
 
-	.extern	_main
+	extern	_main
+	extern __push_cpm_cmdline_args
 
 	section .header_z80, "ax", @progbits
 
@@ -23,6 +24,10 @@
 
 	section	.startup_z80, "ax", @progbits
 	global	__start
+	global	__call_main
+	global	_exit
+	global	defltdsk
+
 __start:
 	ld	((__restore_sps_onexit+1) & $FFFF), SP	; Save SPS stack
 
@@ -75,16 +80,14 @@ do_exit_v3:
 ; Start of the C program called either as int main(void) or int main(int argc, char *argv[])
 ; - value returned will be in HL
 
-; TODO - supply the command line arguments.
-
 __startadl:
 	ld	(__restore_spl_onexit+1), SP	; Save SPL stack
 
 	call	crt0_init
 
-	ld	hl, 0
-	push	hl				; argv
-	push	hl				; argc
+	jp	__push_cpm_cmdline_args
+
+__call_main:
 	call	_main				; int main(int argc, char *argv[])
 
 __crt_exit:
@@ -96,7 +99,6 @@ __restore_spl_onexit:
 	ld	SP, 0
 	RET.L
 
-	.global	_exit
 _exit:
 	POP	HL				; discard return address
 	POP	HL				; retrieve return value
@@ -134,5 +136,4 @@ crt0_exit:
 	ret
 
 	SECTION	bss_crt, "ax", @progbits
-	global	defltdsk
 defltdsk:       defb    0	;Default disc
