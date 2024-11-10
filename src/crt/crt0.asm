@@ -27,6 +27,7 @@
 	global	__call_main
 	global	_exit
 	global	defltdsk
+	global _cpm_mbase
 
 __start:
 	ld	((__restore_sps_onexit+1) & $FFFF), SP	; Save SPS stack
@@ -84,7 +85,6 @@ __startadl:
 	ld	(__restore_spl_onexit+1), SP	; Save SPL stack
 
 	call	crt0_init
-
 	jp	__push_cpm_cmdline_args
 
 __call_main:
@@ -124,6 +124,8 @@ crt0_init:
 	OR 	C
 	JR 	NZ, .loop
 
+	LD	A, MB
+	LD	(_cpm_mbase+2), HL
 
     	SECTION	code_crt_init_exit, "ax", @progbits
 	RET
@@ -137,3 +139,4 @@ crt0_exit:
 
 	SECTION	bss_crt, "ax", @progbits
 defltdsk:       defb    0	;Default disc
+_cpm_mbase:	d24	0	;CP/M base address

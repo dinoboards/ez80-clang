@@ -3,17 +3,18 @@
 	.assume	adl=1
 
 	section	.text,"ax",@progbits
-	.global	cpm_bdos
+	.global	_bdos
 
-cpm_bdos:
-	push	ix
+; uint8_t bdos(uint16_t bc, uint16_t de);
+
+_bdos:
+	call	__frameset0
+	ld	bc, (ix + 6)
+	ld	de, (ix + 9)
 
 	CALL.SIS	cpm_bdos_z80 & 0xFFFF
 
-	pop	ix
+	POP	IX
 	RET
 
-	.assume	adl = 0
-cpm_bdos_z80:
-	CALL	BDOS
-	RET.L
+	extern __frameset0

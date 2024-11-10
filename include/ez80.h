@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+extern uint24_t __attribute__((pure)) get_address_in_base(const uint16_t a);
+
 /*
  *_port_out() - Output a byte to an I/O port
  * @port: the PORT_IO variable to be assigned
