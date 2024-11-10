@@ -67,6 +67,6 @@ sudo make install
 ```
 
 
+## C Runtime Status
 
-
-
+[List of ported/implemented c runtime function](./runtime-implementation-status.md)
