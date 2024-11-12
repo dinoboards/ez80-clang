@@ -14,6 +14,7 @@ cpm_bdos:
 	RET
 
 	.assume	adl = 0
+	section	.startup_z80, "ax", @progbits
 cpm_bdos_z80:
 	CALL	BDOS
 	RET.L

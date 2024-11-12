@@ -125,7 +125,7 @@ crt0_init:
 	JR 	NZ, .loop
 
 	LD	A, MB
-	LD	(_cpm_mbase+2), HL
+	LD	(_cpm_mbase+2), A
 
     	SECTION	code_crt_init_exit, "ax", @progbits
 	RET

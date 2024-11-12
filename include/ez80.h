@@ -30,4 +30,8 @@ extern void _port_out(const uint24_t data);
 #define DI __asm__("DI")
 #define EI __asm__("EI")
 
+extern uint8_t _heap[];
+extern void   *_get_spl();
+extern void   *_get_sps();
+
 #endif
