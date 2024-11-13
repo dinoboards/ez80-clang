@@ -3,9 +3,9 @@
 	.assume	adl=1
 
 	section	.text,"ax",@progbits
-	.global	_cpm_write
+	.global	_cpm_c_write
 
-_cpm_write:
+_cpm_c_write:
 	LD	IY, 0
 	ADD	IY, SP
 	LD	E, (IY + 3)
