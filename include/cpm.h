@@ -23,17 +23,20 @@ extern void cpm_term(void);
 /* Wait for a character from the keyboard; then echo it to the screen and return it. */
 extern uint8_t cpm_c_read(void);
 
+/*
+Send the character c to the screen. Tabs are expanded to spaces. Output can be paused with ^S and restarted with ^Q (or any key
+under versions prior to CP/M 3). While the output is paused, the program can be terminated with ^C.
+*/
+extern void cpm_c_write(uint8_t c);
+
 /* Wait for a character from the auxiliary reader */
 extern uint8_t cpm_a_read(void);
 
 /* Send the character c to the Auxiliary (Punch) output */
 extern void cpm_a_write(uint8_t c);
 
-/*
-Send the character c to the screen. Tabs are expanded to spaces. Output can be paused with ^S and restarted with ^Q (or any key
-under versions prior to CP/M 3). While the output is paused, the program can be terminated with ^C.
-*/
-extern void cpm_c_write(uint8_t c);
+/* Send the character c to the printer */
+extern void cpm_l_write(uint8_t c);
 
 /* Returns the current IOBYTE
 
