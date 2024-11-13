@@ -3,9 +3,9 @@
 	.assume	adl=1
 
 	section	.text,"ax",@progbits
-	.global	_cpm_rawio
+	.global	_cpm_c_rawio
 
-_cpm_rawio:
+_cpm_c_rawio:
 	LD	C, C_RAWIO
 	LD	E, $FF
 	CALL	cpm_bdos

@@ -31,6 +31,6 @@ extern void cpm_write(uint8_t c);
 
 /* Return a character without echoing if one is waiting; zero if none is
  * available. */
-extern uint8_t cpm_rawio(void);
+extern uint8_t cpm_c_rawio(void);
 
 #endif
