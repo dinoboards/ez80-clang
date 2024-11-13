@@ -38,8 +38,11 @@ extern void cpm_a_write(uint8_t c);
 /* Send the character c to the printer */
 extern void cpm_l_write(uint8_t c);
 
-/* Returns the current IOBYTE
+/* Return a character without echoing if one is waiting; zero if none is
+ * available. */
+extern uint8_t cpm_c_rawio(void);
 
+/* Returns the current IOBYTE
 The value is bit mapped:
 
      Bits      Bits 6,7    Bits 4,5    Bits 2,3    Bits 0,1
@@ -62,6 +65,7 @@ UL1 = User defined (ie implementation dependent) printer device.
 UPn = User defined (ie implementation dependent) output device.
 URn = User defined (ie implementation dependent) input device.
 */
+extern uint8_t cpm_get_iobyte(void);
 
 // Bit masks for each device in the iobyte
 #define CPM_IOBYTE_CONSOLE_MASK ((uint8_t)0x03) // 00000011
@@ -91,14 +95,11 @@ URn = User defined (ie implementation dependent) input device.
 #define CPM_IOBYTE_SET_LIST(iobyte, value)                                                                                         \
   (iobyte = (iobyte & ~CPM_IOBYTE_LIST_MASK) | ((value << CPM_IOBYTE_LIST_SHIFT) & CPM_IOBYTE_LIST_MASK))
 
-extern uint8_t     cpm_get_iobyte(void);
 extern const char *cpm_get_console_device();
 extern const char *cpm_get_reader_device();
 extern const char *cpm_get_punch_device();
 extern const char *cpm_get_list_device();
 
-/* Return a character without echoing if one is waiting; zero if none is
- * available. */
-extern uint8_t cpm_c_rawio(void);
+extern void cpm_set_iobyte(uint8_t iobyte);
 
 #endif
