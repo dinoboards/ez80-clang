@@ -17,6 +17,8 @@ to de. The value returned in register A is the return
 value. */
 extern uint8_t bdos(uint16_t bc, uint16_t de);
 
+extern void cpm_term(void);
+
 /* Return a character without echoing if one is waiting; zero if none is
  * available. */
 extern uint8_t cpm_rawio(void);
