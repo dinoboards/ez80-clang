@@ -29,6 +29,65 @@ under versions prior to CP/M 3). While the output is paused, the program can be 
 */
 extern void cpm_c_write(uint8_t c);
 
+/* Returns the current IOBYTE
+
+The value is bit mapped:
+
+     Bits      Bits 6,7    Bits 4,5    Bits 2,3    Bits 0,1
+     Device    LIST        PUNCH       READER      CONSOLE
+
+     Value
+       00      TTY:        TTY:        TTY:        TTY:
+       01      CRT:        PTP:        PTR:        CRT:
+       10      LPT:        UP1:        UR1:        BAT:
+       11      UL1:        UP2:        UR2:        UC1:
+
+BAT = batch mode. Use the current Reader for console input, and he current List (printer) device as the console output.
+CRT = Standard console (keyboard and terminal screen).
+LPT = Standard line printer.
+PTP = Standard Paper Tape Punch.
+PTR = Standard Paper Tape Reader.
+TTY = Teletype device, eg a serial port.
+UC1 = User defined (ie implementation dependent) console device.
+UL1 = User defined (ie implementation dependent) printer device.
+UPn = User defined (ie implementation dependent) output device.
+URn = User defined (ie implementation dependent) input device.
+*/
+
+// Bit masks for each device in the iobyte
+#define CPM_IOBYTE_CONSOLE_MASK ((uint8_t)0x03) // 00000011
+#define CPM_IOBYTE_READER_MASK  ((uint8_t)0x0C) // 00001100
+#define CPM_IOBYTE_PUNCH_MASK   ((uint8_t)0x30) // 00110000
+#define CPM_IOBYTE_LIST_MASK    ((uint8_t)0xC0) // 11000000
+
+// Bit shift values for each device in the iobyte
+#define CPM_IOBYTE_CONSOLE_SHIFT 0
+#define CPM_IOBYTE_READER_SHIFT  2
+#define CPM_IOBYTE_PUNCH_SHIFT   4
+#define CPM_IOBYTE_LIST_SHIFT    6
+
+// Macros to extract each device from the iobyte
+#define CPM_IOBYTE_GET_CONSOLE(iobyte) ((iobyte & CPM_IOBYTE_CONSOLE_MASK) >> CPM_IOBYTE_CONSOLE_SHIFT)
+#define CPM_IOBYTE_GET_READER(iobyte)  ((iobyte & CPM_IOBYTE_READER_MASK) >> CPM_IOBYTE_READER_SHIFT)
+#define CPM_IOBYTE_GET_PUNCH(iobyte)   ((iobyte & CPM_IOBYTE_PUNCH_MASK) >> CPM_IOBYTE_PUNCH_SHIFT)
+#define CPM_IOBYTE_GET_LIST(iobyte)    ((iobyte & CPM_IOBYTE_LIST_MASK) >> CPM_IOBYTE_LIST_SHIFT)
+
+// Macros to set each device in the iobyte
+#define CPM_IOBYTE_SET_CONSOLE(iobyte, value)                                                                                      \
+  (iobyte = (iobyte & ~CPM_IOBYTE_CONSOLE_MASK) | ((value << CPM_IOBYTE_CONSOLE_SHIFT) & CPM_IOBYTE_CONSOLE_MASK))
+#define CPM_IOBYTE_SET_READER(iobyte, value)                                                                                       \
+  (iobyte = (iobyte & ~CPM_IOBYTE_READER_MASK) | ((value << CPM_IOBYTE_READER_SHIFT) & CPM_IOBYTE_READER_MASK))
+#define CPM_IOBYTE_SET_PUNCH(iobyte, value)                                                                                        \
+  (iobyte = (iobyte & ~CPM_IOBYTE_PUNCH_MASK) | ((value << CPM_IOBYTE_PUNCH_SHIFT) & CPM_IOBYTE_PUNCH_MASK))
+#define CPM_IOBYTE_SET_LIST(iobyte, value)                                                                                         \
+  (iobyte = (iobyte & ~CPM_IOBYTE_LIST_MASK) | ((value << CPM_IOBYTE_LIST_SHIFT) & CPM_IOBYTE_LIST_MASK))
+
+extern uint8_t     cpm_get_iobyte(void);
+extern const char *cpm_get_console_device();
+extern const char *cpm_get_reader_device();
+extern const char *cpm_get_punch_device();
+extern const char *cpm_get_list_device();
+
 /* Return a character without echoing if one is waiting; zero if none is
  * available. */
 extern uint8_t cpm_c_rawio(void);
