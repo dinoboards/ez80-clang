@@ -61,7 +61,7 @@ SECTIONS
         *(.bss.*)
     }
     _end_of_bss = . ;
-    __heap = .;
+    __heap = ALIGN(4);
     _length_of_bss = _end_of_bss - _start_of_bss;
 
     .comment(NOLOAD) : { *(.comment) }

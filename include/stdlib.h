@@ -27,6 +27,8 @@ typedef struct {
 
 __BEGIN_DECLS
 
+void malloc_init(size_t stack_reserved);
+
 void *calloc(size_t nmemb, size_t size) __attribute__((malloc));
 
 void *malloc(size_t size) __attribute__((malloc));
