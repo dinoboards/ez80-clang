@@ -23,6 +23,9 @@ extern void cpm_term(void);
 /* Wait for a character from the keyboard; then echo it to the screen and return it. */
 extern uint8_t cpm_c_read(void);
 
+/* Wait for a character from the auxiliary reader */
+extern uint8_t cpm_a_read(void);
+
 /*
 Send the character in E to the screen. Tabs are expanded to spaces. Output can be paused with ^S and restarted with ^Q (or any key
 under versions prior to CP/M 3). While the output is paused, the program can be terminated with ^C.
