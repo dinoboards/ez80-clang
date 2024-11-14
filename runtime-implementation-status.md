@@ -72,9 +72,9 @@
 | _dsub         | <span class="na"/>  |
 | _dtof         | <span class="na"/>  |
 | _dtol         | <span class="implemented"/> (as float) |
-| _dtoll        | <span class="na"/>  |
+| _dtoll        | <span class="implemented"/> (as float) |
 | _dtoul        | <span class="implemented"/> (as float) |
-| _dtoull       | <span class="not-implemented"/>  |
+| _dtoull       | <span class="implemented"/> (as float) |
 | _fabs         | <span class="implemented"/>  |
 | _fabsf        | <span class="implemented"/>  |
 | _fadd         | <span class="implemented"/>  |
@@ -86,11 +86,11 @@
 | _frameset0    | <span class="implemented"/>  |
 | _frem         | <span class="not-implemented"/>  |
 | _fsub         | <span class="implemented"/>  |
-| _ftod         | <span class="not-implemented"/>  |
+| _ftod         | <span class="na"/>  |
 | _ftol         | <span class="implemented"/>  |
-| _ftoll        | <span class="not-implemented"/>  |
+| _ftoll        | <span class="implemented"/>  |
 | _ftoul        | <span class="implemented"/>  |
-| _ftoull       | <span class="not-implemented"/>  |
+| _ftoull       | <span class="implemented"/>  |
 | _i48and       | <span class="not-implemented"/>  |
 | _i48bitrev    | <span class="not-implemented"/>  |
 | _i48bswap     | <span class="not-implemented"/>  |
