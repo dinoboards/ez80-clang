@@ -128,7 +128,7 @@
 | _irems        | <span class="implemented"/>  |
 | _iremu        | <span class="implemented"/>  |
 | _ishl         | <span class="implemented"/>  |
-| _ishl_b       | <span class="not-implemented"/>  |
+| _ishl_b       | <span class="implemented"/>  |
 | _ishrs        | <span class="implemented"/>  |
 | _ishrs_b      | <span class="not-implemented"/>  |
 | _ishru        | <span class="implemented"/>  |
