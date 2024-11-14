@@ -142,7 +142,7 @@
 | _lbswap       | <span class="implemented"/>  |
 | _lcmps        | <span class="implemented"/>  |
 | _lcmpu        | <span class="implemented"/>  |
-| _lcmpzero     | <span class="not-implemented"/>  |
+| _lcmpzero     | <span class="implemented"/>  |
 | _lctlz        | <span class="implemented"/>  |
 | _ldivs        | <span class="implemented"/>  |
 | _ldivu        | <span class="implemented"/>  |
