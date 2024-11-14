@@ -27,31 +27,31 @@ __i48or:
 	push	de
 	scf
 	sbc	hl, hl
-	add	hl, sp					; uhl = &iyu
+	add	hl, sp ; uhl = &iyu
 	push	iy
 
 	ld	de, 3
-	ld	a, (hl) 				; a = iyu
+	ld	a, (hl) ; a = iyu
 	add	hl, de
-	or	a, (hl) 				; a |= deu
-	ld	(hl), a 				; deu = a
+	or	a, (hl) ; a |= deu
+	ld	(hl), a ; deu = a
 
 	add	hl, de
-	ld	a, (hl) 				; a = bcu
+	ld	a, (hl) ; a = bcu
 	add	hl, de
-	or	a, (hl) 				; a |= hlu
-	ld	(hl), a 				; hlu = a
+	or	a, (hl) ; a |= hlu
+	ld	(hl), a ; hlu = a
 
 	; Load values back into registers and process low and high bytes
 	pop	bc
 	pop	de
 
 	ld	a, d
-	or	a, b 					; = iyh
+	or	a, b ; = iyh
 	ld	d, a
 
 	ld	a, e
-	or	a, c 					; = iyl
+	or	a, c ; = iyl
 	ld	e, a
 
 	pop	bc

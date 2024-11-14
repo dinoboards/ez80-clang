@@ -111,7 +111,7 @@
 | _i48shl       | <span class="implemented"/>  |
 | _i48shrs      | <span class="implemented"/>  |
 | _i48shru      | <span class="implemented"/>  |
-| _i48xor       | <span class="not-implemented"/>  |
+| _i48xor       | <span class="implemented"/>  |
 | _iand         | <span class="implemented"/>  |
 | _ibitrev      | <span class="not-implemented"/>  |
 | _icmpzero     | <span class="not-implemented"/>  |
