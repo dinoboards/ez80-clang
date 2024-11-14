@@ -54,7 +54,7 @@
 | atexit                               | <span class="implemented"/>          |
 | _bbitrev      | <span class="implemented"/>  |
 | _bctlz        | <span class="implemented"/>  |
-| _bdivs        | <span class="not-implemented"/>  |
+| _bdivs        | <span class="implemented"/>  |
 | _bdivu        | <span class="implemented"/>  |
 | _bmulu        | <span class="not-implemented"/>  |
 | _bpopcnt      | <span class="not-implemented"/>  |
@@ -189,7 +189,7 @@
 | _sbitrev      | <span class="not-implemented"/>  |
 | _scmpzero     | <span class="not-implemented"/>  |
 | _sctlz        | <span class="not-implemented"/>  |
-| _sdivs        | <span class="not-implemented"/>  |
+| _sdivs        | <span class="implemented"/>  |
 | _sdivu        | <span class="not-implemented"/>  |
 | _setflag      | <span class="implemented"/>  |
 | _smulu        | <span class="not-implemented"/>  |
