@@ -57,7 +57,7 @@
 | _bdivs        | <span class="implemented"/>  |
 | _bdivu        | <span class="implemented"/>  |
 | _bmulu        | <span class="implemented"/>  |
-| _bpopcnt      | <span class="not-implemented"/>  |
+| _bpopcnt      | <span class="implemented"/>  |
 | _brems        | <span class="not-implemented"/>  |
 | _bremu        | <span class="not-implemented"/>  |
 | _bshl         | <span class="implemented"/>  |
