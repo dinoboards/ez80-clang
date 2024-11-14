@@ -133,7 +133,7 @@
 | _ishrs_b      | <span class="implemented"/>  |
 | _ishru        | <span class="implemented"/>  |
 | _ishru_b      | <span class="implemented"/>  |
-| _itol         | <span class="not-implemented"/>  |
+| _itol         | <span class="implemented"/>  |
 | _ixor         | <span class="implemented"/>  |
 | _ladd         | <span class="implemented"/>  |
 | _ladd_b       | <span class="not-implemented"/>  |
