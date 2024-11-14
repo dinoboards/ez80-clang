@@ -117,7 +117,7 @@
 | _icmpzero     | <span class="implemented"/>  |
 | _ictlz        | <span class="implemented"/>  |
 | _idivs        | <span class="implemented"/>  |
-| _idivu        | <span class="not-implemented"/>  |
+| _idivu        | <span class="implemented"/>  |
 | _idvrmu       | <span class="implemented"/>  |
 | _imul_b       | <span class="not-implemented"/>  |
 | _imulu        | <span class="implemented"/>  |

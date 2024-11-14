@@ -10,42 +10,20 @@
 ;
 ; Performs 16-bit unsigned division
 ; Arguments: uhl = dividend, ubc = divisor
-; Results: ude=UHL/UBC, uhl=UHL%UBC
+; Result: uhl
 ;--------------------------------------------------------------
-
 	.assume	adl=1
 
-	section	.text, "ax", @progbits
-	.global	__idvrmu
+	section	.text,"ax",@progbits
+	.global	__idivu
 
-__idvrmu:
+__idivu:
+	push	de
+
+	call	__idvrmu
 	ex	de, hl
 
-	push	af
-	ld	a, 24
-	.global	__idvrmu_hijack_a_iters_ude_dividend
-__idvrmu_hijack_a_iters_ude_dividend:
-
-	or	a, a
-	sbc	hl, hl
-
-.loop:
-	ex	de, hl
-	add	hl, hl
-	ex	de, hl
-	adc	hl, hl
-
-	sbc	hl, bc
-	inc	e
-
-	jr	nc, .restore_skip
-	add	hl, bc
-	dec	e
-.restore_skip:
-
-	dec	a
-	jr	nz, .loop
-
-	pop	af
+	pop	de
 	ret
 
+	extern	__idvrmu
