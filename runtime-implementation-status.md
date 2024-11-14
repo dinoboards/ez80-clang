@@ -115,7 +115,7 @@
 | _iand         | <span class="implemented"/>  |
 | _ibitrev      | <span class="implemented"/>  |
 | _icmpzero     | <span class="implemented"/>  |
-| _ictlz        | <span class="not-implemented"/>  |
+| _ictlz        | <span class="implemented"/>  |
 | _idivs        | <span class="implemented"/>  |
 | _idivu        | <span class="not-implemented"/>  |
 | _idvrmu       | <span class="implemented"/>  |
