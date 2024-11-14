@@ -99,9 +99,9 @@
 | _i48cmpzero   | <span class="implemented"/>  |
 | _i48ctlz      | <span class="implemented"/>  |
 | _i48divs      | <span class="implemented"/>  |
-| _i48divu      | <span class="not-implemented"/>  |
-| _i48dvrmu     | <span class="not-implemented"/>  |
-| _i48mulu      | <span class="not-implemented"/>  |
+| _i48divu      | <span class="implemented"/>  |
+| _i48dvrmu     | <span class="implemented"/>  |
+| _i48mulu      | <span class="implemented"/>  |
 | _i48neg       | <span class="implemented"/>  |
 | _i48not       | <span class="not-implemented"/>  |
 | _i48or        | <span class="not-implemented"/>  |
