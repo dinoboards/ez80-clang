@@ -56,7 +56,7 @@
 | _bctlz        | <span class="implemented"/>  |
 | _bdivs        | <span class="implemented"/>  |
 | _bdivu        | <span class="implemented"/>  |
-| _bmulu        | <span class="not-implemented"/>  |
+| _bmulu        | <span class="implemented"/>  |
 | _bpopcnt      | <span class="not-implemented"/>  |
 | _brems        | <span class="not-implemented"/>  |
 | _bremu        | <span class="not-implemented"/>  |
