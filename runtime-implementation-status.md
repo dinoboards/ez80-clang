@@ -119,7 +119,7 @@
 | _idivs        | <span class="implemented"/>  |
 | _idivu        | <span class="implemented"/>  |
 | _idvrmu       | <span class="implemented"/>  |
-| _imul_b       | <span class="not-implemented"/>  |
+| _imul_b       | <span class="implemented"/>  |
 | _imulu        | <span class="implemented"/>  |
 | _ineg         | <span class="implemented"/>  |
 | _inot         | <span class="implemented"/>  |
