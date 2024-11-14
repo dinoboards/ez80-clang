@@ -61,7 +61,7 @@
 | _brems        | <span class="implemented"/>  |
 | _bremu        | <span class="implemented"/>  |
 | _bshl         | <span class="implemented"/>  |
-| _bshrs        | <span class="not-implemented"/>  |
+| _bshrs        | <span class="implemented"/>  |
 | _bshru        | <span class="implemented"/>  |
 | _dadd         | <span class="not-implemented"/>  |
 | _dcmp         | <span class="not-implemented"/>  |

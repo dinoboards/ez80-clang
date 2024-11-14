@@ -1,6 +1,6 @@
 ; (c) Copyright 2007-2008 Zilog, Inc.
 ;-------------------------------------------------------------------------
-; Byte Shift Right Unsigned
+; Byte Shift Right Signed
 ; Input:
 ;	Operand1:
 ;                 A : 8 bit number to shift
@@ -12,20 +12,20 @@
 ; Registers Used:
 ;       flags
 ;-------------------------------------------------------------------------
-        .global    __bshru
+        .global    __bshrs
 	section	.text,"ax",@progbits
 	.assume adl=1
 
-__bshru:
+__bshrs:
         push    bc
         inc	b
         jr      test
 
 loop:
-        srl     a
+        sra     a
 test:
        	djnz	loop
 
-       	pop	bc
+	pop	bc
 	ret
 
