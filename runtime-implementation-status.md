@@ -218,13 +218,13 @@
 |  Function     | Status                                                    |
 |---------------|-----------------------------------------------------------|
 | cos           | <span class="implemented"/>  |
-| putchar       | <span class="implemented"/>  |
-| errno       | <span class="implemented"/>  |
-| fgetc       | <span class="implemented"/>  |
-| fgets       | <span class="implemented"/>  |
+| errno         | <span class="implemented"/>  |
+| fgetc         | <span class="implemented"/>  |
+| fgets         | <span class="implemented"/>  |
+| fmod          | <span class="implemented"/> |
 | fprintf       | <span class="implemented"/>  |
-| fputc       | <span class="implemented"/>  |
-| frexp       | <span class="implemented"/>  |
+| fputc         | <span class="implemented"/>  |
+| frexp         | <span class="implemented"/>  |
 | getchar       | <span class="implemented"/>  |
 | getopt        | <span class="implemented"/>  |
 | isdigit       | <span class="implemented"/>  |
@@ -232,28 +232,29 @@
 | isprint       | <span class="implemented"/>  |
 | ispunct       | <span class="implemented"/>  |
 | isspace       | <span class="implemented"/>  |
-| isxdigit        | <span class="implemented"/>  |
+| isxdigit      | <span class="implemented"/>  |
 | printf        | <span class="implemented"/>  |
-| puts        | <span class="implemented"/>  |
-| rand        | <span class="implemented"/>  |
+| putchar       | <span class="implemented"/>  |
+| puts          | <span class="implemented"/>  |
+| rand          | <span class="implemented"/>  |
 | random        | <span class="implemented"/>  |
-| sin       | <span class="implemented"/>  |
-| snprintf        | <span class="implemented"/>  |
+| sin           | <span class="implemented"/>  |
+| snprintf      | <span class="implemented"/>  |
 | sprintf       | <span class="implemented"/>  |
-| srand       | <span class="implemented"/>  |
+| srand         | <span class="implemented"/>  |
 | sscanf        | <span class="implemented"/>  |
 | strchr        | <span class="implemented"/>  |
 | strcmp        | <span class="implemented"/>  |
 | strcpy        | <span class="implemented"/>  |
 | strlen        | <span class="implemented"/>  |
-| strod       | <span class="implemented"/>  |
-| strol       | <span class="implemented"/>  |
+| strod         | <span class="implemented"/>  |
+| strol         | <span class="implemented"/>  |
 | strtoll       | <span class="implemented"/>  |
 | strtoul       | <span class="implemented"/>  |
-| totoull       | <span class="implemented"/>  |
 | tolower       | <span class="implemented"/>  |
+| totoull       | <span class="implemented"/>  |
 | toupper       | <span class="implemented"/>  |
-| vfprintf        | <span class="implemented"/>  |
+| vfprintf      | <span class="implemented"/>  |
 | vprint        | <span class="implemented"/>  |
 
 
