@@ -58,8 +58,8 @@
 | _bdivu        | <span class="implemented"/>  |
 | _bmulu        | <span class="implemented"/>  |
 | _bpopcnt      | <span class="implemented"/>  |
-| _brems        | <span class="not-implemented"/>  |
-| _bremu        | <span class="not-implemented"/>  |
+| _brems        | <span class="implemented"/>  |
+| _bremu        | <span class="implemented"/>  |
 | _bshl         | <span class="implemented"/>  |
 | _bshrs        | <span class="not-implemented"/>  |
 | _bshru        | <span class="implemented"/>  |
