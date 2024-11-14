@@ -124,7 +124,7 @@
 | _ineg         | <span class="implemented"/>  |
 | _inot         | <span class="implemented"/>  |
 | _ior          | <span class="implemented"/>  |
-| _ipopcnt      | <span class="not-implemented"/>  |
+| _ipopcnt      | <span class="implemented"/>  |
 | _irems        | <span class="implemented"/>  |
 | _iremu        | <span class="implemented"/>  |
 | _ishl         | <span class="implemented"/>  |
