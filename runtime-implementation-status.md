@@ -63,17 +63,17 @@
 | _bshl         | <span class="implemented"/>  |
 | _bshrs        | <span class="implemented"/>  |
 | _bshru        | <span class="implemented"/>  |
-| _dadd         | <span class="not-implemented"/>  |
-| _dcmp         | <span class="not-implemented"/>  |
-| _ddiv         | <span class="not-implemented"/>  |
-| _dmul         | <span class="not-implemented"/>  |
-| _dneg         | <span class="not-implemented"/>  |
-| _drem         | <span class="not-implemented"/>  |
-| _dsub         | <span class="not-implemented"/>  |
-| _dtof         | <span class="not-implemented"/>  |
-| _dtol         | <span class="implemented"/>  |
-| _dtoll        | <span class="not-implemented"/>  |
-| _dtoul        | <span class="implemented"/>  |
+| _dadd         | <span class="na"/>  |
+| _dcmp         | <span class="na"/>  |
+| _ddiv         | <span class="na"/>  |
+| _dmul         | <span class="na"/>  |
+| _dneg         | <span class="na"/>  |
+| _drem         | <span class="na"/>  |
+| _dsub         | <span class="na"/>  |
+| _dtof         | <span class="na"/>  |
+| _dtol         | <span class="implemented"/> (as float) |
+| _dtoll        | <span class="na"/>  |
+| _dtoul        | <span class="implemented"/> (as float) |
 | _dtoull       | <span class="not-implemented"/>  |
 | _fabs         | <span class="implemented"/>  |
 | _fabsf        | <span class="implemented"/>  |
@@ -83,7 +83,7 @@
 | _fmul         | <span class="implemented"/>  |
 | _fneg         | <span class="implemented"/>  |
 | _frameset     | <span class="implemented"/>  |
-| _frameset0    | <span class="not-implemented"/>  |
+| _frameset0    | <span class="implemented"/>  |
 | _frem         | <span class="not-implemented"/>  |
 | _fsub         | <span class="implemented"/>  |
 | _ftod         | <span class="not-implemented"/>  |
@@ -282,7 +282,8 @@
   padding: 1px 2px 3px 2px;
   border-radius: 3px;
   color: white;
-  font-size: 0.9em;  background-color: green;
+  font-size: 0.9em;
+  background-color: green;
 }
 .implemented::before {
   content: 'implemented';
@@ -297,5 +298,16 @@
 }
 .not-implemented::before {
   content: 'not implemented'
+}
+
+.na {
+  padding: 1px 2px 3px 2px;
+  border-radius: 3px;
+  color: grey;
+  font-size: 0.9em;
+  background-color: darkgrey;
+}
+.na::before {
+  content: 'n/a'
 }
 </style>
