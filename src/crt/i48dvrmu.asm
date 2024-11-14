@@ -20,9 +20,8 @@
 
 	.assume adl=1
 
-	section .data
+	section	.text,"ax",@progbits
 
-	section .text
 	.global __i48dvrmu
 
 __i48dvrmu:
