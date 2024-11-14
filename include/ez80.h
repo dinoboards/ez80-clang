@@ -34,4 +34,7 @@ extern uint8_t _heap[];
 extern void   *_get_spl();
 extern void   *_get_sps();
 
+typedef uint16_t near_ptr_t;
+#define AS_NEAR_PTR(x) (near_ptr_t)(uint24_t)(x)
+
 #endif

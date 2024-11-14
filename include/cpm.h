@@ -1,6 +1,7 @@
 #ifndef __CPMCALLS
 #define __CPMCALLS
 
+#include <ez80.h>
 #include <stdint.h>
 
 #define MBASE_CONST_VARIABLE(T, c) (*(T)(((uint24_t)cpm_mbase | c)))
@@ -100,6 +101,9 @@ extern const char *cpm_get_reader_device();
 extern const char *cpm_get_punch_device();
 extern const char *cpm_get_list_device();
 
+/* Set the IOBYTE to the value iobyte */
 extern void cpm_set_iobyte(uint8_t iobyte);
+
+extern void cpm_c_writestr(near_ptr_t str);
 
 #endif
