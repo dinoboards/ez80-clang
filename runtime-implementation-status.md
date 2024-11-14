@@ -136,7 +136,7 @@
 | _itol         | <span class="implemented"/>  |
 | _ixor         | <span class="implemented"/>  |
 | _ladd         | <span class="implemented"/>  |
-| _ladd_b       | <span class="not-implemented"/>  |
+| _ladd_b       | <span class="implemented"/>  |
 | _land         | <span class="implemented"/>  |
 | _lbitrev      | <span class="not-implemented"/>  |
 | _lbswap       | <span class="not-implemented"/>  |

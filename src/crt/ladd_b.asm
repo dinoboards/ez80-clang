@@ -8,20 +8,22 @@
 ;
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
-; This function adds two 24-bit numbers together
-; Arguments: HL = 24-bit number, BC = 24-bit number
-; Returns: HL = HL + BC
+; This function adds an 8 bit number to a 24-bit number together
+; Arguments: HL = 24-bit number, A = 8-bit number
+; Returns: HL = HL + A
 ;--------------------------------------------------------------
-
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
-	.global	__ladd
+	.global	__ladd_b
 
-__ladd:
-	push	af
+__ladd_b:
+	push	bc
+	inc.s	bc
+	ld	c, a
+	ld	b, 0
 	add	hl, bc
-	adc	a, e
-	ld	e, a
-	pop	af
+	pop	bc
+	ret	nc
+	inc	e
 	ret
