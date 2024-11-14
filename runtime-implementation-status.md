@@ -103,7 +103,7 @@
 | _i48dvrmu     | <span class="implemented"/>  |
 | _i48mulu      | <span class="implemented"/>  |
 | _i48neg       | <span class="implemented"/>  |
-| _i48not       | <span class="not-implemented"/>  |
+| _i48not       | <span class="implemented"/>  |
 | _i48or        | <span class="not-implemented"/>  |
 | _i48popcnt    | <span class="not-implemented"/>  |
 | _i48rems      | <span class="not-implemented"/>  |
