@@ -1,35 +1,35 @@
 
-	.assume	adl = 1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 
-	include "src/v99x8/common.inc"
+	include	"src/v99x8/common.inc"
 
-	.global _vdp_cmd_wait_completion
+	.global	_vdp_cmd_wait_completion
 _vdp_cmd_wait_completion:
-	DI
+	di
 	; Set read register to 2
-	LD	BC, VDP_ADDR
+	ld	bc, VDP_ADDR
 
-	LD	A, 2
-	OUT	(BC), A
+	ld	a, 2
+	out	(BC), a
 	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
-	LD	A, 0x80 | 15				; measured on CPU running @25Mhz
-	OUT	(BC), A
+	ld	a, 0x80|15				; measured on CPU running @25Mhz
+	out	(BC), a
 
 	DELAY_1_7US
 
 _vdp_cmd_wait_completion_wait:
-	IN	A, (BC)
-	RRCA
-	JR	C, _vdp_cmd_wait_completion_wait
+	in	a, (BC)
+	rrca
+	jr	c, _vdp_cmd_wait_completion_wait
 
-	XOR	A
+	xor	a
 	DELAY_1_7US
-	OUT	(BC), A
+	out	(BC), a
 	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
-	LD	A, 0x80 | 15				; measured on CPU running @25Mhz
-	OUT	(BC), A
+	ld	a, 0x80|15				; measured on CPU running @25Mhz
+	out	(BC), a
 
-	EI
-	RET
+	ei
+	ret

@@ -16,7 +16,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__i48bitrev
 __i48bitrev:
 	push	af

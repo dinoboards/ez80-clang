@@ -12,7 +12,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__lldvrmu
 __lldvrmu:
 ; Atrociously slow.
@@ -42,14 +42,14 @@ __lldvrmu_hijack:
 ; iy + 10 -> divisor >> 24
 ; iy + 13 -> divisor >> 48
 
-	ld	bc, (iy + 10)
+	ld	bc, (iy+10)
 	sbc	hl, hl
 	ex	de, hl
 	sbc	hl, hl
 	exx
-	ld	hl, (iy + 13)
+	ld	hl, (iy+13)
 	ex.s	de, hl
-	ld	hl, (iy + 7)
+	ld	hl, (iy+7)
 	ld	sp, hl
 	sbc	hl, hl
 
@@ -57,7 +57,7 @@ __lldvrmu_hijack:
 
 .byte_loop:
 	dec	iy
-	ld	a, (iy - 9)
+	ld	a, (iy-9)
 
 	ld	b, 8
 
@@ -93,7 +93,7 @@ __lldvrmu_hijack:
 
 	adc	a, a
 	cpl
-	ld	(iy + 15), a
+	ld	(iy+15), a
 
 	dec	c
 	jr	nz, .byte_loop

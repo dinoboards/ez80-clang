@@ -14,25 +14,25 @@
 ; Registers Used:
 ;
 ;-------------------------------------------------------------------------
-	.assume adl=1
+	.assume	adl=1
 	.global	__sdivs
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.extern	__idivs
 __sdivs:
 	push	af
 	push	bc
 	push	hl
 	sla	h
-	sbc	a,a
-	ld	hl,2
-	add	hl,sp
-	ld	(hl),a
+	sbc	a, a
+	ld	hl, 2
+	add	hl, sp
+	ld	(hl), a
 	inc	hl
 	inc	hl
 	inc	hl
 	sla	b
-	sbc	a,a
-	ld	(hl),a
+	sbc	a, a
+	ld	(hl), a
 	pop	hl
 	pop	bc
 	pop	af

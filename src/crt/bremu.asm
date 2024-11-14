@@ -14,23 +14,23 @@
 ;	none
 ;-------------------------------------------------------------------------
 	.global	__bremu
-	section	.text,"ax",@progbits
-	.assume adl=1
+	section	.text, "ax", @progbits
+	.assume	adl=1
 
 __bremu:
 	push	bc
 	push	hl
-	ld	h,a
-	xor	a,a
-	ld	b,8		;i = 8 (bit counter)
+	ld	h, a
+	xor	a, a
+	ld	b, 8		;i = 8 (bit counter)
 loop:
 	sla	h
 	rla
-	jr	c,over
-	cp	a,c
-	jr	c,under
+	jr	c, over
+	cp	a, c
+	jr	c, under
 over:
-	sub	a,c
+	sub	a, c
 	inc	h
 under:
 	djnz	loop

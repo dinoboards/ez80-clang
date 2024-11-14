@@ -11,18 +11,18 @@
 ;--------------------------------------------------------------
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__i48divu
 
 ; Result in ude:uhl
 __i48divu:
-	push iy
-	push bc
+	push	iy
+	push	bc
 
-	call __i48dvrmu
+	call	__i48dvrmu
 
-	pop bc
-	pop iy
+	pop	bc
+	pop	iy
 	ret
 
 	extern	__i48dvrmu

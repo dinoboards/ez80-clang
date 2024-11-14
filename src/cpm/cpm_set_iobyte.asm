@@ -1,15 +1,15 @@
-	include "src/cpm/cpm.inc"
+	include	"src/cpm/cpm.inc"
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_cpm_set_iobyte
 
 _cpm_set_iobyte:
-	LD	IY, 0
-	ADD	IY, SP
-	LD	E, (IY + 3)
-	LD	C, SET_IOBYTE
-	JP	cpm_bdos
+	ld	iy, 0
+	add	iy, sp
+	ld	e, (IY+3)
+	ld	c, SET_IOBYTE
+	jp	cpm_bdos
 
 	extern	cpm_bdos

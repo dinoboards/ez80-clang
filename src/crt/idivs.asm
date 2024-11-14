@@ -9,9 +9,9 @@
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
 ;--------------------------------------------------------------
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__idivs
 
 __idivs:

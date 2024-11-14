@@ -14,24 +14,24 @@
 ;	d, e
 ;-------------------------------------------------------------------------
 	.global	__bdivs
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.extern	__bdivu
-	.assume adl=1
+	.assume	adl=1
 
 __bdivs:
 	push	bc
 	;;
 	;; Check the sign
 	;;
-	xor	a,a
-	sub a,b
-	jp m,_L0
-	ld b,a
+	xor	a, a
+	sub	a, b
+	jp	m, _L0
+	ld	b, a
 _L0:
-	xor	a,a
-	sub a,c
-	jp m,_L1
-	ld c,a
+	xor	a, a
+	sub	a, c
+	jp	m, _L1
+	ld	c, a
 _L1:
 
 	call	__bdivu
@@ -39,12 +39,12 @@ _L1:
 	;; Check the sign of the quotient
 	;;
 	pop	bc
-	push hl
-	ld	l,a
-	ld	a,b
-	xor	a,c
-	ld	a,l
-	jp	p,_L2
+	push	hl
+	ld	l, a
+	ld	a, b
+	xor	a, c
+	ld	a, l
+	jp	p, _L2
 	neg
 _L2:
 	pop	hl

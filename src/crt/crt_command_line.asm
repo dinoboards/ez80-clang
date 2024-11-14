@@ -1,9 +1,9 @@
 
 ; Command line parsing
-	.assume	adl = 1
+	.assume	adl=1
 
-	.extern __call_main
-	.extern ez80_cpy_mbhl_to_uhl
+	.extern	__call_main
+	.extern	ez80_cpy_mbhl_to_uhl
 	section	.startup_adl, "ax", @progbits
 	global	__push_cpm_cmdline_args
 
@@ -60,7 +60,7 @@ empty_arg:
 
 ; skip extra blanks
 argv_zloop:
-	ld	(hl),	0      				; Terminate the previous argument
+	ld	(hl), 0      				; Terminate the previous argument
 	dec	hl         				; Last character of previous argument
 	dec	c
 	jr	z, argv_done
@@ -80,7 +80,7 @@ argv_done:
 argv_push_final_arg:
 	ld	a, (hl)              			; Strip leading spaces
 	cp	' '
-	jr	nz,argv_push_final_arg2
+	jr	nz, argv_push_final_arg2
 	inc	hl
 	jr	argv_push_final_arg
 
@@ -89,7 +89,7 @@ argv_push_final_arg2:
 	push	de
 	ld	a, h
 	sub	d
-	jr	nz,argv_push_final_arg3
+	jr	nz, argv_push_final_arg3
 	ld	a, l
 	sub	e
 	jr	z, argv_done_2
@@ -114,6 +114,7 @@ argv_done_2:
 	push	hl					; argv
 	push	bc					; argc
 
-	JP	__call_main
+	jp	__call_main
 
-commandline_argv0:		defb	0
+commandline_argv0:
+	defb	0

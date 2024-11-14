@@ -11,7 +11,7 @@
 ;--------------------------------------------------------------
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__ftoll, __ftoull, __dtoll, __dtoull
 __ftoll:
 __ftoull:

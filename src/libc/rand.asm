@@ -12,14 +12,14 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_rand
 _rand:
 	call	_random
-	ld	de,0x800000
-	sbc	hl,de
+	ld	de, 0x800000
+	sbc	hl, de
 	ret	p
-	add	hl,de
+	add	hl, de
 	ret
 
 	extern	_random

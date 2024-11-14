@@ -12,7 +12,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	;;; struct u32div_t {
 ;;;     uint32_t rem;
 ;;;     uint32_t quot;

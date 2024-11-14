@@ -9,9 +9,9 @@
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
 ;--------------------------------------------------------------
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_fabs, _fabsf
 
 _fabs:
@@ -22,5 +22,5 @@ _fabsf:
 	push	de
 	push	hl
 	push	bc
-	res	7,e
+	res	7, e
 	ret

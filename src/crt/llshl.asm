@@ -12,7 +12,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__llshl
 __llshl:
 ; Suboptimal for large shift amounts

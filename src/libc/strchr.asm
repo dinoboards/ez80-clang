@@ -3,7 +3,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_strchr
 
 _strchr:
@@ -31,5 +31,5 @@ _notfound:
 	ret
 
 
-	extern _strlen
+	extern	_strlen
 

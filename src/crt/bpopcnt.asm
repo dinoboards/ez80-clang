@@ -12,7 +12,7 @@
 ;--------------------------------------------------------------
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__bpopcnt
 __bpopcnt:
 	push	hl

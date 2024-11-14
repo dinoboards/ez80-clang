@@ -17,13 +17,13 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_puts
 _puts:
 	pop	de
 	ex	(sp), hl
 	push	de
-	or 	a, a
+	or	a, a
 	ld	de, 0
 	sbc	hl, de
 	jr	nz, .loop
@@ -47,8 +47,8 @@ puts_loop:
 	inc	hl
 	jr	puts_loop
 
-	section .rodata
-	.global 	___null_literal_str
+	section	.rodata
+	.global	___null_literal_str
 ___null_literal_str:
 	db	"(NULL)", 0
 

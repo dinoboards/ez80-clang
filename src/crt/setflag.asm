@@ -18,7 +18,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__setflag
 __setflag:
 
@@ -27,14 +27,14 @@ __setflag:
 	push	af
 	pop	bc		; c <- flags
 
-	bit	2,c		; if (v == 1)
-	jr	z,_done		; else go to .done
-	ld	a,c		; c <- c xor %80
-	xor	a,80h
-	ld	c,a
+	bit	2, c		; if (v == 1)
+	jr	z, _done		; else go to .done
+	ld	a, c		; c <- c xor %80
+	xor	a, 80h
+	ld	c, a
 
 _done:
-	push 	bc
+	push	bc
 	pop	af		; flags <- c
 	pop	bc
 	ret

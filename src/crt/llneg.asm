@@ -12,7 +12,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__llneg
 __llneg:
 	or	a, a

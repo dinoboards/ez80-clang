@@ -5,32 +5,32 @@
 ;-------------------------------------------------------------------------
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_memmove
 
 _memmove:
-	ld	iy,0
-	add	iy,sp
-	ld	bc,(iy+9)	;count
-	sbc	hl,hl
-	sbc	hl,bc		;count==0?
-	jr	z,_L1
-	ld	hl,(iy+6)	;src
-	ld	de,(iy+3)	;dest
-	or	a,a
-	sbc	hl,de
-	ld	hl,(iy+6)	;src
-	jr	c,_L0		;src < dest?
+	ld	iy, 0
+	add	iy, sp
+	ld	bc, (iy+9)	;count
+	sbc	hl, hl
+	sbc	hl, bc		;count==0?
+	jr	z, _L1
+	ld	hl, (iy+6)	;src
+	ld	de, (iy+3)	;dest
+	or	a, a
+	sbc	hl, de
+	ld	hl, (iy+6)	;src
+	jr	c, _L0		;src < dest?
 	ldir
 	jr	_L1
 _L0:
-	add	hl,bc
+	add	hl, bc
 	dec	hl
-	ex	de,hl
-	add	hl,bc
+	ex	de, hl
+	add	hl, bc
 	dec	hl
-	ex	de,hl
+	ex	de, hl
 	lddr
 _L1:
-	ld	hl,(iy+3)	;dest
+	ld	hl, (iy+3)	;dest
 	ret

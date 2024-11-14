@@ -21,31 +21,31 @@
 ; OUTPUTS:	FLAGS based on Op1 - Op2
 ;
 ;--------------------------------------------------------------
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__fcmp
 
 __fcmp:
 	call	__lcmps
-	jr	z,exit1		; sign doesn't matter if equal
+	jr	z, exit1		; sign doesn't matter if equal
 
 	push	bc
 	push	af
 	pop	bc		; C = flags
-	ld	a,b
-	and	a,e
-	ld	a,c		; A = flags
-	jp	p,skip1		; not both negative
+	ld	a, b
+	and	a, e
+	ld	a, c		; A = flags
+	jp	p, skip1		; not both negative
 
-	xor	a,80h		; invert sign bit
+	xor	a, 80h		; invert sign bit
 skip1:
-	bit	2,a		; overflow bit set ?
-	jr	z,skip2		; - no, skip
+	bit	2, a		; overflow bit set ?
+	jr	z, skip2		; - no, skip
 
-	xor	a,80h		; invert sign bit
+	xor	a, 80h		; invert sign bit
 skip2:
-	ld	c,a
+	ld	c, a
 	push	bc
 	pop	af
 	pop	bc

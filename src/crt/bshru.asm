@@ -12,20 +12,20 @@
 ; Registers Used:
 ;       flags
 ;-------------------------------------------------------------------------
-        .global    __bshru
-	section	.text,"ax",@progbits
-	.assume adl=1
+	.global	__bshru
+	section	.text, "ax", @progbits
+	.assume	adl=1
 
 __bshru:
-        push    bc
-        inc	b
-        jr      test
+	push	bc
+	inc	b
+	jr	test
 
 loop:
-        srl     a
+	srl	a
 test:
-       	djnz	loop
+	djnz	loop
 
-       	pop	bc
+	pop	bc
 	ret
 

@@ -20,9 +20,9 @@
 ;
 ;--------------------------------------------------------------
 
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__fadd
 __fadd:
 	push	hl
@@ -34,56 +34,56 @@ __fadd:
 	pop	af
 	rl	d		;D has both sign bits (00000021)
 	rrc	d		;swap sign bit (0000021 -> 10000002)
-	cp	a,e		;exp op1 < exp op2 ?
-	jr	c,less		;- yes, skip
+	cp	a, e		;exp op1 < exp op2 ?
+	jr	c, less		;- yes, skip
 
 	rlc	d		;swap sign bit (1000002 -> 00000021)
 	push	hl
 	push	bc
-	ld	b,a
-	ld	a,e
-	ld	e,b
+	ld	b, a
+	ld	a, e
+	ld	e, b
 	pop	hl
 	pop	bc		;swap operands
 less:
-	sub	a,e
-	jr	z,noshift
+	sub	a, e
+	jr	z, noshift
 
-	cp	a,-24		;too much shift?
+	cp	a, -24		;too much shift?
 	ccf			;(reset carry if jump)
-	jr	nc,noadd	;- yes, skip add
+	jr	nc, noadd	;- yes, skip add
 
 	push	ix
 	push	de
 	push	bc
-	ld	ix,0
-	add	ix,sp
-	ld	d,(ix+2)
+	ld	ix, 0
+	add	ix, sp
+	ld	d, (ix+2)
 loop1:
 	srl	d		;shift uBC right
 	rr	b
 	rr	c
 	inc	a
-	jr	nz,loop1
+	jr	nz, loop1
 
-	ld	(ix),bc
-	ld	(ix+2),d
+	ld	(ix), bc
+	ld	(ix+2), d
 	pop	bc
 	pop	de
 	pop	ix
 noshift:
-	ld	a,d
-	and	a,a		;clear carry, set parity
-	jp	pe,doadd	;same sign, add
+	ld	a, d
+	and	a, a		;clear carry, set parity
+	jp	pe, doadd	;same sign, add
 
-	sbc	hl,bc
-	sbc	a,a
+	sbc	hl, bc
+	sbc	a, a
 	jr	common
 doadd:
-	add	hl,bc
+	add	hl, bc
 noadd:
-	ld	a,0
-	adc	a,a
+	ld	a, 0
+	adc	a, a
 common:
 	push	hl
 	pop	bc

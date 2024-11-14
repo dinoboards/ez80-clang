@@ -17,15 +17,15 @@
 ;
 ;--------------------------------------------------------------
 
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__ultof, __ultod
 __ultof:
 __ultod:
 	push	de		; (ix-3)
-	ld	d,0		; sign bit
-	ld	e,7Fh+23
+	ld	d, 0		; sign bit
+	ld	e, 7Fh+23
 	call	__fppack
 	pop	de
 	ret

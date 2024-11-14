@@ -12,7 +12,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__llrems
 __llrems:
 
@@ -38,8 +38,8 @@ __lldivs:
 
 	ld	a, b
 	ld	(iy), a
-	xor	a, (iy + 14)
-	ld	(iy + 15), a
+	xor	a, (iy+14)
+	ld	(iy+15), a
 
 	xor	a, b
 	rla
@@ -48,7 +48,7 @@ __lldivs:
 	push	bc
 	push	hl
 
-	lea	hl, iy + 7
+	lea	hl, iy+7
 	xor	a, a
 	ld	c, a
 	ld	b, 8
@@ -71,12 +71,12 @@ __lldivs:
 	call	__lldvrmu_hijack
 
 	pop	af
-	bit	7, (iy + 8)
+	bit	7, (iy+8)
 	jr	c, .div_quotient_skip
-	ld	hl, (iy + 15)
-	ld	de, (iy + 18)
-	ld	bc, (iy + 21)
-	bit	7, (iy + 23)
+	ld	hl, (iy+15)
+	ld	de, (iy+18)
+	ld	bc, (iy+21)
+	bit	7, (iy+23)
 .div_quotient_skip:
 
 	call	nz, __llneg

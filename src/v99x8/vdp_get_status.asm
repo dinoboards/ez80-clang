@@ -1,36 +1,36 @@
 
-	.assume	adl = 1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 
-	include "src/v99x8/common.inc"
+	include	"src/v99x8/common.inc"
 
 	.global	_vdp_get_status
 ; uint8_t vdp_get_status(uint8_t r)
 _vdp_get_status:
-	LD	IY, 0
-	ADD	IY, SP
-	LD	L, (IY + 3)
-	LD	BC, VDP_ADDR
+	ld	iy, 0
+	add	iy, sp
+	ld	l, (IY+3)
+	ld	bc, VDP_ADDR
 
-	DI
+	di
 	; SET READ REGISTER TO 15
-	OUT	(BC), L
+	out	(BC), l
 	DELAY_1_7US
-	LD	A, 0x80 | 15
-	OUT	(BC), A
+	ld	a, 0x80|15
+	out	(BC), a
 
-	LD	HL, 0
-	IN	L, (BC)					; READ STATUS
+	ld	hl, 0
+	in	l, (BC)					; READ STATUS
 
 	DELAY_1_7US
 
 	; RESTORE READ REGISTER TO DEFAULT OF 0
-	XOR	A
-	OUT	(BC), A
+	xor	a
+	out	(BC), a
 	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
-	LD	A, 0x80 | 15				; measured on CPU running @25Mhz
-	OUT	(BC), A
-	EI
-	LD	A, L
-	RET
+	ld	a, 0x80|15				; measured on CPU running @25Mhz
+	out	(BC), a
+	ei
+	ld	a, l
+	ret

@@ -11,7 +11,7 @@
 ;--------------------------------------------------------------
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__internal_bitrev_two_bytes
 __internal_bitrev_two_bytes:
 	rra

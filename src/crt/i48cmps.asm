@@ -20,17 +20,17 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__i48cmps
 __i48cmps:
-	push hl
-	push de
-	or a, a
-	sbc hl, bc ; compare hl to bc
-	ex de, hl ; hl = de
-	lea de, iy+0 ; de = iy
-	sbc hl, de ; compare de to iy
-	pop de
-	pop hl
+	push	hl
+	push	de
+	or	a, a
+	sbc	hl, bc ; compare hl to bc
+	ex	de, hl ; hl = de
+	lea	de, iy+0 ; de = iy
+	sbc	hl, de ; compare de to iy
+	pop	de
+	pop	hl
 	ret
 

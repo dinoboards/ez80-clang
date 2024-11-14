@@ -1,15 +1,15 @@
-	include "src/cpm/cpm.inc"
+	include	"src/cpm/cpm.inc"
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_cpm_c_writestr
 
 _cpm_c_writestr:
-	LD	IY, 0
-	ADD	IY, SP
-	LD	DE, (IY + 3)		; must be within the current MBASE segment
-	LD	C, C_WRITESTR
-	JP	cpm_bdos
+	ld	iy, 0
+	add	iy, sp
+	ld	de, (IY+3)		; must be within the current MBASE segment
+	ld	c, C_WRITESTR
+	jp	cpm_bdos
 
 	extern	cpm_bdos

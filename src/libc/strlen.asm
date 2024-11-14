@@ -3,19 +3,19 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_strlen
 
 _strlen:
-	ld		hl,	3
-	add		hl,	sp
-	ld		hl,	(hl)
-	xor		a,	a
-	ld		bc, 0
+	ld	hl, 3
+	add	hl, sp
+	ld	hl, (hl)
+	xor	a, a
+	ld	bc, 0
 	cpir
-	or		a,	a
-	sbc		hl,	hl
+	or	a, a
+	sbc	hl, hl
 	scf
-	sbc		hl,	bc
+	sbc	hl, bc
 	ret
 

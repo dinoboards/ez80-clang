@@ -1,12 +1,12 @@
-	include "src/cpm/cpm.inc"
+	include	"src/cpm/cpm.inc"
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_cpm_a_read
 
 _cpm_a_read:
-	LD	C, A_READ
-	JP	cpm_bdos
+	ld	c, A_READ
+	jp	cpm_bdos
 
 	extern	cpm_bdos

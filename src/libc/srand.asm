@@ -12,13 +12,13 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_srand
 _srand:
 	pop	bc
-	ex	(sp),hl
+	ex	(sp), hl
 	push	bc
-	xor	a,a
+	xor	a, a
 	jp	__setstate
 
 	extern	__setstate

@@ -16,18 +16,18 @@
 ;		AuBC:	32-bit IEEE Single Precision.
 ;
 ;--------------------------------------------------------------
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__fneg
 __fneg:
-	or	a,a
-	jr	nz,__noexit
+	or	a, a
+	jr	nz, __noexit
 	push	hl
-	sbc	hl,hl
-	sbc	hl,bc
+	sbc	hl, hl
+	sbc	hl, bc
 	pop	hl
 	ret	z
 __noexit:
-	xor	a,80h
+	xor	a, 80h
 	ret

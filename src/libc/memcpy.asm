@@ -5,18 +5,18 @@
 ;-------------------------------------------------------------------------
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_memcpy
 _memcpy:
-	ld	iy,0
-	add	iy,sp
-	ld	bc,(iy+9)	;count
-	sbc	hl,hl
-	sbc	hl,bc		;count==0?
-	jr	z,_L0
-	ld	de,(iy+3)	;dest
-	ld	hl,(iy+6)	;src
+	ld	iy, 0
+	add	iy, sp
+	ld	bc, (iy+9)	;count
+	sbc	hl, hl
+	sbc	hl, bc		;count==0?
+	jr	z, _L0
+	ld	de, (iy+3)	;dest
+	ld	hl, (iy+6)	;src
 	ldir
 _L0:
-	ld	hl,(iy+3)	;dest
+	ld	hl, (iy+3)	;dest
 	ret

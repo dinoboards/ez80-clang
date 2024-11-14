@@ -12,7 +12,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__llshru
 __llshru:
 ; Suboptimal for large shift amounts
@@ -20,7 +20,7 @@ __llshru:
 	push	iy
 	ld	iy, 0
 	add	iy, sp
-	ld	a, (iy + 9)
+	ld	a, (iy+9)
 	or	a, a
 	jp	z, __llshrs_finish
 	push	de

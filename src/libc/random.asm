@@ -35,18 +35,18 @@
 ;	return result;
 ; }
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_random
 _random:
 ; Read state[0] and perform state shifting.
-	ld	iy,__state		; iy = &state[0]
-	ld	hl,(iy+0*4+0)		; hl = hl(state[0])
+	ld	iy, __state		; iy = &state[0]
+	ld	hl, (iy+0*4+0)		; hl = hl(state[0])
 	push	hl
-	ld	hl,(iy+0*4+2)		; hl = eu(state[0])
+	ld	hl, (iy+0*4+2)		; hl = eu(state[0])
 	push	hl
-	lea	hl,iy+1*4		; hl = &state[1]
-	lea	de,iy+0*4		; de = &state[0]
-	ld	bc,3*4
+	lea	hl, iy+1*4		; hl = &state[1]
+	lea	de, iy+0*4		; de = &state[0]
+	ld	bc, 3*4
 	ldir				; state[0] = state[1]
 					; state[1] = state[2]
 					; state[2] = state[3]
@@ -65,83 +65,83 @@ _random:
 ;		    s2l == 0  ==> t3l == t2l == t1l ^ s1l == t0l ^ s1l
 ;
 ; Calculate s0.
-	ld	h,d
-	ld	l,e			; hl = t0hl == t0 << 16
-	add	hl,hl
-	add	hl,hl
-	add	hl,hl			; hl = t0 << 19 = s0eu
+	ld	h, d
+	ld	l, e			; hl = t0hl == t0 << 16
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl			; hl = t0 << 19 = s0eu
 					; h = s0e
 					; l = s0u
 ; Calculate t1e and t3e.
-	ld	a,b			; a = t0e
-	xor	a,h			; a = t0e ^ s0e == t1e
-	ld	h,a			; h = t1e
-	xor	a,(iy+3*4+2)		; a = t1e ^ zu == t2e ^ s2e == t3e
-	ld	(iy+3*4+3),a		; e(state[3]) = t3e
-	ld	b,a			; b = t3e
+	ld	a, b			; a = t0e
+	xor	a, h			; a = t0e ^ s0e == t1e
+	ld	h, a			; h = t1e
+	xor	a, (iy+3*4+2)		; a = t1e ^ zu == t2e ^ s2e == t3e
+	ld	(iy+3*4+3), a		; e(state[3]) = t3e
+	ld	b, a			; b = t3e
 ; Calculate t1u and t3u.
-	ld	a,c			; a = t0u
-	xor	a,l			; a = t0u ^ s0u == t1u
-	ld	l,a			; l = t1u
+	ld	a, c			; a = t0u
+	xor	a, l			; a = t0u ^ s0u == t1u
+	ld	l, a			; l = t1u
 					; hl = t1eu == t1 >> 16
-	xor	a,(iy+3*4+1)		; a = t1u ^ zh == t2u ^ s2u == t3u
-	ld	(iy+3*4+2),a		; u(state[3]) = t3u
+	xor	a, (iy+3*4+1)		; a = t1u ^ zh == t2u ^ s2u == t3u
+	ld	(iy+3*4+2), a		; u(state[3]) = t3u
 ; Calculate s1.
-	xor	a,a			; a = 0
-	add.s	hl,hl
-	adc	a,a
-	add.s	hl,hl
-	adc	a,a
-	add.s	hl,hl
-	adc	a,a			; ahl = (t1 >> 16) << 3
+	xor	a, a			; a = 0
+	add.s	hl, hl
+	adc	a, a
+	add.s	hl, hl
+	adc	a, a
+	add.s	hl, hl
+	adc	a, a			; ahl = (t1 >> 16) << 3
 					; ah = ((t1 >> 16) << 3) >> 8 == t1 >> 21 == s1hl
 					; a = s1h
 					; h = s1l
 ; Calculate t3h.
-	xor	a,d			; a = s1h ^ t0h === s1h ^ t1h == t2h
-	xor	a,(iy+3*4+0)		; a = t2h ^ zl == t2h ^ s2h == t3h
-	ld	(iy+3*4+1),a		; h(state[3]) = t3h
+	xor	a, d			; a = s1h ^ t0h === s1h ^ t1h == t2h
+	xor	a, (iy+3*4+0)		; a = t2h ^ zl == t2h ^ s2h == t3h
+	ld	(iy+3*4+1), a		; h(state[3]) = t3h
 ; Calculate t3l.
-	ld	a,e			; a = t0l == t1l
-	xor	a,h			; a = t1l ^ s1l == t2l == t3l
-	ld	(iy+3*4+0),a		; l(state[3]) = t3l
+	ld	a, e			; a = t0l == t1l
+	xor	a, h			; a = t1l ^ s1l == t2l == t3l
+	ld	(iy+3*4+0), a		; l(state[3]) = t3l
 ; Calculate result.
-	ld	hl,(iy+3*4)
-	ld	a,b			; auhl = t3
-	ld	de,(iy+2*4)
-	ld	c,(iy+2*4+3)		; cude = state[2]
-	add	hl,de
-	adc	a,c			; auhl = t3 + state[2] = result
-	ld	e,a			; euhl = result
+	ld	hl, (iy+3*4)
+	ld	a, b			; auhl = t3
+	ld	de, (iy+2*4)
+	ld	c, (iy+2*4+3)		; cude = state[2]
+	add	hl, de
+	adc	a, c			; auhl = t3 + state[2] = result
+	ld	e, a			; euhl = result
 	ret
 
 ; ---
 ; void srandom(uint32_t seed)
 ; ---
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_srandom
 _srandom:
 	pop	bc
 	pop	de
-	ex	(sp),hl			; lude = seed
+	ex	(sp), hl			; lude = seed
 	push	de
 	push	bc
-	ex	de,hl
-	ld	a,e			; auhl = seed
+	ex	de, hl
+	ld	a, e			; auhl = seed
 	.global	__setstate
 __setstate:
-	ld	(__state),hl
-	ld	hl,__state+3
-	ld	(hl),a
-	ld	b,12
+	ld	(__state), hl
+	ld	hl, __state+3
+	ld	(hl), a
+	ld	b, 12
 __setstateloop:
 	inc	hl
-	ld	(hl),b
+	ld	(hl), b
 	djnz	__setstateloop
 	ret
 
-	section	.data,"aw",@progbits
+	section	.data, "aw", @progbits
 	.global	__state
 __state:
-	d32	0d0e0f10h,090a0b0ch,05060708h,01020304h
+	d32	0d0e0f10h, 090a0b0ch, 05060708h, 01020304h

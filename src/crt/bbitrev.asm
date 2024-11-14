@@ -13,24 +13,24 @@
 ;--------------------------------------------------------------
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__bbitrev
 __bbitrev:
 	push	bc
-	ld	b,a 		; b=ABCDEFGH
+	ld	b, a 		; b=ABCDEFGH
 	rrca 			; a=HABCDEFG
 	rrca 			; a=GHABCDEF
-	xor	a,b
-	and	a,$aa
-	xor 	a,b 		; a=GBADCFEH
-	ld	b,a 		; b=GBADCFEH
+	xor	a, b
+	and	a, $aa
+	xor	a, b 		; a=GBADCFEH
+	ld	b, a 		; b=GBADCFEH
 	rrca 			; a=HGBADCFE
 	rrca 			; a=EHGBADCF
 	rrca 			; a=FEHGBADC
 	rrca 			; a=CFEHGBAD
-	xor	a,b
-	and	a,$66
-	xor	a,b 		; a=GFEDCBAH
+	xor	a, b
+	and	a, $66
+	xor	a, b 		; a=GFEDCBAH
 	rrca 			; a=HGFEDCBA
 	pop	bc
 	ret

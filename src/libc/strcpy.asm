@@ -4,7 +4,7 @@
 
 	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_strcpy
 
 _strcpy:

@@ -21,21 +21,21 @@
 
 ;-------------------------------------------------------------------------
 
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__fsub
 __fsub:
 	push	af
-	ld	a,e
-	xor	a,80h	 	;Change op2 sign.
-	ld	e,a
+	ld	a, e
+	xor	a, 80h	 	;Change op2 sign.
+	ld	e, a
 	pop	af
 	call	__fadd		;Add the two.
 	push	af
-	ld	a,e
-	xor	a,80h	 	;restore op2 sign.
-	ld	e,a
+	ld	a, e
+	xor	a, 80h	 	;restore op2 sign.
+	ld	e, a
 	pop	af
 	ret
 

@@ -9,13 +9,13 @@
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
 ;--------------------------------------------------------------
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__fpupop2
 
 __fpupop2:
-	push    bc
+	push	bc
 	ld	bc, 0800000h
 	add	hl, bc
 	jr	nc, ncarry

@@ -14,12 +14,12 @@
 ;	none
 ;-------------------------------------------------------------------------
 	.global	__bmulu
-	section	.text,"ax",@progbits
-	.assume adl=1
+	section	.text, "ax", @progbits
+	.assume	adl=1
 
 __bmulu:
 	push	bc
 	mlt	bc
-	ld	a,c
+	ld	a, c
 	pop	bc
 	ret

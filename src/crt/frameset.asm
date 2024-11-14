@@ -9,16 +9,16 @@
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
 ;--------------------------------------------------------------
-	.assume adl=1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	__frameset
 __frameset:
 	pop	de
 	push	ix
-	ld	ix,0
-	add	ix,sp
-	add	hl,sp
-	ld	sp,hl
-	ex	de,hl
+	ld	ix, 0
+	add	ix, sp
+	add	hl, sp
+	ld	sp, hl
+	ex	de, hl
 	jp	(hl)

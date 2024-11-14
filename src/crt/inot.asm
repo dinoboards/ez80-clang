@@ -9,19 +9,19 @@
 ;	Result:   hl : 24/16 bit
 ; Registers Used:
 ;-------------------------------------------------------------------------
-	.assume adl=1
-	section	.text,"ax",@progbits
+	.assume	adl=1
+	section	.text, "ax", @progbits
 
 	.global	__inot
 	.global	__snot
 __inot:
 __snot:
 	push	de
-	ex	de,hl
+	ex	de, hl
 	scf
-	sbc	hl,hl
-	or	a,a
-	sbc	hl,de
+	sbc	hl, hl
+	or	a, a
+	sbc	hl, de
 	pop	de
 	ret
 
