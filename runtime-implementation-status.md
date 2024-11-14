@@ -113,7 +113,7 @@
 | _i48shru      | <span class="implemented"/>  |
 | _i48xor       | <span class="implemented"/>  |
 | _iand         | <span class="implemented"/>  |
-| _ibitrev      | <span class="not-implemented"/>  |
+| _ibitrev      | <span class="implemented"/>  |
 | _icmpzero     | <span class="not-implemented"/>  |
 | _ictlz        | <span class="not-implemented"/>  |
 | _idivs        | <span class="implemented"/>  |
