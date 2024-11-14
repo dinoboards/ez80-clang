@@ -13,3 +13,5 @@ ez80-clang-*.zip
 .vscode
 src/v99x8-standard/*
 src/v99x8-hdmi/*
+
+scripts

@@ -52,7 +52,7 @@
 | Redirection                          | <span class="not-implemented"/>  |
 | exit                                 | <span class="implemented"/>          |
 | atexit                               | <span class="implemented"/>          |
-| _bbitrev      | <span class="not-implemented"/>  |
+| _bbitrev      | <span class="implemented"/>  |
 | _bctlz        | <span class="not-implemented"/>  |
 | _bdivs        | <span class="not-implemented"/>  |
 | _bdivu        | <span class="not-implemented"/>  |
