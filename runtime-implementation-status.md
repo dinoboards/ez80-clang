@@ -108,7 +108,7 @@
 | _i48popcnt    | <span class="implemented"/>  |
 | _i48rems      | <span class="implemented"/>  |
 | _i48remu      | <span class="implemented"/>  |
-| _i48shl       | <span class="not-implemented"/>  |
+| _i48shl       | <span class="implemented"/>  |
 | _i48shrs      | <span class="not-implemented"/>  |
 | _i48shru      | <span class="not-implemented"/>  |
 | _i48xor       | <span class="not-implemented"/>  |
