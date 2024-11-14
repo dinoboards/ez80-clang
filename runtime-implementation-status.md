@@ -130,7 +130,7 @@
 | _ishl         | <span class="implemented"/>  |
 | _ishl_b       | <span class="implemented"/>  |
 | _ishrs        | <span class="implemented"/>  |
-| _ishrs_b      | <span class="not-implemented"/>  |
+| _ishrs_b      | <span class="implemented"/>  |
 | _ishru        | <span class="implemented"/>  |
 | _ishru_b      | <span class="not-implemented"/>  |
 | _itol         | <span class="not-implemented"/>  |
