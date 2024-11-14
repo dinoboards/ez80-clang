@@ -138,7 +138,7 @@
 | _ladd         | <span class="implemented"/>  |
 | _ladd_b       | <span class="implemented"/>  |
 | _land         | <span class="implemented"/>  |
-| _lbitrev      | <span class="not-implemented"/>  |
+| _lbitrev      | <span class="implemented"/>  |
 | _lbswap       | <span class="not-implemented"/>  |
 | _lcmps        | <span class="implemented"/>  |
 | _lcmpu        | <span class="implemented"/>  |
