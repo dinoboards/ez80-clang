@@ -93,7 +93,7 @@
 | _ftoull       | <span class="implemented"/>  |
 | _i48and       | <span class="implemented"/>  |
 | _i48bitrev    | <span class="implemented"/>  |
-| _i48bswap     | <span class="not-implemented"/>  |
+| _i48bswap     | <span class="implemented"/>  |
 | _i48cmps      | <span class="not-implemented"/>  |
 | _i48cmpu      | <span class="not-implemented"/>  |
 | _i48cmpzero   | <span class="not-implemented"/>  |
