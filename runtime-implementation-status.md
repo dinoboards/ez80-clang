@@ -4,14 +4,16 @@
 
 | BDOS            | Description                         | Status                                                   |
 |-----------------|-------------------------------------|----------------------------------------------------------|
-|  0: P_TERMCPM   | System Reset                        | <span class="not-implemented"/> |
+|  0: P_TERMCPM   | System Reset                        | <span class="implemented"/> |
 |  1: C_READ      | Console input                       | <span class="implemented"/>         |
-|  2: C_WRITE     | Console output                      | <span class="not-implemented"/> |
-|  3 A_READ       | Auxiliary (Reader) input            | <span class="not-implemented"/> |
-|  4 A_WRITE      | Auxiliary (Punch) output            | <span class="not-implemented"/> |
-|  5 L_WRITE      | Printer output                      | <span class="not-implemented"/> |
+|  2: C_WRITE     | Console output                      | <span class="implemented"/> |
+|  3 A_READ       | Auxiliary (Reader) input            | <span class="implemented"/> |
+|  4 A_WRITE      | Auxiliary (Punch) output            | <span class="implemented"/> |
+|  5 L_WRITE      | Printer output                      | <span class="implemented"/> |
 |  6  C_RAWIO     | Direct console I/O                  | <span class="implemented"/>         |
-|  9 C_WRITESTR   | Output string                       | <span class="not-implemented"/> |
+|  7 GET_IOBYTE   | Get IOBYTE                          | <span class="implemented"/>         |
+|  8 SET_IOBYTE   | Set IOBYTE                          | <span class="implemented"/>         |
+|  9 C_WRITESTR   | Output string                       | <span class="implemented"/> |
 | 10 C_READSTR    | Buffered console input              | <span class="not-implemented"/> |
 | 11 C_STAT       | Console status                      | <span class="not-implemented"/> |
 | 12 S_BDOSVER    | Return version number               | <span class="not-implemented"/> |
@@ -60,7 +62,7 @@
 | _bremu        | <span class="not-implemented"/>  |
 | _bshl         | <span class="implemented"/>  |
 | _bshrs        | <span class="not-implemented"/>  |
-| _bshru        | <span class="not-implemented"/>  |
+| _bshru        | <span class="implemented"/>  |
 | _dadd         | <span class="not-implemented"/>  |
 | _dcmp         | <span class="not-implemented"/>  |
 | _ddiv         | <span class="not-implemented"/>  |
