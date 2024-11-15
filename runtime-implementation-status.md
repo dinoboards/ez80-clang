@@ -231,7 +231,7 @@
 | cos           | <span class="implemented"/>  |
 | cosh          | <span class="implemented"/> |
 | difftime      | <span class="not-implemented"/> |
-| div           | <span class="not-implemented"/> |
+| div           | <span class="implemented"/> |
 | errno         | <span class="implemented"/>  |
 | exit          | <span class="not-implemented"/> |
 | exp           | <span class="not-implemented"/> |
