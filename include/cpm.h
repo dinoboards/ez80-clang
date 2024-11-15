@@ -180,14 +180,14 @@ extern void cpm_c_writestr(near_ptr_t str);
  * correctly. In later versions of CP/M, more features can be used at this point; ZPM3 includes a full line editor with recall of
  * previous lines typed.
  *
- * If str is NULL, the DMA address is used (CP/M 3 and later) and the buffer already contains data:
+ * If `str` is NULL, the DMA address is used (CP/M 3 and later) and the buffer already contains data:
  *
  * buffer: DEFB    size
  *         DEFB    len
  *         DEFB    bytes
  *
  * The value at buffer+0 is the amount of bytes available in the buffer. Once the limit has been reached, no more can be added,
- * although the line editor can still be used. If str is NULL the next byte contains the number of bytes already in the buffer;
+ * although the line editor can still be used. If `str` is NULL the next byte contains the number of bytes already in the buffer;
  * otherwise this is ignored. On return from the function, it contains the number of bytes present in the buffer.
  *
  * The bytes typed then follow. There is no end marker.
@@ -204,5 +204,12 @@ extern void cpm_c_readstr(near_ptr_t str);
  * @param[in] addr The near pointer to the DMA address.
  */
 extern void cpm_f_dmaoff(near_ptr_t addr);
+
+/**
+ * @brief Returns 0 if no characters are waiting, nonzero if a character is waiting.
+ *
+ * @return The console status
+ */
+extern uint8_t cpm_c_stat(void);
 
 #endif
