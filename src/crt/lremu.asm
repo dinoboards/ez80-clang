@@ -9,7 +9,6 @@
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
 ;--------------------------------------------------------------
-
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
