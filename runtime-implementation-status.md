@@ -222,7 +222,7 @@
 | acos          | <span class="implemented"/> |
 | asin          | <span class="implemented"/> |
 | atan          | <span class="implemented"/> |
-| atan2         | <span class="not-implemented"/> |
+| atan2         | <span class="implemented"/> |
 | atexit        | <span class="not-implemented"/> |
 | calloc        | <span class="implemented"/> |
 | ceil          | <span class="not-implemented"/> |
