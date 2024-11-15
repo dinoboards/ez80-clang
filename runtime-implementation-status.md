@@ -159,8 +159,8 @@
 | _lldivu       | <span class="implemented"/>  |
 | _llmulu       | <span class="implemented"/>  |
 | _llneg        | <span class="implemented"/>  |
-| _llnot        | <span class="not-implemented"/>  |
-| _llor         | <span class="not-implemented"/>  |
+| _llnot        | <span class="implemented"/>  |
+| _llor         | <span class="implemented"/>  |
 | _llpopcnt     | <span class="not-implemented"/>  |
 | _llrems       | <span class="implemented"/>  |
 | _llremu       | <span class="implemented"/>  |
