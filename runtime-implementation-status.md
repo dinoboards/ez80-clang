@@ -168,9 +168,9 @@
 | _llshrs       | <span class="implemented"/>  |
 | _llshru       | <span class="implemented"/>  |
 | _llsub        | <span class="implemented"/>  |
-| _lltod        | <span class="not-implemented"/>  |
-| _lltof        | <span class="not-implemented"/>  |
-| _llxor        | <span class="not-implemented"/>  |
+| _lltod        | <span class="implemented"/>  |
+| _lltof        | <span class="implemented"/>  |
+| _llxor        | <span class="implemented"/>  |
 | _lmulu        | <span class="implemented"/>  |
 | _lneg         | <span class="implemented"/>  |
 | _lnot         | <span class="not-implemented"/>  |

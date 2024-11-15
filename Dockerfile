@@ -47,8 +47,8 @@ RUN cmake -S llvm -B build -G Ninja \
 RUN BUILD_THREADS=$(nproc) && BUILD_THREADS=$((BUILD_THREADS * 7 / 10)) && [ "$BUILD_THREADS" -lt 4 ] && BUILD_THREADS=1 || true && cmake --build build -j $BUILD_THREADS
 
 # apply 2nd patch
-RUN git fetch --depth 1 origin 37bfd9c9ab67537f752be3cb377e666aa581ba07
-RUN git checkout 37bfd9c9ab67537f752be3cb377e666aa581ba07
+RUN git fetch --depth 1 origin 85d408fe6bc12f624f4990e20dea30d1c3dd59e3
+RUN git checkout 85d408fe6bc12f624f4990e20dea30d1c3dd59e3
 RUN cmake -S llvm -B build -G Ninja \
     -DLLVM_ENABLE_PROJECTS="clang" \
     -DCMAKE_INSTALL_PREFIX=/opt/local/z80-none-elf \
@@ -76,6 +76,7 @@ COPY direct-shims /src/direct-shims
 COPY linker-scripts /src/linker-scripts
 
 COPY version.sh /src/docker-shims/version.sh
+COPY version.sh /src/version.sh
 
 
 RUN mkdir -p /opt/ez80-clang/bin

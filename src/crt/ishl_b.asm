@@ -2,13 +2,13 @@
 ;-------------------------------------------------------------------------
 ; Integer Shift Left
 ; Input:
-;	Operand1: 
+;	Operand1:
 ;		  A : 8 bit number of bits to shift
-;	Operand2: 
+;	Operand2:
 ;		  HL : 24 bit value to be shifted by C
 ;
 ; Output:
-;	Result:   HL : 24 bit 
+;	Result:   HL : 24 bit
 ; Registers Used:
 ;	none
 ;-------------------------------------------------------------------------
