@@ -180,7 +180,7 @@
 | _lremu        | <span class="implemented"/>  |
 | _lshl         | <span class="implemented"/>  |
 | _lshrs        | <span class="implemented"/>  |
-| _lshru        | <span class="not-implemented"/>  |
+| _lshru        | <span class="implemented"/>  |
 | _lsub         | <span class="implemented"/>  |
 | _ltod         | <span class="implemented"/>  |
 | _ltof         | <span class="implemented"/>  |
