@@ -173,7 +173,7 @@
 | _llxor        | <span class="implemented"/>  |
 | _lmulu        | <span class="implemented"/>  |
 | _lneg         | <span class="implemented"/>  |
-| _lnot         | <span class="not-implemented"/>  |
+| _lnot         | <span class="implemented"/>  |
 | _lor          | <span class="implemented"/>  |
 | _lpopcnt      | <span class="not-implemented"/>  |
 | _lrems        | <span class="not-implemented"/>  |
