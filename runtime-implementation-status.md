@@ -223,9 +223,9 @@
 | asin          | <span class="implemented"/> |
 | atan          | <span class="implemented"/> |
 | atan2         | <span class="implemented"/> |
-| atexit        | <span class="not-implemented"/> |
+| atexit        | <span class="implemented"/> |
 | calloc        | <span class="implemented"/> |
-| ceil          | <span class="not-implemented"/> |
+| ceil          | <span class="implemented"/> |
 | clearerr      | <span class="not-implemented"/> |
 | clock         | <span class="not-implemented"/> |
 | cos           | <span class="implemented"/>  |
@@ -241,7 +241,7 @@
 | fflush        | <span class="not-implemented"/> |
 | fgetc         | <span class="implemented"/>  |
 | fgets         | <span class="implemented"/>  |
-| floor         | <span class="not-implemented"/> |
+| floor         | <span class="implemented"/> |
 | fmod          | <span class="implemented"/> |
 | fmod          | <span class="not-implemented"/> |
 | fopen         | <span class="not-implemented"/> |
