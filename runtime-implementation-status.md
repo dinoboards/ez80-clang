@@ -192,7 +192,7 @@
 | _sdivs        | <span class="implemented"/>  |
 | _sdivu        | <span class="implemented"/>  |
 | _setflag      | <span class="implemented"/>  |
-| _smulu        | <span class="not-implemented"/>  |
+| _smulu        | <span class="implemented"/>  |
 | _sneg         | <span class="not-implemented"/>  |
 | _snot         | <span class="implemented"/>  |
 | _sor          | <span class="implemented"/>  |
