@@ -224,25 +224,33 @@ extern uint8_t cpm_s_bdosver(void);
 /**
  * @brief Resets all disk drives and logs out all disks.
  *
- * This function resets all disk drives, logs out all disks, and empties disk buffers.
- * It sets the currently selected drive to A:. Any drives set to Read-Only in software
- * become Read-Write; replacement BDOS implementations may leave them Read-Only.
+ * This function resets all disk drives, logs out all disks, and empties disk buffers. It sets the currently selected drive to A:.
+ * Any drives set to Read-Only in software* become Read-Write; replacement BDOS implementations may leave them Read-Only.
  *
- * In CP/M versions 1 and 2, it logs in drive A: and returns 0xFF if there is a file
- * present whose name begins with a `$`, otherwise it returns 0. Replacement BDOS
- * implementations may modify this behavior.
+ * In CP/M versions 1 and 2, it logs in drive A: and returns 0xFF if there is a file present whose name begins with a `$`, otherwise
+ * it returns 0. Replacement BDOS* implementations may modify this behavior.
  *
- * In multitasking versions, it returns 0 if succeeded, or 0xFF if other processes
- * have files open on removable or read-only drives.
+ * In multitasking versions, it returns 0 if succeeded, or 0xFF if other processes have files open on removable or read-only drives.
  *
- * When the Digital Research CP/M 2 BDOS is started from cold, it is not properly
- * initialized until this function is called; disk operations may fail or crash.
- * Normally, this is done by the CCP and other programs don't need to worry, but if
- * you are writing an alternative CCP or a program that runs instead of the CCP, it's
- * something to bear in mind.
+ * When the Digital Research CP/M 2 BDOS is started from cold, it is not properly initialized until this function is called; disk
+ * operations may fail or crash.  Normally, this is done by the CCP and other programs don't need to worry, but if you are writing
+ * an alternative CCP or a program that runs instead of the CCP, it's something to bear in mind.
  *
  * @return 0 if succeeded, or 0xFF if there are issues.
  */
 extern uint8_t cpm_drv_allreset(void);
 
+/**
+ * @brief Sets the currently selected drive.
+ *
+ * This function sets the currently selected drive to the specified drive number and logs in the disk. The drive number passed to
+ * this routine is 0 for A:, 1 for B:, up to 15 for P:.
+ *
+ * CP/M 1975 and 1.3 are limited to two drives. CP/M 1.4 is limited to four drives.
+ *
+ * @param[in] drive The drive number to set (0 for A:, 1 for B:, ..., 15 for P:).
+ *
+ * @return 0 if successful, or 0xFF if there is an error. Under MP/M II and later versions, H can contain a physical error number.
+ */
+extern uint8_t cpm_drv_set(uint8_t drive);
 #endif
