@@ -280,11 +280,11 @@
 | mktime        | <span class="not-implemented"/> |
 | modf          | <span class="implemented"/> |
 | perror        | <span class="not-implemented"/> |
-| pow           | <span class="not-implemented"/> |
+| pow           | <span class="implemented"/> |
 | printf        | <span class="implemented"/>  |
 | putchar       | <span class="implemented"/>  |
 | puts          | <span class="implemented"/>  |
-| raise         | <span class="not-implemented"/> |
+| raise         | <span class="na"/> |
 | rand          | <span class="implemented"/>  |
 | random        | <span class="implemented"/>  |
 | realloc       | <span class="implemented"/> |
