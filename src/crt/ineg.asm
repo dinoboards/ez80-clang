@@ -14,8 +14,9 @@
 
 	section	.text, "ax", @progbits
 	.global	__ineg
+	.global	__sneg
 
-
+__sneg:
 __ineg:
 	add	hl, de	; uhl=UHL+UDE
 	ex	de, hl	; ude=UHL+UDE, uhl=UDE
