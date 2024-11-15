@@ -175,7 +175,7 @@
 | _lneg         | <span class="implemented"/>  |
 | _lnot         | <span class="implemented"/>  |
 | _lor          | <span class="implemented"/>  |
-| _lpopcnt      | <span class="not-implemented"/>  |
+| _lpopcnt      | <span class="implemented"/>  |
 | _lrems        | <span class="not-implemented"/>  |
 | _lremu        | <span class="not-implemented"/>  |
 | _lshl         | <span class="implemented"/>  |
