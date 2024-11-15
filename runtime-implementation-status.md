@@ -321,8 +321,7 @@
 | strtok        | <span class="implemented"/> |
 | strtoll       | <span class="implemented"/>  |
 | strtoul       | <span class="implemented"/>  |
-| system        | <span class="not-implemented"/> |
-| tanh          | <span class="not-implemented"/> |
+| tanh          | <span class="implemented"/> |
 | time          | <span class="not-implemented"/> |
 | tolower       | <span class="implemented"/>  |
 | totoull       | <span class="implemented"/>  |
