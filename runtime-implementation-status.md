@@ -149,7 +149,7 @@
 | _ldvrmu       | <span class="implemented"/>  |
 | _lladd        | <span class="implemented"/>  |
 | _lland        | <span class="implemented"/>  |
-| _llbitrev     | <span class="not-implemented"/>  |
+| _llbitrev     | <span class="implemented"/>  |
 | _llbswap      | <span class="not-implemented"/>  |
 | _llcmps       | <span class="not-implemented"/>  |
 | _llcmpu       | <span class="implemented"/>  |
