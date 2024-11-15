@@ -212,4 +212,13 @@ extern void cpm_f_dmaoff(near_ptr_t addr);
  */
 extern uint8_t cpm_c_stat(void);
 
+/**
+ * @brief Returns the BDOS version.
+ *
+ * This function returns the BDOS version.
+ *
+ * @return The BDOS version.
+ */
+extern uint8_t cpm_s_bdosver(void);
+
 #endif
