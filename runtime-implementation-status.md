@@ -270,8 +270,8 @@
 | labs          | <span class="implemented"/> |
 | ldiv          | <span class="implemented"/> |
 | localtime     | <span class="not-implemented"/> |
-| log           | <span class="not-implemented"/> |
-| log10         | <span class="not-implemented"/> |
+| log           | <span class="implemented"/> |
+| log10         | <span class="implemented"/> |
 | malloc        | <span class="implemented"/> |
 | memcmp        | <span class="not-implemented"/> |
 | memcpy        | <span class="not-implemented"/> |
