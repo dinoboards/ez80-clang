@@ -267,8 +267,8 @@
 | isspace       | <span class="implemented"/>  |
 | isupper       | <span class="implemented"/> |
 | isxdigit      | <span class="implemented"/>  |
-| labs          | <span class="not-implemented"/> |
-| ldiv          | <span class="not-implemented"/> |
+| labs          | <span class="implemented"/> |
+| ldiv          | <span class="implemented"/> |
 | localtime     | <span class="not-implemented"/> |
 | log           | <span class="not-implemented"/> |
 | log10         | <span class="not-implemented"/> |

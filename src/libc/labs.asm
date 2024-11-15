@@ -12,15 +12,16 @@
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
-	.global	_fabs, _fabsf
-
-_fabs:
-_fabsf:
+	.global	_labs
+_labs:
 	pop	bc
 	pop	hl
 	pop	de
 	push	de
 	push	hl
 	push	bc
-	res	7, e
-	ret
+	bit	7, e
+	ret	z
+	jp	__lneg
+
+	extern	__lneg
