@@ -304,7 +304,7 @@
 | sqrt          | <span class="implemented"/> |
 | srand         | <span class="implemented"/>  |
 | sscanf        | <span class="implemented"/>  |
-| strcat        | <span class="not-implemented"/> |
+| strcat        | <span class="implemented"/> |
 | strchr        | <span class="implemented"/>  |
 | strcmp        | <span class="implemented"/>  |
 | strcpy        | <span class="implemented"/>  |
