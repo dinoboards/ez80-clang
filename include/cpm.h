@@ -13,6 +13,10 @@ typedef char (*CPM_FCB_t)[];
 // assigned to the start of the 64k CPM page (0x030000)
 extern void const *const cpm_mbase;
 
+#define __MBASE (((uint8_t *)&cpm_mbase)[2])
+
+#define AS_CPM_PTR(a) as_near_ptr_safe(a, __MBASE, __FILE__, __LINE__)
+
 /* Call the bdos with register pair BC set to bc and DE set
 to de. The value returned in register A is the return
 value. */
@@ -105,5 +109,9 @@ extern const char *cpm_get_list_device();
 extern void cpm_set_iobyte(uint8_t iobyte);
 
 extern void cpm_c_writestr(near_ptr_t str);
+
+extern void cpm_c_readstr(near_ptr_t str);
+
+extern void cpm_f_dmaoff(near_ptr_t addr);
 
 #endif

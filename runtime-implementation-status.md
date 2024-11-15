@@ -10,11 +10,11 @@
 |  3 A_READ       | Auxiliary (Reader) input            | <span class="implemented"/> |
 |  4 A_WRITE      | Auxiliary (Punch) output            | <span class="implemented"/> |
 |  5 L_WRITE      | Printer output                      | <span class="implemented"/> |
-|  6  C_RAWIO     | Direct console I/O                  | <span class="implemented"/>         |
+|  6 C_RAWIO      | Direct console I/O                  | <span class="implemented"/>         |
 |  7 GET_IOBYTE   | Get IOBYTE                          | <span class="implemented"/>         |
 |  8 SET_IOBYTE   | Set IOBYTE                          | <span class="implemented"/>         |
 |  9 C_WRITESTR   | Output string                       | <span class="implemented"/> |
-| 10 C_READSTR    | Buffered console input              | <span class="not-implemented"/> |
+| 10 C_READSTR    | Buffered console input              | <span class="implemented"/> |
 | 11 C_STAT       | Console status                      | <span class="not-implemented"/> |
 | 12 S_BDOSVER    | Return version number               | <span class="not-implemented"/> |
 | 13 DRV_ALLRESET | Reset discs                         | <span class="not-implemented"/> |
@@ -30,7 +30,7 @@
 | 23 F_RENAME     | Rename file                         | <span class="not-implemented"/> |
 | 24 DRV_LOGINVEC | Return bitmap of logged-in drives   | <span class="not-implemented"/> |
 | 25 DRV_GET      | Return current drive                | <span class="not-implemented"/> |
-| 26 F_DMAOFF     | Set DMA address                     | <span class="not-implemented"/> |
+| 26 F_DMAOFF     | Set DMA address                     | <span class="implemented"/> |
 | 27 DRV_ALLOCVEC | Return address of allocation map    | <span class="not-implemented"/> |
 | 28 DRV_SETRO    | Software write-protect current disc | <span class="not-implemented"/> |
 | 29 DRV_ROVEC    | Return bitmap of read-only drives   | <span class="not-implemented"/> |

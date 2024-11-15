@@ -37,4 +37,20 @@ extern void   *_get_sps();
 typedef uint16_t near_ptr_t;
 #define AS_NEAR_PTR(x) (near_ptr_t)(uint24_t)(x)
 
+/**
+ * @brief Extracts the near 16-bit pointer from the 24-bit address.
+ *
+ * This function extracts the near 16-bit pointer from the given 24-bit address.
+ * It checks if the 24-bit address is within the same 64k page as the MBASE.
+ * If not, it prints an error message and aborts.
+ *
+ * @param[in] address The 24-bit address to be used.
+ * @param[in] mbase The base address of the 64k page.
+ * @param[in] file The name of the file where the function is called from.
+ * @param[in] line The line number in the file where the function is called from.
+ *
+ * @return The near 16-bit pointer extracted from the 24-bit address.
+ */
+extern near_ptr_t as_near_ptr_safe(const void *address, const uint8_t mbase, const char *file, const int line);
+
 #endif
