@@ -308,7 +308,7 @@
 | strchr        | <span class="implemented"/>  |
 | strcmp        | <span class="implemented"/>  |
 | strcpy        | <span class="implemented"/>  |
-| strerror      | <span class="not-implemented"/> |
+| strerror      | <span class="implemented"/> |
 | strftime      | <span class="not-implemented"/> |
 | strlen        | <span class="implemented"/>  |
 | strncat       | <span class="not-implemented"/> |
