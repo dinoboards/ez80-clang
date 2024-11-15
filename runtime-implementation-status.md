@@ -312,7 +312,7 @@
 | strftime      | <span class="not-implemented"/> |
 | strlen        | <span class="implemented"/>  |
 | strncat       | <span class="implemented"/> |
-| strncmp       | <span class="not-implemented"/> |
+| strncmp       | <span class="implemented"/> |
 | strncpy       | <span class="not-implemented"/> |
 | strod         | <span class="implemented"/>  |
 | strol         | <span class="implemented"/>  |
