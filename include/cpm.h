@@ -253,4 +253,14 @@ extern uint8_t cpm_drv_allreset(void);
  * @return 0 if successful, or 0xFF if there is an error. Under MP/M II and later versions, H can contain a physical error number.
  */
 extern uint8_t cpm_drv_set(uint8_t drive);
+
+/**
+ * @brief Returns the currently selected drive.
+ *
+ * Returns currently selected drive. 0 => A:, 1 => B: etc.
+ *
+ * @return The currently selected drive.
+ */
+extern uint8_t cpm_drv_get(void);
+
 #endif
