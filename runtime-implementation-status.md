@@ -278,7 +278,7 @@
 | memmove       | <span class="not-implemented"/> |
 | memset        | <span class="not-implemented"/> |
 | mktime        | <span class="not-implemented"/> |
-| modf          | <span class="not-implemented"/> |
+| modf          | <span class="implemented"/> |
 | perror        | <span class="not-implemented"/> |
 | pow           | <span class="not-implemented"/> |
 | printf        | <span class="implemented"/>  |
