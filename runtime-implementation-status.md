@@ -217,7 +217,7 @@
 
 |  Function     | Status                                                    |
 |---------------|-----------------------------------------------------------|
-| abort         | <span class="not-implemented"/> |
+| abort         | <span class="implemented"/> |
 | abs           | <span class="not-implemented"/> |
 | acos          | <span class="not-implemented"/> |
 | asin          | <span class="not-implemented"/> |
