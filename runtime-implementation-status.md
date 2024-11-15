@@ -161,7 +161,7 @@
 | _llneg        | <span class="implemented"/>  |
 | _llnot        | <span class="implemented"/>  |
 | _llor         | <span class="implemented"/>  |
-| _llpopcnt     | <span class="not-implemented"/>  |
+| _llpopcnt     | <span class="implemented"/>  |
 | _llrems       | <span class="implemented"/>  |
 | _llremu       | <span class="implemented"/>  |
 | _llshl        | <span class="implemented"/>  |
