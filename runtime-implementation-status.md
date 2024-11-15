@@ -187,7 +187,7 @@
 | _lxor         | <span class="implemented"/>  |
 | _sand         | <span class="implemented"/>  |
 | _sbitrev      | <span class="implemented"/>  |
-| _scmpzero     | <span class="not-implemented"/>  |
+| _scmpzero     | <span class="implemented"/>  |
 | _sctlz        | <span class="not-implemented"/>  |
 | _sdivs        | <span class="implemented"/>  |
 | _sdivu        | <span class="not-implemented"/>  |
