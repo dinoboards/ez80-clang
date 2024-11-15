@@ -235,7 +235,7 @@
 | errno         | <span class="implemented"/>  |
 | exit          | <span class="implemented"/> |
 | exp           | <span class="implemented"/> |
-| fabs          | <span class="not-implemented"/> |
+| fabs          | <span class="implemented"/> |
 | fclose        | <span class="not-implemented"/> |
 | ferror        | <span class="not-implemented"/> |
 | fflush        | <span class="not-implemented"/> |
