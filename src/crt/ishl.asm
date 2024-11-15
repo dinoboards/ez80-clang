@@ -15,8 +15,10 @@
 	section	.text, "ax", @progbits
 
 	.global	__ishl
+	.global	__sshl
 
 __ishl:
+__sshl:
 ; CC: if 0<=C<8:   23*r(PC)+3*r(SPL)+4+(C&1==0)+(C&2!=0)*(1*r(PC)-1)+(C&4!=0)*(3*r(PC)-1)
 ;     if 8<=C<16:  30*r(PC)+3*r(SPL)+5+(C&1==0)+(C&2!=0)*(1*r(PC)-1)+(C&4!=0)*(3*r(PC)-1)
 ;     if 16<=C<24: 35*r(PC)+3*r(SPL)+5+(C&1==0)+(C&2!=0)*(1*r(PC)-1)+(C&4!=0)*(3*r(PC)-1)
