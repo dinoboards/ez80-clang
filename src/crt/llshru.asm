@@ -9,7 +9,6 @@
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
 ;--------------------------------------------------------------
-
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
@@ -22,11 +21,11 @@ __llshru:
 	add	iy, sp
 	ld	a, (iy+9)
 	or	a, a
-	jp	z, __llshrs_finish
+	jp	z, __llshrs.finish
 	push	de
 	push	hl
 	srl	b
-	jp	__llshrs_hijack_llshru
+	jp	__llshrs.hijack_llshru
 
-	extern	__llshrs_finish
-	extern	__llshrs_hijack_llshru
+	extern	__llshrs.finish
+	extern	__llshrs.hijack_llshru

@@ -165,8 +165,8 @@
 | _llrems       | <span class="implemented"/>  |
 | _llremu       | <span class="implemented"/>  |
 | _llshl        | <span class="implemented"/>  |
-| _llshrs       | <span class="not-implemented"/>  |
-| _llshru       | <span class="not-implemented"/>  |
+| _llshrs       | <span class="implemented"/>  |
+| _llshru       | <span class="implemented"/>  |
 | _llsub        | <span class="implemented"/>  |
 | _lltod        | <span class="not-implemented"/>  |
 | _lltof        | <span class="not-implemented"/>  |
