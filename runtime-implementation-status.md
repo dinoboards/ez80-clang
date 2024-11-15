@@ -313,7 +313,7 @@
 | strlen        | <span class="implemented"/>  |
 | strncat       | <span class="implemented"/> |
 | strncmp       | <span class="implemented"/> |
-| strncpy       | <span class="not-implemented"/> |
+| strncpy       | <span class="implemented"/> |
 | strod         | <span class="implemented"/>  |
 | strol         | <span class="implemented"/>  |
 | strrchr       | <span class="not-implemented"/> |
