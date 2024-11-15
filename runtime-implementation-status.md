@@ -229,7 +229,7 @@
 | clearerr      | <span class="not-implemented"/> |
 | clock         | <span class="not-implemented"/> |
 | cos           | <span class="implemented"/>  |
-| cosh          | <span class="not-implemented"/> |
+| cosh          | <span class="implemented"/> |
 | difftime      | <span class="not-implemented"/> |
 | div           | <span class="not-implemented"/> |
 | errno         | <span class="implemented"/>  |
@@ -299,7 +299,7 @@
 | sigsuspend    | <span class="not-implemented"/> |
 | sigwait       | <span class="not-implemented"/> |
 | sin           | <span class="implemented"/>  |
-| sinh          | <span class="not-implemented"/> |
+| sinh          | <span class="implemented"/> |
 | snprintf      | <span class="implemented"/>  |
 | sprintf       | <span class="implemented"/>  |
 | sqrt          | <span class="implemented"/> |
