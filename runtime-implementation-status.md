@@ -197,7 +197,7 @@
 | _snot         | <span class="implemented"/>  |
 | _sor          | <span class="implemented"/>  |
 | _spopcnt      | <span class="implemented"/>  |
-| _srems        | <span class="not-implemented"/>  |
+| _srems        | <span class="implemented"/>  |
 | _sremu        | <span class="implemented"/>  |
 | _sshl         | <span class="not-implemented"/>  |
 | _sshl_b       | <span class="not-implemented"/>  |
