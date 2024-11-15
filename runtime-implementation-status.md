@@ -190,7 +190,7 @@
 | _scmpzero     | <span class="implemented"/>  |
 | _sctlz        | <span class="implemented"/>  |
 | _sdivs        | <span class="implemented"/>  |
-| _sdivu        | <span class="not-implemented"/>  |
+| _sdivu        | <span class="implemented"/>  |
 | _setflag      | <span class="implemented"/>  |
 | _smulu        | <span class="not-implemented"/>  |
 | _sneg         | <span class="not-implemented"/>  |
