@@ -233,8 +233,8 @@
 | difftime      | <span class="not-implemented"/> |
 | div           | <span class="implemented"/> |
 | errno         | <span class="implemented"/>  |
-| exit          | <span class="not-implemented"/> |
-| exp           | <span class="not-implemented"/> |
+| exit          | <span class="implemented"/> |
+| exp           | <span class="implemented"/> |
 | fabs          | <span class="not-implemented"/> |
 | fclose        | <span class="not-implemented"/> |
 | ferror        | <span class="not-implemented"/> |
