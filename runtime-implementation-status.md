@@ -218,10 +218,10 @@
 |  Function     | Status                                                    |
 |---------------|-----------------------------------------------------------|
 | abort         | <span class="implemented"/> |
-| abs           | <span class="not-implemented"/> |
-| acos          | <span class="not-implemented"/> |
-| asin          | <span class="not-implemented"/> |
-| atan          | <span class="not-implemented"/> |
+| abs           | <span class="implemented"/> |
+| acos          | <span class="implemented"/> |
+| asin          | <span class="implemented"/> |
+| atan          | <span class="implemented"/> |
 | atan2         | <span class="not-implemented"/> |
 | atexit        | <span class="not-implemented"/> |
 | calloc        | <span class="implemented"/> |
@@ -302,7 +302,7 @@
 | sinh          | <span class="not-implemented"/> |
 | snprintf      | <span class="implemented"/>  |
 | sprintf       | <span class="implemented"/>  |
-| sqrt          | <span class="not-implemented"/> |
+| sqrt          | <span class="implemented"/> |
 | srand         | <span class="implemented"/>  |
 | sscanf        | <span class="implemented"/>  |
 | strcat        | <span class="not-implemented"/> |
