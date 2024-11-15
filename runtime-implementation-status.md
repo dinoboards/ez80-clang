@@ -316,9 +316,9 @@
 | strncpy       | <span class="implemented"/> |
 | strod         | <span class="implemented"/>  |
 | strol         | <span class="implemented"/>  |
-| strrchr       | <span class="not-implemented"/> |
-| strstr        | <span class="not-implemented"/> |
-| strtok        | <span class="not-implemented"/> |
+| strrchr       | <span class="implemented"/> |
+| strstr        | <span class="implemented"/> |
+| strtok        | <span class="implemented"/> |
 | strtoll       | <span class="implemented"/>  |
 | strtoul       | <span class="implemented"/>  |
 | system        | <span class="not-implemented"/> |
