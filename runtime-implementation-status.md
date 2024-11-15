@@ -151,7 +151,7 @@
 | _lland        | <span class="implemented"/>  |
 | _llbitrev     | <span class="implemented"/>  |
 | _llbswap      | <span class="implemented"/>  |
-| _llcmps       | <span class="not-implemented"/>  |
+| _llcmps       | <span class="implemented"/>  |
 | _llcmpu       | <span class="implemented"/>  |
 | _llcmpzero    | <span class="implemented"/>  |
 | _llctlz       | <span class="implemented"/>  |
