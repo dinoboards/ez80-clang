@@ -6,10 +6,12 @@
 	.global	_cpm_c_rawio
 
 _cpm_c_rawio:
+	push	ix
 	ld	c, C_RAWIO
 	ld	e, $FF
-	call	cpm_bdos
+	call.sis cpm_bdos_z80 & 0xFFFF
 	ld	l, a
+	pop	ix
 	ret
 
-	extern	cpm_bdos
+	extern	cpm_bdos_z80

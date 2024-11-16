@@ -1,22 +1,20 @@
-	.assume	adl = 1
+	.assume	adl=1
 
-	section	.text,"ax",@progbits
+	section	.text, "ax", @progbits
 	.global	_putchar
 
 
-__bdos	= 0x5;
+__bdos	=	$5;
 
 ; int putchar(int character) {
 _putchar:
-	push	ix
-	ld	ix, 0
-	add	ix, sp
-	ld	de, (ix + 6)
+	call	__frameset0
+	ld	de, (ix+6)
 
-	ld      c,2
-	CALL	cpm_bdos
+	ld	c, 2
+	call.sis cpm_bdos_z80 & $FFFF
 
 	pop	ix
-	RET
+	ret
 
-	extern	cpm_bdos
+	extern	cpm_bdos_z80

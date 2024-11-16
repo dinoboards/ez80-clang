@@ -6,9 +6,11 @@
 	.global	_cpm_drv_get
 
 _cpm_drv_get:
+	push	ix
 	ld	c, DRV_GET
-	call	cpm_bdos
+	call.sis cpm_bdos_z80 & 0xFFFF
 	ld	l, a
+	pop	ix
 	ret
 
-	extern	cpm_bdos
+	extern	cpm_bdos_z80

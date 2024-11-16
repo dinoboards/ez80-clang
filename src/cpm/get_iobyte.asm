@@ -6,9 +6,11 @@
 	.global	_cpm_get_iobyte
 
 _cpm_get_iobyte:
+	push	ix
 	ld	c, GET_IOBYTE
-	call	cpm_bdos
+	call.sis cpm_bdos_z80 & 0xFFFF
 	ld	l, a
+	pop	ix
 	ret
 
-	extern	cpm_bdos
+	extern	cpm_bdos_z80

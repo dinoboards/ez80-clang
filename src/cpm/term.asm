@@ -9,6 +9,6 @@ _cpm_term:
 	ld	c, P_TERMCPM
 	ld	de, 0
 	ld	hl, 0
-	jp	cpm_bdos
+	jp.sis cpm_bdos_z80 & 0xFFFF	; ISSUE SPL is not correctly restored!
 
-	extern	cpm_bdos
+	extern	cpm_bdos_z80

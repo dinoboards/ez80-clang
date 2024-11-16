@@ -6,7 +6,10 @@
 	.global	_cpm_c_stat
 
 _cpm_c_stat:
+	push	ix
 	ld	c, C_STAT
-	jp	cpm_bdos
+	call.sis cpm_bdos_z80 & 0xFFFF
+	pop	ix
+	ret
 
-	extern	cpm_bdos
+	extern	cpm_bdos_z80

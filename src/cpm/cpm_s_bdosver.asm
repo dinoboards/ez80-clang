@@ -6,9 +6,11 @@
 	.global	_cpm_s_bdosver
 
 _cpm_s_bdosver:
+	push	ix
 	ld	c, S_BDOSVER
-	call	cpm_bdos
+	call.sis cpm_bdos_z80 & 0xFFFF
 	ld	l, a
+	pop	ix
 	ret
 
-	extern	cpm_bdos
+	extern	cpm_bdos_z80

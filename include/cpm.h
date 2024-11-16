@@ -263,4 +263,99 @@ extern uint8_t cpm_drv_set(uint8_t drive);
  */
 extern uint8_t cpm_drv_get(void);
 
+/**
+ * @brief Opens a file for reading or reading/writing.
+ *
+ * This function opens a file for reading or reading/writing using the File Control Block (FCB). The FCB is a 36-byte data
+ * structure, most of which is maintained by CP/M.
+ *
+ * The FCB should have its DR, Fn, and Tn fields filled in, and the four fields EX, S1, S2, and RC set to zero. Under CP/M 3 and
+ * later, if CR is set to 0xFF, then on return CR will contain the last record byte count.  Note that CR should normally be reset to
+ * zero if sequential access is to be used.
+ *
+ * Under MP/M II, the file is normally opened exclusively - no other process can access it.
+ * Two bits in the FCB control the mode the file is opened in:
+ * - F5': Set to 1 for "unlocked" mode - other programs can use the file.
+ * - F6': Set to 1 to open the file in read-only mode - other programs can use the file read-only.
+ *   If both F6' and F5' are set, F6' wins.
+ * If the file is opened in "unlocked" mode, the file's identifier (used for record locking) will be returned at FCB+21h.
+ *
+ * Under MP/M II and later versions, a password can be supplied to this function by pointing the DMA address at the password.
+ *
+ * On return from this function, A is 0xFF for error, or 0-3 for success. Some versions (including CP/M 3) always return zero;
+ * others return 0-3 to indicate that an image of the directory entry is to be found at (80h+20h*A).
+ *
+ * If result is 0xFF, CP/M 3 returns a hardware error (stored in errno). It also sets some bits in the FCB:
+ * - F7': Set if the file is read-only because writing is password protected and no password was supplied.
+ * - F8': Set if the file is read-only because it is a User 0 system file opened from another user area.
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0-3 for success, or 0xFF for error.
+ */
+extern uint16_t cpm_f_open(near_ptr_t fcb);
+
+/**
+ * @brief Write a record to the previously specified DMA address.
+ *
+ * @details The record is normally 128 bytes, but can be a multiple of 128 bytes.
+ * Update byte returned values are:
+ * - 0: OK
+ * - 1: Directory full
+ * - 2: Disc full
+ * - 8: (MP/M) Record locked by another process
+ * - 9: Invalid FCB
+ * - 10: (CP/M) Media changed; (MP/M) FCB checksum error
+ * - 11: (MP/M) Unlocked file verification error
+ * - 0xFF: Hardware error??
+ *
+ * Lower byte, H contains the number of 128-byte records written,  before any error (CP/M 3 only).
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0 for success, or an error code as described above.
+ */
+extern uint16_t cpm_f_write(near_ptr_t fcb);
+
+/* Size of CPM Sector */
+#define SECSIZE 128
+
+/* Flags for fcp->use */
+#define U_READ  1 /* file open for reading */
+#define U_WRITE 2 /* file open for writing */
+#define U_RDWR  3 /* open for read and write */
+#define U_CON   4 /* device is console */
+#define U_RDR   5 /* device is reader */
+#define U_PUN   6 /* device is punch */
+#define U_LST   7 /* list device */
+
+#define __STDIO_EOFMARKER 26 /* End of file marker (^Z) */
+#define __STDIO_BINARY    1  /* We should consider binary/text differences */
+#define __STDIO_CRLF      1  /* Automatically convert between CR and CRLF */
+
+typedef struct fcb {
+  // 36 bytes of standard FCB
+  uint8_t  drive;       /* drive code */
+  char     name[8];     /* file name */
+  char     ext[3];      /* file type */
+  uint8_t  extent;      /* file extent */
+  char     filler[2];   /* not used */
+  char     records;     /* number of records in present extent */
+  char     discmap[16]; /* CP/M disc map */
+  char     next_record; /* next record to read or write */
+  uint24_t ranrec;      /* random record number (24 bit no. ) */
+
+  /* Below here is used by the library */
+  // 7 bytes used by the library
+  unsigned long rwptr; /* read/write pointer in bytes */
+  uint8_t       use;   /* use flag */
+  uint8_t       uid;   /* user id belonging to this file */
+  uint8_t       mode;  /* TEXT/BINARY discrimination */
+
+  // 133 bytes used for caching
+  unsigned long cached_record; /* Record number that we have cached */
+  uint8_t       dirty;         /* Set if the buffer is dirty and needs writing to disc */
+  uint8_t       buffer[SECSIZE];
+} FCB;
+
 #endif

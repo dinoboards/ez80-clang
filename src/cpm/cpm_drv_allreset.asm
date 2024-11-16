@@ -6,7 +6,11 @@
 	.global	_cpm_drv_allreset
 
 _cpm_drv_allreset:
+	push	ix
 	ld	c, DRV_ALLRESET
-	jp	cpm_bdos
+	call.sis cpm_bdos_z80 & 0xFFFF
+	pop	ix
+	ret
 
-	extern	cpm_bdos
+
+	extern	cpm_bdos_z80
