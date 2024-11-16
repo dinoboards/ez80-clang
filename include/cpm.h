@@ -219,7 +219,7 @@ extern uint8_t cpm_c_stat(void);
  *
  * @return The BDOS version.
  */
-extern uint8_t cpm_s_bdosver(void);
+extern uint16_t cpm_s_bdosver(void);
 
 /**
  * @brief Resets all disk drives and logs out all disks.
@@ -341,6 +341,20 @@ extern uint16_t cpm_f_write(near_ptr_t fcb);
  * @return 0 for success, or an error code as described above.
  */
 extern uint16_t cpm_f_make(near_ptr_t fcb);
+
+/**
+ * @brief Set or retrieve the current user number.
+ *
+ * @details If number=0xFF, returns the current user number.
+ *
+ * Set the current user number. number should be 0-15, or 255 to retrieve the current user number. Some versions can use user areas
+ * 16-31, but these should be avoided for compatibility reasons.
+ *
+ * @param[in] number The user number to set (0-15) or 255 to retrieve the current user number.
+ *
+ * @return The current user number if number is 255, otherwise the number set.
+ */
+extern uint8_t cpm_f_usernum(const uint8_t number);
 
 /* Size of CPM Sector */
 #define SECSIZE 128
