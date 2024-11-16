@@ -309,13 +309,38 @@ extern uint16_t cpm_f_open(near_ptr_t fcb);
  * - 11: (MP/M) Unlocked file verification error
  * - 0xFF: Hardware error??
  *
- * Lower byte, H contains the number of 128-byte records written,  before any error (CP/M 3 only).
+ * Lower byte, contains the number of 128-byte records written, before any error (CP/M 3 only).
  *
  * @param[in] fcb The near pointer to the File Control Block (FCB).
  *
  * @return 0 for success, or an error code as described above.
  */
 extern uint16_t cpm_f_write(near_ptr_t fcb);
+
+/**
+ * @brief Creates the file specified by the FCB.
+ *
+ * @details Returns error codes in BA and HL.
+ *
+ * If the directory is full, the function return an upper byte of 0xFF.
+ *
+ * If the file already exists, the default action is to return to the command prompt. However, CP/M 3 may return a hardware error in
+ * the lower byte
+ *
+ * Under MP/M II, set F5' to open the file in "unlocked" mode.
+ *
+ * Under MP/M II and later versions, set F6' to create the file with a password; the DMA address should point at a 9-byte buffer:
+ *
+ * @code
+ * DEFS    8   ;Password
+ * DEFB    1   ;Password mode
+ * @endcode
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0 for success, or an error code as described above.
+ */
+extern uint16_t cpm_f_make(near_ptr_t fcb);
 
 /* Size of CPM Sector */
 #define SECSIZE 128
