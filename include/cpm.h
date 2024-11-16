@@ -17,6 +17,8 @@ extern void const *const cpm_mbase;
 
 #define AS_CPM_PTR(a) as_near_ptr_safe(a, __MBASE, __FILE__, __LINE__)
 
+typedef cpm_f_error_t uint16_t;
+
 /**
  * @brief Call the BDOS function with specified register values.
  *
@@ -293,7 +295,7 @@ extern uint8_t cpm_drv_get(void);
  *
  * @return 0-3 for success, or 0xFF for error.
  */
-extern uint16_t cpm_f_open(near_ptr_t fcb);
+extern cpm_f_error_t cpm_f_open(near_ptr_t fcb);
 
 /**
  * @brief Write a record to the previously specified DMA address.
@@ -315,7 +317,7 @@ extern uint16_t cpm_f_open(near_ptr_t fcb);
  *
  * @return 0 for success, or an error code as described above.
  */
-extern uint16_t cpm_f_write(near_ptr_t fcb);
+extern cpm_f_error_t cpm_f_write(near_ptr_t fcb);
 
 /**
  * @brief Creates the file specified by the FCB.
@@ -340,7 +342,7 @@ extern uint16_t cpm_f_write(near_ptr_t fcb);
  *
  * @return 0 for success, or an error code as described above.
  */
-extern uint16_t cpm_f_make(near_ptr_t fcb);
+extern cpm_f_error_t cpm_f_make(near_ptr_t fcb);
 
 /**
  * @brief Set or retrieve the current user number.
@@ -355,6 +357,45 @@ extern uint16_t cpm_f_make(near_ptr_t fcb);
  * @return The current user number if number is 255, otherwise the number set.
  */
 extern uint8_t cpm_f_usernum(const uint8_t number);
+
+/**
+ * @brief Close a file and write any pending data.
+ *
+ * @details This function closes a file and writes any pending data. It should always be used when a file has been written to.
+ *
+ * On return from this function, A is 0xFF for error, or 0-3 for success. Some versions always return zero; others return 0-3 to
+ * indicate that an image of the directory entry is to be found at (80h+20h*A).
+ *
+ * Under CP/M 3, if F5' is set to 1, the pending data are written and the file is made consistent, but it remains open.
+ *
+ * If A=0xFF, CP/M 3 returns a hardware error in H and B.
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0-3 for success, or 0xFF for error.
+ */
+extern cpm_f_error_t cpm_f_close(near_ptr_t fcb);
+
+/**
+ * @brief Load a record at the previously specified DMA address.
+ *
+ * @details Loads a record (normally 128 bytes, but under CP/M 3 this can be a multiple of 128 bytes) at the previously specified DMA address.
+ *
+ * Values returned in upper byte are:
+ * - 0: OK
+ * - 1: End of file
+ * - 9: Invalid FCB
+ * - 10: (CP/M) Media changed; (MP/M) FCB checksum error
+ * - 11: (MP/M) Unlocked file verification error
+ * - 0xFF: Hardware error
+ *
+ * If on return upper byte is not 0xFF, the lower byte contains the number of 128-byte records read before the error (MP/M II and later).
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0 for success, or an error code as described above.
+ */
+extern cpm_f_error_t cpm_f_read(near_ptr_t fcb);
 
 /* Size of CPM Sector */
 #define SECSIZE 128
