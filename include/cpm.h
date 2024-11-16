@@ -17,7 +17,7 @@ extern void const *const cpm_mbase;
 
 #define AS_CPM_PTR(a) as_near_ptr_safe(a, __MBASE, __FILE__, __LINE__)
 
-typedef cpm_f_error_t uint16_t;
+typedef uint16_t cpm_f_error_t;
 
 /**
  * @brief Call the BDOS function with specified register values.
@@ -379,7 +379,8 @@ extern cpm_f_error_t cpm_f_close(near_ptr_t fcb);
 /**
  * @brief Load a record at the previously specified DMA address.
  *
- * @details Loads a record (normally 128 bytes, but under CP/M 3 this can be a multiple of 128 bytes) at the previously specified DMA address.
+ * @details Loads a record (normally 128 bytes, but under CP/M 3 this can be a multiple of 128 bytes) at the previously specified
+ * DMA address.
  *
  * Values returned in upper byte are:
  * - 0: OK
@@ -389,13 +390,108 @@ extern cpm_f_error_t cpm_f_close(near_ptr_t fcb);
  * - 11: (MP/M) Unlocked file verification error
  * - 0xFF: Hardware error
  *
- * If on return upper byte is not 0xFF, the lower byte contains the number of 128-byte records read before the error (MP/M II and later).
+ * If on return upper byte is not 0xFF, the lower byte contains the number of 128-byte records read before the error (MP/M II and
+ * later).
  *
  * @param[in] fcb The near pointer to the File Control Block (FCB).
  *
  * @return 0 for success, or an error code as described above.
  */
 extern cpm_f_error_t cpm_f_read(near_ptr_t fcb);
+
+/**
+ * @brief Rename a file.
+ *
+ * @details BDOS function 23 (F_RENAME) - Supported by all versions.
+ *
+ * Renames the file specified to the new name, stored at FCB+16. This function cannot rename across drives, so the "drive" bytes of
+ * both filenames should be identical. Returns A=0-3 if successful; A=0xFF if error. Under CP/M 3, if H is zero then the file could
+ * not be found; if it is nonzero it contains a hardware error number.
+ *
+ * Under Concurrent CP/M, set F5' if an extended lock on the file should be held through the rename. Otherwise, the lock will be
+ * released.
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0-3 for success, or 0xFF for error.
+ */
+extern cpm_f_error_t cpm_f_rename(near_ptr_t fcb);
+
+/**
+ * @brief Set file attributes.
+ *
+ * @details BDOS function 30 (F_ATTRIB) - Supported by CP/M 2 and later.
+ *
+ * Sets and resets the bits required. Standard CP/M versions allow the bits F1', F2', F3', F4', T1' (read-only), T2' (system), and
+ * T3' (archive) to be changed. Some alternative BDOS versions allow F5', F6', F7', and F8' to be set, but this is not encouraged
+ * since setting these bits can cause CP/M 3 to behave differently.
+ *
+ * Under Concurrent CP/M, if the F5' bit is not set and the file has an extended file lock, the lock will be released when the
+ * attributes are set. If F5' is set, the lock stays.
+ *
+ * Under CP/M 3, the Last Record Byte Count is set by storing the required value at FCB+32 (FCB+20h) and setting the F6' bit.
+ *
+ * The code returned in A is 0-3 if the operation was successful, or 0xFF if there was an error. Under CP/M 3, if A is 0xFF and H is
+ * nonzero, H contains a hardware error.
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0-3 for success, or 0xFF for error.
+ */
+extern cpm_f_error_t cpm_f_attrib(near_ptr_t fcb);
+
+/**
+ * @brief Random access read record.
+ *
+ * @details BDOS function 33 (F_READRAND) - Supported by CP/M 2 and later.
+ *
+ * Reads the record specified in the random record count area of the FCB, at the DMA address. The pointers in the FCB will be
+ * updated so that the next record to read using the sequential I/O calls will be the record just read.
+ *
+ * Error numbers returned are:
+ * - 0: OK
+ * - 1: Reading unwritten data
+ * - 4: Reading unwritten extent (a 16k portion of file does not exist)
+ * - 6: Record number out of range
+ * - 9: Invalid FCB
+ * - 10: Media changed (CP/M); FCB checksum error (MP/M)
+ * - 11: Unlocked file verification error (MP/M)
+ * - 0xFF: [MP/M II, CP/M 3] Hardware error in H.
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0 for success, or an error code as described above.
+ */
+extern cpm_f_error_t cpm_f_readrand(near_ptr_t fcb);
+
+/**
+ * @brief Random access write record.
+ *
+ * @details BDOS function 34 (F_WRITERAND) - Supported by CP/M 2 and later.
+ *
+ * Writes the record specified in the random record count area of the FCB, at the DMA address. The pointers in the FCB will be
+ * updated so that the next record to write using the sequential I/O calls will be the record just written.
+ *
+ * Error numbers returned are:
+ * - 0: OK
+ * - 2: Disc full
+ * - 3: Cannot close extent
+ * - 5: Directory full
+ * - 6: Record number out of range
+ * - 8: Record is locked by another process (MP/M)
+ * - 9: Invalid FCB
+ * - 10: Media changed (CP/M); FCB checksum error (MP/M)
+ * - 11: Unlocked file verification error (MP/M)
+ * - 0xFF: [MP/M II, CP/M 3] Hardware error in H.
+ *
+ * If the record indicated is beyond the end of the file, the record will be written and the file may contain a gap; attempting to
+ * read this gap may give "reading unwritten data" errors, or nonsense.
+ *
+ * @param[in] fcb The near pointer to the File Control Block (FCB).
+ *
+ * @return 0 for success, or an error code as described above.
+ */
+extern cpm_f_error_t cpm_f_writerand(near_ptr_t fcb);
 
 /* Size of CPM Sector */
 #define SECSIZE 128
@@ -432,10 +528,6 @@ typedef struct fcb {
   uint8_t       uid;   /* user id belonging to this file */
   uint8_t       mode;  /* TEXT/BINARY discrimination */
 
-  // 133 bytes used for caching
-  unsigned long cached_record; /* Record number that we have cached */
-  uint8_t       dirty;         /* Set if the buffer is dirty and needs writing to disc */
-  uint8_t       buffer[SECSIZE];
 } FCB;
 
 #endif
