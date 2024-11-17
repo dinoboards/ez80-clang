@@ -377,6 +377,50 @@ extern uint8_t cpm_f_usernum(const uint8_t number);
 extern cpm_f_error_t cpm_f_close(near_ptr_t fcb);
 
 /**
+ * @brief Search for the first occurrence of the specified file.
+ *
+ * BDOS function 17 (F_SFIRST) - search for first
+ * Supported by: All versions
+ *
+ * Searches for the first occurrence of the specified file. The filename should be stored in the supplied FCB.  The filename can
+ * include '?' marks, which match any character on the disk. If the first byte of the FCB is '?',  then any directory entry
+ * (including disk labels, date stamps, etc.) will match. The EX byte is also checked; normally it should be set to zero, but if it
+ * is set to '?', then all suitable extents are matched.
+ *
+ * @param fcb The address of the FCB.
+ * @return cpm_f_error_t Error codes in BA and HL.
+ *
+ * Returns 0xFF in the upper byte if an error occurs (CP/M 3 returns a hardware error in lower byte), or A=0-3 un upper byte if
+ * successful.
+ *
+ * Under CP/M-86 v4, if the first byte of the FCB is '?' or bit 7 of the byte is set, subdirectories as well as files will be
+ * returned by this search.
+ */
+extern cpm_f_error_t cpm_f_sfirst(near_ptr_t fcb);
+
+/**
+ * @brief Search for the next occurrence of the specified file.
+ *
+ * BDOS function 18 (F_SNEXT) - search for next
+ * Supported by: All versions
+ * Entered with C=0x12, DE=address of FCB. Returns error codes in BA and HL.
+ *
+ * This function should only be executed immediately after function 17 or another invocation of function 18.  No other disk access
+ * functions should have been used.
+ *
+ * Function 18 behaves exactly as function 17, but finds the next occurrence of the specified file after the one returned last time.
+ * The FCB parameter is not documented, but Jim Lopushinsky states in LD301.DOC:
+ *
+ *   In none of the official Programmer's Guides for any version of CP/M does it say that an FCB is required for Search Next
+ *   (function 18). However, if the FCB passed to Search First contains an unambiguous file reference (i.e. no question marks), then
+ *   the Search Next function requires an FCB passed in reg DE (for CP/M-80) or DX (for CP/M-86).
+ *
+ * @param fcb The address of the FCB.
+ * @return cpm_f_error_t Error codes in BA and HL.
+ */
+extern cpm_f_error_t cpm_f_snext(near_ptr_t fcb);
+
+/**
  * @brief Load a record at the previously specified DMA address.
  *
  * @details Loads a record (normally 128 bytes, but under CP/M 3 this can be a multiple of 128 bytes) at the previously specified
