@@ -2,7 +2,7 @@
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
-	.global	strncmp
+	.global	_strncmp
 
 ;   int strncmp(char *s1, char *s2, size_t n)
 _strncmp:
