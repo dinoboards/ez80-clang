@@ -10,7 +10,6 @@ FCB *request_fcb() {
   for (int i = 0; i < MAX_OPEN_FILES; i++) {
     if (!__fcb[i].use) {
       memset(&__fcb[i], 0, sizeof(FCB));
-      __fcb[i].use = true;
       return &__fcb[i];
     }
   }

@@ -49,9 +49,23 @@ struct stat {
 };
 
 /* Function prototypes */
+
+/**
+ * @brief Get file status.
+ *
+ * The stat() function retrieves information about the file pointed to by path and fills in the stat structure pointed to by buf.
+ *
+ * @param path The path of the file.
+ * @param buf A pointer to a stat structure where the file status information will be stored.
+ * @return int Returns 0 on success. On error, -1 is returned, and errno is set appropriately.
+ *
+ * current implementation does clears all fields of buf, not values are assigned
+ * The limitation of CP/M mean that some fields will always be unset
+ */
 int stat(const char *path, struct stat *buf);
-int fstat(int fd, struct stat *buf);
-int lstat(const char *path, struct stat *buf);
+
+// int fstat(int fd, struct stat *buf);
+// int lstat(const char *path, struct stat *buf);
 
 #ifdef __cplusplus
 }
