@@ -20,8 +20,8 @@ jobs:
       - name: pull previous version to get docker layers
         run: |
           docker pull ubuntu:focal-20240530
-          docker pull dinoboards/llvmez80-platform:0.0.5
-          docker pull dinoboards/llvmez80-builder:0.0.5
+          docker pull dinoboards/llvmez80-platform:0.0.11
+          docker pull dinoboards/llvmez80-builder:0.0.11
 
       - name: build clang within docker image
         run: |
