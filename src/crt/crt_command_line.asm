@@ -19,6 +19,19 @@ __push_cpm_cmdline_args:
 	add	hl, bc  				; now points to the end of the command line
 	dec	c
 
+ ; replace all trailing spaces on the tail to 0
+ ; if we end up back at the start - then, there are no arguments
+remove_trailing:
+	ld	a, (hl)
+	cp	' '
+	jr	nz, argv_begin
+	ld	(hl), 0
+	dec	hl
+	dec	c
+	jr	nz, remove_trailing
+
+	jr	argv_done
+
 ; Push pointers to argv[n] onto the stack now
 ; We must start from the end
 ; Entry:  hl = end of arguments
