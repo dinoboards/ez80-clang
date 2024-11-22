@@ -92,6 +92,7 @@ $(eval $(call build_lib,libc))
 $(eval $(call build_lib,cpm))
 $(eval $(call build_lib,malloc))
 $(eval $(call build_lib,io))
+$(eval $(call build_lib,ez80rc))
 $(eval $(call build_lib,v99x8-hdmi,--defsym ENABLE_DELAY=0))
 $(eval $(call build_lib,v99x8-standard,--defsym ENABLE_DELAY=1))
 
