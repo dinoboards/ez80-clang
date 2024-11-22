@@ -9,9 +9,9 @@ _cpm_c_rawio:
 	push	ix
 	ld	c, C_RAWIO
 	ld	e, $FF
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	ld	l, a
 	pop	ix
 	ret
 
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl

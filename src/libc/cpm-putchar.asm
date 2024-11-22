@@ -2,19 +2,8 @@
 
 	section	.text, "ax", @progbits
 	.global	_putchar
+	extern	_cpm_c_write
 
-
-__bdos	=	$5;
-
-; int putchar(int character) {
 _putchar:
-	call	__frameset0
-	ld	de, (ix+6)
+	jp	_cpm_c_write
 
-	ld	c, 2
-	call.sis cpm_bdos_z80 & $FFFF
-
-	pop	ix
-	ret
-
-	extern	cpm_bdos_z80

@@ -8,8 +8,8 @@
 _cpm_a_read:
 	push	ix
 	ld	c, A_READ
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	pop	ix
 	ret
 
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl

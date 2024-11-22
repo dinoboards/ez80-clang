@@ -8,9 +8,9 @@
 _cpm_s_bdosver:
 	push	ix
 	ld	c, S_BDOSVER
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	ld	l, a
 	pop	ix
 	ret
 
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl

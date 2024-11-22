@@ -10,11 +10,11 @@ _cpm_f_close:
 	call	__frameset0
 	ld	de, (ix+6)
 	ld	c, F_CLOSE
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	ld	l, a
 	ld	a, h
 	ld	(_errno), a
 	pop	ix
 	ret
 
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl

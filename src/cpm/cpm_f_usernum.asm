@@ -10,9 +10,9 @@ _cpm_f_usernum:
 	call	__frameset0
 	ld	e, (ix+6)
 	ld	c, F_USERNUM
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	ld	l, a
 	pop	ix
 	ret
 
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl

@@ -18,7 +18,7 @@
 	section	.header_z80, "ax", @progbits
 
 ; .ifdef CPM_HEADER
-	jp	__start&$FFFF
+	jp	__start & $FFFF
 	; TODO ADD A HEADER HERE
 ; .endif
 
@@ -26,7 +26,6 @@
 	global	__start
 	global	__call_main
 	global	_exit
-	global	defltdsk
 	global	_cpm_mbase
 
 __start:
@@ -35,17 +34,13 @@ __start:
 	; SAVE DEFAULT DISC
 	ld	c, 25
 	call	5
-	ld	(defltdsk&$FFFF), a
+	ld	(defltdsk & $FFFF), a
 
 	call.lil	__startadl
 
-	; XOR	A
-	; LD	B,7
-	; RST.L	$10
-
 	; Restore default disc
 	push	hl
-	ld	a, (defltdsk&$FFFF)
+	ld	a, (defltdsk & $FFFF)
 	ld	e, a
 	ld	c, 14
 	call	5

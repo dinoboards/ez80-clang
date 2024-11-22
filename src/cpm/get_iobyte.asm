@@ -8,9 +8,9 @@
 _cpm_get_iobyte:
 	push	ix
 	ld	c, GET_IOBYTE
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	ld	l, a
 	pop	ix
 	ret
 
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl

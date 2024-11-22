@@ -9,8 +9,8 @@ _cpm_drv_set:
 	call	__frameset0
 	ld	e, (ix+6)
 	ld	c, DRV_SET
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	pop	ix
 	ret
 
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl

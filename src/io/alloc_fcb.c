@@ -3,8 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-static FCB __fcb[MAX_OPEN_FILES] __attribute__((section(".startup_z80")));
-;
+static FCB __fcb[MAX_OPEN_FILES] __attribute__((section(".bss_z80")));
 
 FCB *request_fcb() {
   for (int i = 0; i < MAX_OPEN_FILES; i++) {

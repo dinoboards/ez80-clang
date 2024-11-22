@@ -9,7 +9,7 @@ _cpm_c_writestr:
 	call	__frameset0
 	ld	de, (ix+6)		; must be within the current MBASE segment
 	ld	c, C_WRITESTR
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	pop	ix
 	ret
 

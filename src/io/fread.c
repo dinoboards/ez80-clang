@@ -4,7 +4,7 @@
 
 // buffer must be allocated within the first 64k segment
 
-static uint8_t buffer[SECSIZE] __attribute__((section(".startup_z80")));
+static uint8_t buffer[SECSIZE] __attribute__((section(".bss_z80")));
 
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
   FCB   *file_fcb    = (FCB *)stream;

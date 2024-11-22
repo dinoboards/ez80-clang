@@ -11,11 +11,9 @@ _bdos:
 	call	__frameset0
 	ld	bc, (ix+6)
 	ld	de, (ix+9)
-
-	call.sis cpm_bdos_z80 & 0xFFFF
-
+	call	cpm_bdos_adl
 	pop	ix
 	ret
 
 	extern	__frameset0
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl

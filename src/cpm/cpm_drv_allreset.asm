@@ -8,9 +8,9 @@
 _cpm_drv_allreset:
 	push	ix
 	ld	c, DRV_ALLRESET
-	call.sis cpm_bdos_z80 & 0xFFFF
+	call	cpm_bdos_adl
 	pop	ix
 	ret
 
 
-	extern	cpm_bdos_z80
+	extern	cpm_bdos_adl
