@@ -9,14 +9,16 @@ source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
 export  DOCKER_BUILDKIT=1
 
-echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
-echo
-docker build  ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
+#if CI is, then skip the docker build - it take way to long on github actions
+if [ -z "$CI" ]; then
+  echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
+  echo
+  docker build  ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
 
-echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
-echo
-docker build  ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
-
+  echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
+  echo
+  docker build  ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
+fi
 
 CLANG_BIN_DIR="opt/ez80-clang/bin"
 CLANG_LIB_DIR="opt/ez80-clang/lib/"
