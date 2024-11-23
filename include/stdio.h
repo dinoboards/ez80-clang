@@ -132,6 +132,11 @@ int   sscanf(const char *s, const char *format, ...);
 int   fscanf(FILE *fp, const char *fmt, ...);
 FILE *freopen(const char *__restrict filename, const char *__restrict mode, FILE *stream);
 int   ungetc(int c, FILE *stream);
+
+void perror(const char *s);
+
+inline int fileno(const FILE *stream) { return (int)&stream; }
+
 __END_DECLS
 
 #endif /* _STDIO_H */
