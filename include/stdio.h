@@ -7,11 +7,7 @@
 #ifdef HAS_CUSTOM_FILE
 #include CUSTOM_FILE_FILE
 #else
-typedef struct {
-  unsigned char slot;
-  unsigned char eof;
-  unsigned char err;
-} FILE;
+typedef void *FILE;
 #define FOPEN_MAX 5
 #define stdin     ((FILE *)1)
 #define stdout    ((FILE *)2)
@@ -39,6 +35,38 @@ char inchar(void);
 
 void outchar(char character);
 
+/**
+ * @brief Opens a file.
+ *
+ * @details The `fopen` function opens the file whose name is the string pointed to by `filename` and associates a stream with it.
+ *
+ * The `mode` argument is a string that indicates the type of access requested for the file. The allowed modes are:
+ * - `"r"` : Open text file for reading. The stream is positioned at the beginning of the file.
+ * - `"w"` : Truncate to zero length or create text file for writing. The stream is positioned at the beginning of the file.
+ * - `"a"` : Open for writing. The file is created if it does not exist. The stream is positioned at the end of the file.
+ * - `"r+"`: Open for reading and writing. The stream is positioned at the beginning of the file.
+ * - `"w+"`: Truncate to zero length or create text file for reading and writing. The stream is positioned at the beginning of the
+ * file.
+ * - `"a+"`: Open for reading and writing. The file is created if it does not exist. The stream is positioned at the end of the
+ * file.
+ * - `"rb"`: Open binary file for reading. The stream is positioned at the beginning of the file.
+ * - `"wb"`: Truncate to zero length or create binary file for writing. The stream is positioned at the beginning of the file.
+ * - `"ab"`: Open binary file for writing. The file is created if it does not exist. The stream is positioned at the end of the
+ * file.
+ * - `"r+b"` or `"rb+"`: Open binary file for reading and writing. The stream is positioned at the beginning of the file.
+ * - `"w+b"` or `"wb+"`: Truncate to zero length or create binary file for reading and writing. The stream is positioned at the
+ * beginning of the file.
+ * - `"a+b"` or `"ab+"`: Open binary file for reading and writing. The file is created if it does not exist. The stream is
+ * positioned at the end of the file.
+ *
+ * The `fopen` function returns a pointer to a `FILE` object that can be used to identify the stream in subsequent operations. If
+ * the file cannot be opened, a `NULL` pointer is returned.
+ *
+ * @param[in] filename The name of the file to be opened.
+ * @param[in] mode The mode in which to open the file.
+ *
+ * @return A pointer to a `FILE` object on success, or `NULL` on failure.
+ */
 FILE *fopen(const char *__restrict filename, const char *__restrict mode);
 
 int fclose(FILE *stream);

@@ -19,6 +19,7 @@ typedef long          off_t;     /* File offset */
 typedef int           blksize_t; /* Block size */
 typedef long          blkcnt_t;  /* Block count */
 typedef long          time_t;    /* Time */
+typedef long          ssize_t;   /* Signed size type */
 
 #ifdef __cplusplus
 }

@@ -5,8 +5,6 @@
 
 #define MAX_OPEN_FILES 8
 
-// extern FCB __fcb[MAX_OPEN_FILES];
-
 extern int extract_filename_parts(const char *input, FCB *fcb);
 
 extern FCB        *request_fcb();

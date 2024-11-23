@@ -1,15 +1,17 @@
 #include <cpm.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 
-// buffer must be allocated within the first 64k segment
-
-static uint8_t buffer[SECSIZE] __attribute__((section(".bss_z80")));
+extern uint8_t buffer[SECSIZE];
 
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
   FCB   *file_fcb    = (FCB *)stream;
   size_t total_bytes = size * nmemb;
   size_t bytes_read  = 0;
+
+  if (file_fcb->flags == O_WRONLY)
+    return 0;
 
   cpm_f_dmaoff(AS_CPM_PTR(buffer));
 

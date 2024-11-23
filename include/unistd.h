@@ -40,6 +40,8 @@
 extern "C" {
 #endif
 
+#include <sys/types.h>
+
 extern char *optarg;
 extern int   optind;
 extern int   opterr;

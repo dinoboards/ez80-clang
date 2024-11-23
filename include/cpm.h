@@ -592,6 +592,7 @@ typedef struct fcb {
   uint8_t       use;   /* use flag */
   uint8_t       uid;   /* user id belonging to this file */
   uint8_t       mode;  /* TEXT/BINARY discrimination */
+  uint8_t       flags; /* access flags O_RDONLY | O_WRONLY | O_RDWR */
 
 } FCB;
 
