@@ -1,4 +1,5 @@
 #include <cpm.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -10,8 +11,16 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
   size_t total_bytes = size * nmemb;
   size_t bytes_read  = 0;
 
-  if (file_fcb->flags == O_WRONLY)
+  if (file_fcb == NULL || file_fcb->use == 0) {
+    errno = EBADF;
     return 0;
+  }
+
+  if (file_fcb->flags == O_WRONLY) {
+    errno             = EINVAL;
+    file_fcb->errored = true;
+    return 0;
+  }
 
   cpm_f_dmaoff(AS_CPM_PTR(buffer));
 

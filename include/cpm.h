@@ -2,6 +2,7 @@
 #define __CPMCALLS
 
 #include <ez80.h>
+#include <stdbool.h>
 #include <stdint.h>
 
 #define MBASE_CONST_VARIABLE(T, c) (*(T)(((uint24_t)cpm_mbase | c)))
@@ -588,11 +589,12 @@ typedef struct fcb {
 
   /* Below here is used by the library */
   // 7 bytes used by the library
-  unsigned long rwptr; /* read/write pointer in bytes */
-  uint8_t       use;   /* use flag */
-  uint8_t       uid;   /* user id belonging to this file */
-  uint8_t       mode;  /* TEXT/BINARY discrimination */
-  uint8_t       flags; /* access flags O_RDONLY | O_WRONLY | O_RDWR */
+  unsigned long rwptr;   /* read/write pointer in bytes */
+  uint8_t       use;     /* use flag */
+  uint8_t       uid;     /* user id belonging to this file */
+  uint8_t       mode;    /* TEXT/BINARY discrimination */
+  uint8_t       flags;   /* access flags O_RDONLY | O_WRONLY | O_RDWR */
+  bool          errored; /* error number */
 
 } FCB;
 

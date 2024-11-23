@@ -1,4 +1,5 @@
 #include <cpm.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -9,6 +10,11 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) {
   FCB   *file_fcb      = (FCB *)stream;
   size_t total_bytes   = size * nmemb;
   size_t bytes_written = 0;
+
+  if (file_fcb == NULL || file_fcb->use == 0) {
+    errno = EBADF;
+    return 0;
+  }
 
   if (file_fcb->flags == O_RDONLY)
     return 0;
@@ -40,6 +46,8 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) {
     // Write the current record
     file_fcb->ranrec = record_num;
     if (cpm_f_writerand(AS_CPM_PTR(file_fcb)) != 0) {
+      errno             = EIO;
+      file_fcb->errored = true;
       break; // Error writing record
     }
 

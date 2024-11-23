@@ -135,7 +135,7 @@ int   ungetc(int c, FILE *stream);
 
 void perror(const char *s);
 
-inline int fileno(const FILE *stream) { return (int)&stream; }
+static inline int fileno(const FILE *stream) { return (int)stream; }
 
 __END_DECLS
 

@@ -1,8 +1,14 @@
 #include <cpm.h>
+#include <errno.h>
 #include <stdio.h>
 
 int fseek(FILE *stream, long int offset, int origin) {
   FCB *file_fcb = (FCB *)stream;
+
+  if (file_fcb == NULL || file_fcb->use == 0) {
+    errno = EBADF;
+    return 0;
+  }
 
   switch (origin) {
   case SEEK_SET:

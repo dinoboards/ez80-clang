@@ -1,15 +1,19 @@
 #include "include/io.h"
 #include <cpm.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 
 FILE *fopen(const char *filename, const char *mode) {
   FCB *file_fcb = request_fcb();
-  if (file_fcb == NULL)
+  if (file_fcb == NULL) {
+    errno = EMFILE;
     return NULL; // No free FCB available
+  }
 
   if (extract_filename_parts(filename, file_fcb)) {
+    errno = EINVAL;
     return NULL;
   }
 
@@ -35,13 +39,15 @@ FILE *fopen(const char *filename, const char *mode) {
     //   while (cpm_f_read(AS_CPM_PTR(file_fcb)) != 1);
 
   } else {
+    errno = EINVAL;
     return NULL; // Unsupported mode
   }
 
   // for w, delete file, then call cpm_f_make
   // for a, check if exists, then open using cpm_f_open and position at end, otherwise create using cpm_f_make
 
-  if (result != 0) {
+  if (result != CPM_ERR_OK) {
+    errno = EIO;
     return NULL; // Error opening/creating file
   }
 
