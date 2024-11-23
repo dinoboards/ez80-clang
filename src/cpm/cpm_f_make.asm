@@ -3,18 +3,10 @@
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
-	.global	_cpm_f_make
-	.extern _errno
+	global	_cpm_f_make
+	extern	cpm_f_status_03
 
 _cpm_f_make:
-	call	__frameset0
-	ld	de, (ix+6)		; must be within the current MBASE segment
 	ld	c, F_MAKE
-	call	cpm_bdos_adl
-	ld	l, a
-	ld	a, h
-	ld	(_errno), a
-	pop	ix
-	ret
+	jp	cpm_f_status_03
 
-	extern	cpm_bdos_adl

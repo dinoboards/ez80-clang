@@ -41,7 +41,7 @@ FILE *fopen(const char *filename, const char *mode) {
   // for w, delete file, then call cpm_f_make
   // for a, check if exists, then open using cpm_f_open and position at end, otherwise create using cpm_f_make
 
-  if (result == 0xFF) {
+  if (result != 0) {
     return NULL; // Error opening/creating file
   }
 

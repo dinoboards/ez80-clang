@@ -3,16 +3,9 @@
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
-	.global	_cpm_f_readrand
+	global	_cpm_f_readrand
+	extern cpm_f_status_00
 
 _cpm_f_readrand:
-	call	__frameset0
-	ld	de, (ix+6)		; must be within the current MBASE segment
 	ld	c, F_READRAND
-	call	cpm_bdos_adl
-	ld	l, h			; hardware error
-	ld	h, a			; error code
-	pop	ix
-	ret
-
-	extern	cpm_bdos_adl
+	jp	cpm_f_status_00

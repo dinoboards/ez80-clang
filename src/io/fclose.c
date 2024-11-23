@@ -12,7 +12,7 @@ int fclose(FILE *stream) {
 
   const cpm_f_error_t result = cpm_f_close(AS_CPM_PTR(file_fcb));
 
-  if (result == 0xFF) {
+  if (result != 0) {
     return -1; // Error closing file
   }
 

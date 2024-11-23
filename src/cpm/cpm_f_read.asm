@@ -3,16 +3,10 @@
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
-	.global	_cpm_f_read
+	global	_cpm_f_read
+	extern cpm_f_status_00
 
 _cpm_f_read:
-	call	__frameset0
-	ld	de, (ix+6)		; must be within the current MBASE segment
 	ld	c, F_READ
-	call	cpm_bdos_adl
-	ld	l, h			; number of 128byte blocks read
-	ld	h, a			; error code
-	pop	ix
-	ret
+	jp	cpm_f_status_00
 
-	extern	cpm_bdos_adl

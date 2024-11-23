@@ -17,7 +17,7 @@ extern void const *const cpm_mbase;
 
 #define AS_CPM_PTR(a) as_near_ptr_safe(a, __MBASE, __FILE__, __LINE__)
 
-typedef uint16_t cpm_f_error_t;
+typedef uint8_t cpm_f_error_t;
 
 /**
  * @brief Call the BDOS function with specified register values.
@@ -595,5 +595,35 @@ typedef struct fcb {
   uint8_t       flags; /* access flags O_RDONLY | O_WRONLY | O_RDWR */
 
 } FCB;
+
+#define CPM_ERR_OK               0
+#define CPM_ERR_DIR_FULL         1
+#define CPM_ERR_EOF              1
+#define CPM_ERR_UNWRITTEN        1
+#define CPM_ERR_DISC_FULL        2
+#define CPM_ERR_CLOSE_EXTENT     3
+#define CPM_ERR_UNWRITTEN_EXTENT 4
+#define CPM_ERR_DIR_FULL         5
+#define CPM_ERR_REC_OUT_OF_RANGE 6
+#define CPM_ERR_REC_LOCKED       8
+#define CPM_ERR_INVALID_FCB      9
+#define CPM_ERR_MEDIA_CHANGED    10
+#define CPM_ERR_UNLOCKED_FILE    11
+
+#define CPM_ERR_GENERAL 255
+
+#define CPM_EXERR_SELECT_ERROR      (128 + 1)
+#define CPM_EXERR_READONLY_FILE     (128 + 2)
+#define CPM_EXERR_READONLY_DISC     (128 + 3)
+#define CPM_EXERR_INVALID_DRIVE     (128 + 4)
+#define CPM_EXERR_FILE_ALREADY_OPEN (128 + 5)
+#define CPM_EXERR_FCB_CHECKSUM      (128 + 6)
+#define CPM_EXERR_PASSWORD          (128 + 7)
+#define CPM_EXERR_FILE_EXISTS       (128 + 8)
+#define CPM_EXERR_BAD_FILENAME      (128 + 9)
+#define CPM_EXERR_WHEEL_PROTECTION  (128 + 10)
+#define CPM_EXERR_TOO_MANY_FILES    (128 + 10)
+#define CPM_EXERR_NO_ROOM           (128 + 11)
+#define CPM_EXERR_NOT_LOGGED_IN     (128 + 12)
 
 #endif

@@ -11,7 +11,6 @@ _cpm_f_usernum:
 	ld	e, (ix+6)
 	ld	c, F_USERNUM
 	call	cpm_bdos_adl
-	ld	l, a
 	pop	ix
 	ret
 

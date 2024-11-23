@@ -1,8 +1,7 @@
 	include	"src/cpm/cpm.inc"
 
 	.assume	adl=1
-
-	section	.text, "ax", @progbits
+	.section	.text, "ax", @progbits
 	.global	_cpm_f_dmaoff
 
 _cpm_f_dmaoff:
