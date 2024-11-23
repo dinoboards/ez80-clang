@@ -20,8 +20,8 @@ jobs:
       - name: pull previous version to get docker layers
         run: |
           docker pull ubuntu:focal-20240530
-          docker pull dinoboards/llvmez80-platform:0.0.12
-          docker pull dinoboards/llvmez80-builder:0.0.12
+          docker pull dinoboards/llvmez80-platform:0.0.13
+          docker pull dinoboards/llvmez80-builder:0.0.13
 
       - name: build clang within docker image
         run: |
@@ -30,7 +30,7 @@ jobs:
       - name: Zip tools
         uses: actions/upload-artifact@v4
         with:
-          name: ez80-clang-0.0.12
+          name: ez80-clang-0.0.13
           path: |
             tmp/direct
 
