@@ -25,6 +25,10 @@
 	global	__get_sps
 
 __start:
+	; TODO: do we need to also clear bss
+	ld	a, MB
+	ld	(_cpm_mbase+2), a
+
 	jp	_main
 
 _exit	equ	0x200000
@@ -35,3 +39,8 @@ __get_sps:
 	; LD	A,-1
 	; LD	HL, -1
 	RET
+
+	section	bss_crt, "ax", @progbits
+	global	_cpm_mbase
+_cpm_mbase:
+	d24	0	;CP/M base address
