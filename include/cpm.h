@@ -421,10 +421,31 @@ extern cpm_f_error_t cpm_f_sfirst(near_ptr_t fcb);
 extern cpm_f_error_t cpm_f_snext(near_ptr_t fcb);
 
 /**
+ * @brief Deletes a file.
+ *
+ * BDOS function 19 (F_DELETE) - delete file.
+ * Supported by: All versions.
+ *
+ * @param fcb Address of the FCB.
+ * @return Error codes in BA and HL.
+ *
+ * Deletes all directory entries matching the specified filename. The name can contain '?' marks.
+ * Returns 0xFF in the upper byte if an error occurs (CP/M 3 returns a hardware error in lower byte), or 0-3 in upper byte if
+ * successful.
+ *
+ * Under CP/M 3, if bit F5' is set to 1, the file remains but any password protection is removed.
+ * If the file has any password protection at all, the DMA address must be pointing at the password when this function is called.
+ */
+extern cpm_f_error_t cpm_f_delete(near_ptr_t fcb);
+
+/**
  * @brief Load a record at the previously specified DMA address.
  *
  * @details Loads a record (normally 128 bytes, but under CP/M 3 this can be a multiple of 128 bytes) at the previously specified
  * DMA address.
+ *
+ * BDOS function 20 (F_READ) read record
+ * Supported by all versions.
  *
  * Values returned in upper byte are:
  * - 0: OK
