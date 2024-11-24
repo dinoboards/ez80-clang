@@ -3,11 +3,15 @@ SHELL=/bin/bash
 BASH_ENV=~/.ez80-clang
 BASH_ENV=version.sh
 
+export PATH := ./tmp/opt/ez80-clang/bin:$(PATH)
+# Define the system include path
+export EZ80_CLANG_SYSTEM_INCLUDE_PATH := $(PWD)/tmp/opt/ez80-clang/include -isystem $(PWD)/include
+
 # Define directories
 SRC_DIR := src
 LIB_DIR := lib
 
-# Define the assembler and archiver
+# Define the assembler and archive
 AS := ez80-as
 AR := ez80-ar
 CLANG := ez80-clang
@@ -15,7 +19,6 @@ CLANG := ez80-clang
 # Define the assembler flags
 ASFLAGS := -march=ez80+full
 CFLAGS  := -ffunction-sections -fdata-sections -nostdinc -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S -Oz
-
 
 
 # $1 -> library name & directory name
@@ -103,8 +106,17 @@ $(eval $(call build_lib_variant,v99x8,standard))
 EZ80_CLANG_VERSION := $(shell source ./version.sh && echo $$EZ80_CLANG_VERSION)
 TARGET := ez0-clang-$(EZ80_CLANG_VERSION).tar.gz
 
-$(TARGET):
+extract-clang:
+	@./extract-clang.sh
+
+docker:
 	@./build-docker.sh
+
+docker-push:
+	@./push-docker.sh
+
+$(TARGET):
+	@./build-package.sh
 
 package: $(TARGET)
 

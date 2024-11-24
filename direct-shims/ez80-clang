@@ -2,4 +2,7 @@
 
 set -e
 
-/opt/ez80-clang/bin/ez80-clang-15 -target ez80-none-elf -nostdinc -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} "$@"
+# Determine the directory of the script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+"${SCRIPT_DIR}/ez80-clang-15" -target ez80-none-elf -nostdinc -isystem ${EZ80_CLANG_SYSTEM_INCLUDE_PATH} "$@"

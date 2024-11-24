@@ -4,8 +4,7 @@ export EZ80_CLANG_TOOLCHAIN_BUILDER="dinoboards/llvmez80-builder:${EZ80_CLANG_TO
 
 export EZ80_CLANG_TOOLCHAIN_CACHE_FROM=""
 
-# change to get latest tagged version from repo hisotry, that matches a sematic versioning tag (vx.x.x)
-export EZ80_CLANG_VERSION="0.0.14"
+EZ80_CLANG_VERSION="0.0.0"
 
 # Get the current branch name
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)

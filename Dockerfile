@@ -67,35 +67,17 @@ RUN ./configure --target=z80-none-elf --program-prefix=ez80-none-elf- --prefix=/
 RUN make -j
 RUN make install
 
-COPY docker-shims /src/docker-shims
-COPY direct-shims /src/direct-shims
-COPY linker-scripts /src/linker-scripts
-
-COPY version.sh /src/docker-shims/version.sh
-COPY version.sh /src/version.sh
-
-
 RUN mkdir -p /opt/ez80-clang/bin
 RUN cp /opt/ez80-none-elf/bin/* /opt/ez80-clang/bin/
 RUN ln -s ez80-none-elf-ar /opt/ez80-clang/bin/ez80-ar
 RUN ln -s ez80-none-elf-as /opt/ez80-clang/bin/ez80-as
 RUN cp /src/llvm-project/build/bin/clang-15 /opt/ez80-clang/bin/ez80-clang-15
 RUN cp /src/llvm-project/build/bin/clang-format /opt/ez80-clang/bin/ez80-clang-format
-COPY direct-shims /opt/ez80-clang/bin/
 
-
-COPY Makefile /src/Makefile
-COPY src /src/src
-COPY include /src/include
+RUN mkdir -p /src/include
 RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdbool.h /src/include/stdbool.h
 RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdint.h /src/include/stdint.h
 RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stddef.h /src/include/stddef.h
 RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/__stddef_max_align_t.h /src/include/__stddef_max_align_t.h
 RUN cp /src/llvm-project/build/lib/clang/15.0.0/include/stdarg.h /src/include/stdarg.h
 
-WORKDIR /src
-ENV C_INCLUDE_PATH=/src/include
-
-ENV PATH="/opt/ez80-clang/bin:${PATH}"
-
-RUN make -B
