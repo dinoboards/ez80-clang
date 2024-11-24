@@ -9,16 +9,13 @@ source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
 
 export  DOCKER_BUILDKIT=1
 
-#if CI is, then skip the docker build - it take way to long on github actions
-if [ -z "$CI" ]; then
-  echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
-  echo
-  docker build  ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
+echo "Building ${EZ80_CLANG_TOOLCHAIN_PLATFORM}"
+echo
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
 
-  echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
-  echo
-  docker build  ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
-fi
+echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
+echo
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
 
 CLANG_BIN_DIR="opt/ez80-clang/bin"
 CLANG_LIB_DIR="opt/ez80-clang/lib/"
@@ -45,8 +42,8 @@ EOF
 
 function make_direct_tar() {
   rm -rf tmp/direct
-  mkdir -p tmp/direct/ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}
-  cd tmp/direct/ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}
+  mkdir -p tmp/direct/ez80-clang-${EZ80_CLANG_VERSION}
+  cd tmp/direct/ez80-clang-${EZ80_CLANG_VERSION}
 
   mkdir -p ${CLANG_BIN_DIR}
   mkdir -p ${CLANG_LIB_DIR}
@@ -62,11 +59,7 @@ function make_direct_tar() {
   cp ../../../install.sh .
 
   cd ..
-  tar -czvf ../../ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}.tar.gz ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION}/*
+  tar -czvf ../../ez80-clang-${EZ80_CLANG_VERSION}.tar.gz ez80-clang-${EZ80_CLANG_VERSION}/*
 }
-
-# tar -xzvf ez80-clang-0.0.5.tar.gz
-# cd ez80-clang-0.0.5
-# sudo ./install.sh
 
 make_direct_tar

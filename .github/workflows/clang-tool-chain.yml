@@ -16,12 +16,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
+          fetch-depth: 0
 
-      - name: pull previous version to get docker layers
+      - name: Source version.sh and set environment variables
+        id: set-env-vars
         run: |
-          docker pull ubuntu:focal-20240530
-          docker pull dinoboards/llvmez80-platform:0.0.13
-          docker pull dinoboards/llvmez80-builder:0.0.13
+          source ./version.sh
+          echo "EZ80_CLANG_TOOLCHAIN_VERSION=$EZ80_CLANG_TOOLCHAIN_VERSION" >> $GITHUB_ENV
+          echo "EZ80_CLANG_VERSION=$EZ80_CLANG_VERSION" >> $GITHUB_ENV
 
       - name: build clang within docker image
         run: |
@@ -30,7 +32,7 @@ jobs:
       - name: Zip tools
         uses: actions/upload-artifact@v4
         with:
-          name: ez80-clang-0.0.13
+          name: ez80-clang-${{ env.EZ80_CLANG_VERSION }}
           path: |
             tmp/direct
 

@@ -100,8 +100,8 @@ $(eval $(call build_lib,v99x8-standard,--defsym ENABLE_DELAY=1))
 $(eval $(call build_lib_variant,v99x8,hdmi))
 $(eval $(call build_lib_variant,v99x8,standard))
 
-EZ80_CLANG_TOOLCHAIN_VERSION := $(shell source ./version.sh && echo $$EZ80_CLANG_TOOLCHAIN_VERSION)
-TARGET := ez0-clang-$(EZ80_CLANG_TOOLCHAIN_VERSION).tar.gz
+EZ80_CLANG_VERSION := $(shell source ./version.sh && echo $$EZ80_CLANG_VERSION)
+TARGET := ez0-clang-$(EZ80_CLANG_VERSION).tar.gz
 
 $(TARGET):
 	@./build-docker.sh
@@ -109,7 +109,7 @@ $(TARGET):
 package: $(TARGET)
 
 install:
-	@cd tmp/direct/ez80-clang-${EZ80_CLANG_TOOLCHAIN_VERSION} && ./install.sh
+	@cd tmp/direct/ez80-clang-${EZ80_CLANG_VERSION} && ./install.sh
 
 format:
 	@./clang-format.sh
