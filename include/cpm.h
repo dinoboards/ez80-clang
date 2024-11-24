@@ -595,6 +595,7 @@ typedef struct fcb {
   uint8_t       mode;    /* TEXT/BINARY discrimination */
   uint8_t       flags;   /* access flags O_RDONLY | O_WRONLY | O_RDWR */
   bool          errored; /* error number */
+  bool          eof;     /* end of file */
 
 } FCB;
 

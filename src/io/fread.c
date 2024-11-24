@@ -32,7 +32,10 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
     // Read the current record
     file_fcb->ranrec = record_num;
     if (cpm_f_readrand(AS_CPM_PTR(file_fcb)) != 0) {
-      break; // Error reading record
+      errno             = EIO;
+      file_fcb->errored = true;
+      file_fcb->eof     = true; // probably we just got to eof.  TODO: review (https://www.seasip.info/Cpm/bytelen.html)
+      break;                    // Error reading record
     }
 
     // Calculate the number of bytes to copy from the current record

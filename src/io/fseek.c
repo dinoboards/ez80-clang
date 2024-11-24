@@ -13,10 +13,12 @@ int fseek(FILE *stream, long int offset, int origin) {
   switch (origin) {
   case SEEK_SET:
     file_fcb->rwptr = offset;
+    file_fcb->eof   = false;  //TODO: check if we are at the end of the file
     break;
 
   case SEEK_CUR:
     file_fcb->rwptr += offset;
+    file_fcb->eof = false; //TODO: check if we are at the end of the file
     break;
 
   case SEEK_END:
