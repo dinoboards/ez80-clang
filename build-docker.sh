@@ -11,11 +11,11 @@ export  DOCKER_BUILDKIT=1
 
 echo "Building ${EZ80_CLANG_TOOLCHAIN_PLATFORM}"
 echo
-docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM} --build-arg BUILDKIT_INLINE_CACHE=1 --target platform -t ${EZ80_CLANG_TOOLCHAIN_PLATFORM} .
 
 echo "Building ${EZ80_CLANG_TOOLCHAIN_BUILDER}"
 echo
-docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM}  --build-arg BUILDKIT_INLINE_CACHE=1 --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
+docker build ${EZ80_CLANG_TOOLCHAIN_CACHE_FROM} --build-arg BUILDKIT_INLINE_CACHE=1 --target builder -t ${EZ80_CLANG_TOOLCHAIN_BUILDER} .
 
 CLANG_BIN_DIR="opt/ez80-clang/bin"
 CLANG_LIB_DIR="opt/ez80-clang/lib/"

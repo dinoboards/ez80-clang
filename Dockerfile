@@ -2,20 +2,16 @@ FROM ubuntu:focal-20240530 AS platform
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# RUN sed -i 's/http:\/\/archive\.ubuntu\.com\/ubuntu/http:\/\/mirror.internode.on.net\/pub\/ubuntu\/ubuntu/g'  /etc/apt/sources.list
-# RUN sed -i 's/http:\/\/security\.ubuntu\.com\/ubuntu/http:\/\/mirror.internode.on.net\/pub\/ubuntu\/ubuntu/g'  /etc/apt/sources.list
-
-RUN rm -rfv /var/lib/apt/lists/* && \
-    apt clean && \
-    apt update && \
-    apt dist-upgrade -y && \
-    apt install -y \
-    build-essential \
-    curl \
-    git \
-    python3 \
-    software-properties-common \
-    wget
+RUN rm -rfv /var/lib/apt/lists/*
+RUN apt clean
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y build-essential
+RUN apt install -y curl
+RUN apt install -y git
+RUN apt install -y python3
+RUN apt install -y software-properties-common
+RUN apt install -y wget
 
 LABEL Maintainer="Dean Netherton" \
       Description="tool chain for llvm-project (ez80)"
