@@ -38,8 +38,17 @@ jobs:
           path: |
             tmp/direct
 
-      - name: tar-gz-package
-        uses: actions/upload-artifact@v4
-        with:
-          name: ez80-clang-package.tar.gz
-          path: ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz
+      - name: Install GitHub CLI
+        if: startsWith(github.ref, 'refs/tags/')
+        run: sudo apt-get install -y gh
+
+      - name: Create draft pre-release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          PREV_TAG_NAME=$(git describe --tags --abbrev=0 ${TAG_NAME}^)
+          RELEASE_NAME="Clang Release $TAG_NAME"
+          CHANGELOG_URL="https://github.com/dinoboards/ez80-clang/compare/${PREV_TAG_NAME}...${TAG_NAME}"
+          gh release create $TAG_NAME "ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz" --repo ${{ github.repository }} --title "$RELEASE_NAME" --prerelease --draft --notes "**Full Changelog**: $CHANGELOG_URL"
