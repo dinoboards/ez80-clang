@@ -27,7 +27,7 @@ jobs:
 
       - name: package clang and runtime
         run: |
-          make extract-clang
+          make download-llvm-release
           make
           make package
 
@@ -42,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ez80-clang-package.tar.gz
-          path: ez80-clang-${EZ80_CLANG_VERSION}.tar.gz
+          path: ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz

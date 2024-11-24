@@ -106,8 +106,11 @@ $(eval $(call build_lib_variant,v99x8,standard))
 EZ80_CLANG_VERSION := $(shell source ./version.sh && echo $$EZ80_CLANG_VERSION)
 TARGET := ez0-clang-$(EZ80_CLANG_VERSION).tar.gz
 
-extract-clang:
+extract-llvm-release:
 	@./extract-clang.sh
+
+download-llvm-release:
+	@./download-clang.sh
 
 docker:
 	@./build-docker.sh
