@@ -42,6 +42,7 @@ function make_direct_tar() {
   pwd
 
   cp ../../opt/ez80-clang/bin/* "${CLANG_BIN_DIR}"
+  cp ../../../direct-shims/* ${CLANG_BIN_DIR}
   cp ../../../lib/* "${CLANG_LIB_DIR}"
   cp -r ../../opt/ez80-clang/include/* "${CLANG_INCLUDE_DIR}"
   cp -r ../../../include/* "${CLANG_INCLUDE_DIR}"

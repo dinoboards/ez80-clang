@@ -57,12 +57,10 @@ RUN cmake -S llvm -B build -G Ninja \
 RUN BUILD_THREADS=$(nproc) && BUILD_THREADS=$((BUILD_THREADS * 7 / 10)) && [ "$BUILD_THREADS" -lt 4 ] && BUILD_THREADS=1 || true && cmake --build build -j $BUILD_THREADS
 
 
-# What about version 2.43???
-
 WORKDIR /src
-ADD https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.gz ./binutils-2.37.tar.gz
-RUN tar xf binutils-2.37.tar.gz
-WORKDIR /src/binutils-2.37
+ADD https://ftp.gnu.org/gnu/binutils/binutils-2.43.tar.gz ./binutils-2.43.tar.gz
+RUN tar xf binutils-2.43.tar.gz
+WORKDIR /src/binutils-2.43
 RUN ./configure --target=z80-none-elf --program-prefix=ez80-none-elf- --prefix=/opt/ez80-none-elf
 RUN make -j
 RUN make install

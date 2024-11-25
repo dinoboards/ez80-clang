@@ -21,6 +21,4 @@ mkdir -p ${CLANG_BIN_DIR}
 mkdir -p ${CLANG_INCLUDE_DIR}
 
 docker cp "temp-llvmez80:/opt/ez80-clang/bin/." "${CLANG_BIN_DIR}"
-cp ./direct-shims/* ${CLANG_BIN_DIR}
-
 docker cp "temp-llvmez80:/src/include/." "${CLANG_INCLUDE_DIR}"
