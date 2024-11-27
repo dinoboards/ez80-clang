@@ -108,9 +108,11 @@ TARGET := ez0-clang-$(EZ80_CLANG_VERSION).tar.gz
 
 extract-llvm-release:
 	@./extract-clang.sh
+	@cp ./direct-shims/* ./tmp/opt/ez80-clang/bin
 
 download-llvm-release:
 	@./download-clang.sh
+	@cp ./direct-shims/* ./tmp/opt/ez80-clang/bin
 
 docker:
 	@./build-docker.sh
