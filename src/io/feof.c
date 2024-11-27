@@ -1,3 +1,4 @@
+#include "include/io.h"
 #include <cpm.h>
 #include <errno.h>
 #include <stdio.h>

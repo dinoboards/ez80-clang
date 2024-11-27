@@ -1,10 +1,9 @@
+#include "include/io.h"
 #include <cpm.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
-
-extern uint8_t buffer[SECSIZE];
 
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
   FCB   *file_fcb    = (FCB *)stream;
@@ -30,7 +29,7 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
     unsigned long offset     = file_fcb->rwptr % SECSIZE;
 
     // Read the current record
-    file_fcb->ranrec = record_num;
+    file_fcb->cpm_fcb.ranrec = record_num;
     if (cpm_f_readrand(AS_CPM_PTR(file_fcb)) != 0) {
       errno             = EIO;
       file_fcb->errored = true;

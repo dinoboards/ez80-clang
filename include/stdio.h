@@ -85,9 +85,22 @@ size_t fread(void *ptr, size_t size, size_t count, FILE *__restrict stream);
 
 size_t fwrite(const void *__restrict ptr, size_t size, size_t count, FILE *__restrict stream);
 
-long int ftell(FILE *stream) __attribute__((__warn_unused_result__));
+long ftell(FILE *stream) __attribute__((__warn_unused_result__));
 
-int fseek(FILE *stream, long int offset, int origin);
+/**
+ * @brief Reposition the file offset of the stream.
+ *
+ * The fseek function sets the file position indicator for the stream pointed to by stream.
+ * The new position, measured in bytes, is obtained by adding offset bytes to the position
+ * specified by origin. If origin is set to SEEK_SET, SEEK_CUR, or SEEK_END, the offset is
+ * relative to the start of the file, the current position indicator, or end-of-file, respectively.
+ *
+ * @param stream A pointer to a FILE object that identifies the stream.
+ * @param offset The number of bytes to offset from origin.
+ * @param origin The position from where offset is added. It can be SEEK_SET, SEEK_CUR, or SEEK_END.
+ * @return int Returns 0 on success, or a non-zero value on error.
+ */
+int fseek(FILE *stream, long offset, int origin);
 
 int fgetc(FILE *stream);
 #define getc(...) fgetc(__VA_ARGS__)

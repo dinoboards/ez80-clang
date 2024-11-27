@@ -1,13 +1,15 @@
 #include "include/io.h"
 #include <cpm.h>
+#include <errno.h>
 #include <stdio.h>
 
-int ferror(FILE *stream) {
+long ftell(FILE *stream) {
   FCB *file_fcb = (FCB *)stream;
 
   if (file_fcb == NULL || file_fcb->use == 0) {
-    return 1;
+    errno = EBADF;
+    return 0;
   }
 
-  return file_fcb->errored;
+  return file_fcb->rwptr;
 }

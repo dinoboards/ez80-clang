@@ -6,8 +6,8 @@
 
 int extract_filename_parts(const char *input, FCB *fcb) {
   // Initialize output buffers
-  fcb->drive = '\0';
-  memset(fcb->name, ' ', 8 + 3); // includes ext
+  fcb->cpm_fcb.drive = '\0';
+  memset(fcb->cpm_fcb.name, ' ', 8 + 3); // includes ext
 
   const char *ptr      = input;
   int         name_len = 0;
@@ -15,7 +15,7 @@ int extract_filename_parts(const char *input, FCB *fcb) {
 
   // Check for drive designation
   if (isalpha(ptr[0]) && ptr[1] == ':') {
-    fcb->drive = toupper(ptr[0]) - 'A' + 1;
+    fcb->cpm_fcb.drive = toupper(ptr[0]) - 'A' + 1;
     ptr += 2;
   }
 
@@ -23,7 +23,7 @@ int extract_filename_parts(const char *input, FCB *fcb) {
   while (*ptr && *ptr != '.' && name_len < 8) {
     if (!isalnum(*ptr))
       return -1; // Invalid character
-    fcb->name[name_len++] = toupper(*ptr);
+    fcb->cpm_fcb.name[name_len++] = toupper(*ptr);
     ptr++;
   }
 
@@ -35,7 +35,7 @@ int extract_filename_parts(const char *input, FCB *fcb) {
   while (*ptr && ext_len < 3) {
     if (!isalnum(*ptr))
       return -1; // Invalid character
-    fcb->ext[ext_len++] = toupper(*ptr);
+    fcb->cpm_fcb.ext[ext_len++] = toupper(*ptr);
     ptr++;
   }
 

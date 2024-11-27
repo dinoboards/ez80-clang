@@ -1,10 +1,9 @@
+#include "include/io.h"
 #include <cpm.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
-
-extern uint8_t buffer[SECSIZE];
 
 size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) {
   FCB   *file_fcb      = (FCB *)stream;
@@ -26,11 +25,11 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) {
     unsigned long record_num = file_fcb->rwptr / SECSIZE;
     unsigned long offset     = file_fcb->rwptr % SECSIZE;
 
-    memset(buffer, 0, SECSIZE);
+    memset(buffer, file_fcb->mode & _IOTEXT ? __STDIO_EOFMARKER : 0, SECSIZE);
 
     // Read the current record if it's not aligned to the start
     if (offset != 0 || bytes_written == 0) {
-      file_fcb->ranrec = record_num;
+      file_fcb->cpm_fcb.ranrec = record_num;
       cpm_f_readrand(AS_CPM_PTR(file_fcb));
     }
 
@@ -44,7 +43,7 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) {
     memcpy(buffer + offset, (const uint8_t *)ptr + bytes_written, bytes_to_copy);
 
     // Write the current record
-    file_fcb->ranrec = record_num;
+    file_fcb->cpm_fcb.ranrec = record_num;
     if (cpm_f_writerand(AS_CPM_PTR(file_fcb)) != 0) {
       errno             = EIO;
       file_fcb->errored = true;

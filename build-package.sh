@@ -38,9 +38,6 @@ function make_direct_tar() {
   mkdir -p ${CLANG_INCLUDE_DIR}
   mkdir -p ${CLANG_LS_DIR}
 
-  set -x
-  pwd
-
   cp ../../opt/ez80-clang/bin/* "${CLANG_BIN_DIR}"
   cp ../../../direct-shims/* ${CLANG_BIN_DIR}
   cp ../../../lib/* "${CLANG_LIB_DIR}"
@@ -52,7 +49,13 @@ function make_direct_tar() {
   cp ../../../install.sh .
 
   cd ..
-  tar -czvf ../../ez80-clang-${EZ80_CLANG_VERSION}.tar.gz ez80-clang-${EZ80_CLANG_VERSION}/*
+
+  if command -v pigz &> /dev/null; then
+    tar -cf - ez80-clang-${EZ80_CLANG_VERSION}/* | pigz  > ../../ez80-clang-${EZ80_CLANG_VERSION}.tar.gz
+  else
+    tar -czvf ../../ez80-clang-${EZ80_CLANG_VERSION}.tar.gz ez80-clang-${EZ80_CLANG_VERSION}/*
+  fi
+
 }
 
 make_direct_tar

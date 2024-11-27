@@ -8,8 +8,8 @@
 #define MBASE_CONST_VARIABLE(T, c) (*(T)(((uint24_t)cpm_mbase | c)))
 
 typedef char (*CPM_FCB_t)[];
-#define CPM_FCB    MBASE_CONST_VARIABLE(CPM_FCB_t, 0x005C)
-#define CPM_DMABUF MBASE_CONST_VARIABLE(CPM_FCB_t, 0x0080) /* Default DMA buffer address */
+#define CPM_SYS_FCB MBASE_CONST_VARIABLE(CPM_FCB_t, 0x005C)
+#define CPM_DMABUF  MBASE_CONST_VARIABLE(CPM_FCB_t, 0x0080) /* Default DMA buffer address */
 
 // assigned to the start of the 64k CPM page (0x030000)
 extern void const *const cpm_mbase;
@@ -559,6 +559,25 @@ extern cpm_f_error_t cpm_f_readrand(near_ptr_t fcb);
  */
 extern cpm_f_error_t cpm_f_writerand(near_ptr_t fcb);
 
+/**
+ * @brief Compute the size of a file.
+ *
+ * @details BDOS function 35 (F_SIZE) - Supported by CP/M 2 and later.
+ *
+ * Computes the size of a file by setting the random record count bytes of the FCB to the number of 128-byte records in the file.
+ *
+ * @note Under CP/M 2, the value returned has no meaning;
+ * the function does not distinguish between a zero-length file and one that does not exist at all.
+ * Under CP/M 3, returns 0xFF if there is an error (file not found, or CP/M 3 hardware error);
+ * otherwise, returns A=0.
+ *
+ * @param[in] fcb A pointer to the File Control Block (FCB).
+ * @return  * @return 0 for success, or an error code as described above.
+ *
+ *
+ */
+extern cpm_f_error_t cpm_f_size(near_ptr_t fcb);
+
 /* Size of CPM Sector */
 #define SECSIZE 128
 
@@ -575,29 +594,18 @@ extern cpm_f_error_t cpm_f_writerand(near_ptr_t fcb);
 #define __STDIO_BINARY    1  /* We should consider binary/text differences */
 #define __STDIO_CRLF      1  /* Automatically convert between CR and CRLF */
 
-typedef struct fcb {
+typedef struct cpm_fcb {
   // 36 bytes of standard FCB
-  uint8_t  drive;       /* drive code */
-  char     name[8];     /* file name */
-  char     ext[3];      /* file type */
-  uint8_t  extent;      /* file extent */
-  char     filler[2];   /* not used */
-  char     records;     /* number of records in present extent */
-  char     discmap[16]; /* CP/M disc map */
-  char     next_record; /* next record to read or write */
+  uint8_t  drive;       /* drive code 0*/
+  char     name[8];     /* file name 1*/
+  char     ext[3];      /* file type 9*/
+  uint8_t  extent;      /* file extent 12*/
+  char     filler[2];   /* not used 14*/
+  char     records;     /* number of records in present extent 15*/
+  char     discmap[16]; /* CP/M disc map 16 */
+  char     next_record; /* next record to read or write 32*/
   uint24_t ranrec;      /* random record number (24 bit no. ) */
-
-  /* Below here is used by the library */
-  // 7 bytes used by the library
-  unsigned long rwptr;   /* read/write pointer in bytes */
-  uint8_t       use;     /* use flag */
-  uint8_t       uid;     /* user id belonging to this file */
-  uint8_t       mode;    /* TEXT/BINARY discrimination */
-  uint8_t       flags;   /* access flags O_RDONLY | O_WRONLY | O_RDWR */
-  bool          errored; /* error number */
-  bool          eof;     /* end of file */
-
-} FCB;
+} CPM_FCB;
 
 #define CPM_ERR_OK               0
 #define CPM_ERR_DIR_FULL         1

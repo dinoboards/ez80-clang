@@ -21,30 +21,34 @@ FILE *fopen(const char *filename, const char *mode) {
   if (strcmp(mode, "r") == 0) {
     result          = cpm_f_open(AS_CPM_PTR(file_fcb));
     file_fcb->flags = O_RDONLY;
+    file_fcb->mode  = _IOTEXT;
+
   } else if (strcmp(mode, "r+") == 0) {
     result          = cpm_f_open(AS_CPM_PTR(file_fcb));
     file_fcb->flags = O_RDWR;
+    file_fcb->mode  = _IOTEXT;
 
   } else if (strcmp(mode, "w") == 0) {
     cpm_f_delete(AS_CPM_PTR(file_fcb));
     result          = cpm_f_make(AS_CPM_PTR(file_fcb));
     file_fcb->flags = O_WRONLY;
+    file_fcb->mode  = _IOTEXT;
 
-    // } else if (strcmp(mode, "a") == 0) {
-    //   result = cpm_f_open(AS_CPM_PTR(file_fcb));
-    //   if (result == 0xFF) {
-    //     result = cpm_f_make(AS_CPM_PTR(file_fcb));
-    //   }
-    //   // Move to the end of the file (simplified)
-    //   while (cpm_f_read(AS_CPM_PTR(file_fcb)) != 1);
+  } else if (strcmp(mode, "wb") == 0) {
+    cpm_f_delete(AS_CPM_PTR(file_fcb));
+    result          = cpm_f_make(AS_CPM_PTR(file_fcb));
+    file_fcb->flags = O_WRONLY;
+    file_fcb->mode  = 0;
+
+  } else if (strcmp(mode, "rb") == 0) {
+    result          = cpm_f_open(AS_CPM_PTR(file_fcb));
+    file_fcb->flags = O_RDONLY;
+    file_fcb->mode  = 0;
 
   } else {
     errno = EINVAL;
     return NULL; // Unsupported mode
   }
-
-  // for w, delete file, then call cpm_f_make
-  // for a, check if exists, then open using cpm_f_open and position at end, otherwise create using cpm_f_make
 
   if (result != CPM_ERR_OK) {
     errno = EIO;
