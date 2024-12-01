@@ -13,7 +13,7 @@ BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 CLEAN_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '/' '-' | tr -cd '[:alnum:]-')
 
 # Get the latest tag that matches the pattern vx.x.x
-LATEST_TAG=$(git describe --tags --match "v[0-9]*" --abbrev=0 2>/dev/null)
+LATEST_TAG=$(git tag -l 'v0.0.[0-9]*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
 
 # Get the current commit SHA
 CURRENT_SHA=$(git rev-parse HEAD)
@@ -37,4 +37,5 @@ else
   fi
 fi
 
+export LATEST_TAG
 export EZ80_CLANG_VERSION

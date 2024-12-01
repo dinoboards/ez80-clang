@@ -27,19 +27,13 @@ jobs:
           source ./version.sh
           echo "EZ80_CLANG_TOOLCHAIN_VERSION=$EZ80_CLANG_TOOLCHAIN_VERSION" >> $GITHUB_ENV
           echo "EZ80_CLANG_VERSION=$EZ80_CLANG_VERSION" >> $GITHUB_ENV
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: package clang and runtime
         run: |
           make download-llvm-release
           make
           make package
-
-      - name: zip-package
-        uses: actions/upload-artifact@v4
-        with:
-          name: ez80-clang-${{ env.EZ80_CLANG_VERSION }}
-          path: |
-            tmp/direct
 
       - name: Install GitHub CLI
         run: sudo apt-get install -y gh
@@ -49,10 +43,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "Last full release: $LAST_TAG"
+          echo "Last full release: $LATEST_TAG"
           RELEASE_NAME="Clang Pre Release ${{ env.EZ80_CLANG_VERSION }}"
-          CHANGELOG_URL="https://github.com/dinoboards/ez80-clang/compare/${LAST_TAG}...${{ github.sha }}"
+          CHANGELOG_URL="https://github.com/dinoboards/ez80-clang/compare/${LATEST_TAG}...${{ github.sha }}"
           gh release create "${{ env.EZ80_CLANG_VERSION }}" "ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz" --repo ${{ github.repository }} --title "$RELEASE_NAME" --prerelease --draft --notes "**Full Changelog**: $CHANGELOG_URL"
 
       - name: Create Release
@@ -61,7 +54,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}
-          PREV_TAG_NAME=$(git describe --tags --abbrev=0 ${TAG_NAME}^)
           RELEASE_NAME="Clang Release $TAG_NAME"
-          CHANGELOG_URL="https://github.com/dinoboards/ez80-clang/compare/${PREV_TAG_NAME}...${TAG_NAME}"
+          CHANGELOG_URL="https://github.com/dinoboards/ez80-clang/compare/${LATEST_TAG}...${TAG_NAME}"
           gh release create $TAG_NAME "ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz" --repo ${{ github.repository }} --title "$RELEASE_NAME" --prerelease --notes "**Full Changelog**: $CHANGELOG_URL"
