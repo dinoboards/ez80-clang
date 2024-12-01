@@ -66,29 +66,6 @@ endef
 
 .PHONY: all clean
 
-# $1 main lib dir
-# $2 variant lib dir
-define build_lib_variant =
-$(1)_DIR := $$(SRC_DIR)/$(1)
-$(1)_ASM_FILES := $$(wildcard $$($(1)_DIR)/*.asm)
-$(1)_C_FILES := $$(wildcard $$($(1)_DIR)/*.c)
-
-$(1)_$(2)_DIR := $$(SRC_DIR)/$(1)-$(2)
-$(1)_$(2)_ASM_FILES := $$(patsubst $$($(1)_DIR)/%.asm, $$($(1)_$(2)_DIR)/%.asm, $$($(1)_ASM_FILES))
-$(1)_$(2)_C_FILES := $$(patsubst $$($(1)_DIR)/%.c, $$($(1)_$(2)_DIR)/%.c, $$($(1)_C_FILES))
-$(1)_$(2)_S_FILES := $$($(1)_$(2)_C_FILES:.c=.s)
-$(1)_$(2)_O_FILES := $$($(1)_$(2)_ASM_FILES:.asm=.o) $$($(1)_$(2)_C_FILES:.asm=.o)
-$$($(1)_$(2)_DIR)/%.asm: $$($(1)_DIR)/%.asm
-	@mkdir -p $$($(1)_$(2)_DIR)
-	@echo -e '\t.assume\tadl = 1\n\n\tsection\t.text,"ax",@progbits\n\n\tinclude "$$<"' > $$@
-$$($(1)_$(2)_DIR)/%.c: $$($(1)_DIR)/%.c
-	@mkdir -p $$($(1)_$(2)_DIR)
-	@echo -e '\t#include "../$(1)/$$(notdir $$<)"' > $$@
-lib/lib$(1)-$(2).a: $$($(1)_$(2)_S_FILES) $$($(1)_$(2)_O_FILES)
-.SECONDARY: $$($(1)_$(2)_ASM_FILES)
-endef
-
-
 $(eval $(call build_lib,ez80))
 $(eval $(call build_lib,crt))
 $(eval $(call build_lib,crtexe))
@@ -99,9 +76,6 @@ $(eval $(call build_lib,io))
 $(eval $(call build_lib,ez80rc))
 $(eval $(call build_lib,v99x8-hdmi,--defsym ENABLE_DELAY=0))
 $(eval $(call build_lib,v99x8-standard,--defsym ENABLE_DELAY=1))
-
-$(eval $(call build_lib_variant,v99x8,hdmi))
-$(eval $(call build_lib_variant,v99x8,standard))
 
 EZ80_CLANG_VERSION := $(shell source ./version.sh && echo $$EZ80_CLANG_VERSION)
 TARGET := ez0-clang-$(EZ80_CLANG_VERSION).tar.gz
@@ -125,10 +99,11 @@ $(TARGET):
 
 package: $(TARGET)
 
-package-local: format all extract-llvm-release $(TARGET)
+package-local: format extract-llvm-release all $(TARGET)
 
 install:
 	@cd tmp/direct/ez80-clang-${EZ80_CLANG_VERSION} && ./install.sh
 
 format:
 	@./clang-format.sh
+
