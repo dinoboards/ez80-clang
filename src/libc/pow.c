@@ -1,32 +1,54 @@
-/************************************************************************/
-/*									*/
-/*			Copyright (C)1987-2008 by			*/
-/*		            Zilog, Inc.           			*/
-/*									*/
-/*		        San Jose, California     			*/
-/*									*/
-/************************************************************************/
+/*************************************************
+ *  Copyright (C) 1999-2008 by  Zilog, Inc.
+ *  All Rights Reserved
+ *************************************************/
+
+/*
+        computes a^b.
+        uses log and exp
+*/
 
 #include <errno.h>
 #include <math.h>
 
-double pow(double arg1, double arg2) {
-  float result;
-  long  temp;
+double pow(double base, double expnt) {
+  long n;
 
-  if (arg1 > 0.0) {
-    return expf(arg2 * log(arg1));
+  if (base == 0) {
+    if (expnt <= 0)
+      goto domain; // 0 to power <= 0
+    return 1.0;
   }
-  if (arg1 < 0.0) {
-    temp = arg2;
-    if (temp == arg2) {
-      result = expf(arg2 * log(-arg1));
-      return temp & 1 ? -result : result;
+
+  n = expnt;
+  if (n == expnt) {
+    // Integer exponent, do it with repeat multiplication
+    unsigned long bit    = 1;
+    double        result = 1.0;
+    double        pwr    = base;
+    if (n < 0) {
+      n   = -n;
+      pwr = 1.0 / pwr;
     }
-    errno = EDOM;
+
+    while (1) {
+      if (bit & n)
+        result *= pwr;
+      bit <<= 1;
+      if (bit > (unsigned long)n)
+        break;
+      pwr = pwr * pwr;
+    }
+    return result;
   }
-  if (arg2 <= 0.0) {
-    errno = EDOM;
-  }
-  return 0.0;
+
+  if (base < 0.)
+    goto domain; // negative number to non-integer power
+
+  float f = log(base);
+  return (exp(expnt * f));
+
+domain:
+  errno = EDOM;
+  return (0.0);
 }

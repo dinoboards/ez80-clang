@@ -23,10 +23,10 @@
 #define sqrt2 1.41421356237310
 #define maxf  10000
 
-double exp(double arg) {
-  double fraction;
-  double temp1, temp2, xsq;
-  int    ent;
+float expf(float arg) {
+  float fraction;
+  float temp1, temp2, xsq;
+  int   ent;
 
   if (arg == 0.0) {
     return 1.0;
@@ -44,5 +44,7 @@ double exp(double arg) {
   xsq      = fraction * fraction;
   temp1    = ((p2 * xsq + p1) * xsq + p0) * fraction;
   temp2    = ((1.0 * xsq + q2) * xsq + q1) * xsq + q0;
-  return ldexp(sqrt2 * (temp2 + temp1) / (temp2 - temp1), ent);
+  return ldexpf(sqrt2 * (temp2 + temp1) / (temp2 - temp1), ent);
 }
+
+double exp(double) __attribute__((alias("expf")));

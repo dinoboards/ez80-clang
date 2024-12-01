@@ -21,3 +21,5 @@ double floor(double d) {
   }
   return (d);
 }
+
+float floorf(float) __attribute__((alias("floor")));
