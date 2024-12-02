@@ -55,12 +55,5 @@ int vsnprintf(char *buffer, size_t bufsz, char const *format, va_list vlist) {
   int const      n  = npf_vpprintf(pc, &bufputc_ctx, format, vlist);
   pc('\0', &bufputc_ctx);
 
-  if (bufsz && (n >= (int)bufsz)) {
-    buffer[0] = '\0';
-  }
-  if (bufsz && (n >= (int)bufsz)) {
-    buffer[bufsz - 1] = '\0';
-  }
-
   return n;
 }
