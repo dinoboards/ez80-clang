@@ -55,14 +55,16 @@ _exit	equ	$200000
 __clear_mem:
 	xor	a
 	ld	d, a
+
 .loop:
+	ld	a, b
+	or	c
+	ret	z
+
 	ld	(HL), d
 	inc	hl
 	dec	bc
-	ld	a, b
-	or	c
-	jr	nz, .loop
-	ret
+	jr	.loop
 
 
 	; TODO also move to there own file
