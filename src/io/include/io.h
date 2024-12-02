@@ -34,6 +34,6 @@ static inline void claim_fcb(FCB *fcb) { fcb->use = 1; }
 #define _IOTEXT   64
 #define _IOSTRING 128
 
-extern uint8_t buffer[SECSIZE];
+extern uint8_t ___fbuffer[SECSIZE];
 
 #endif

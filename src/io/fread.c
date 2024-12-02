@@ -21,7 +21,7 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
     return 0;
   }
 
-  cpm_f_dmaoff(AS_CPM_PTR(buffer));
+  cpm_f_dmaoff(AS_CPM_PTR(___fbuffer));
 
   while (bytes_read < total_bytes) {
     // Calculate the current record and offset within the record
@@ -43,8 +43,8 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
       bytes_to_copy = total_bytes - bytes_read;
     }
 
-    // Copy the bytes from the buffer to the destination
-    memcpy((uint8_t *)ptr + bytes_read, buffer + offset, bytes_to_copy);
+    // Copy the bytes from the ___fbuffer to the destination
+    memcpy((uint8_t *)ptr + bytes_read, ___fbuffer + offset, bytes_to_copy);
     bytes_read += bytes_to_copy;
     file_fcb->rwptr += bytes_to_copy;
   }

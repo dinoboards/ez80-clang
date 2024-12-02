@@ -18,14 +18,14 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) {
   if (file_fcb->flags == O_RDONLY)
     return 0;
 
-  cpm_f_dmaoff(AS_CPM_PTR(buffer));
+  cpm_f_dmaoff(AS_CPM_PTR(___fbuffer));
 
   while (bytes_written < total_bytes) {
     // Calculate the current record and offset within the record
     unsigned long record_num = file_fcb->rwptr / SECSIZE;
     unsigned long offset     = file_fcb->rwptr % SECSIZE;
 
-    memset(buffer, file_fcb->mode & _IOTEXT ? __STDIO_EOFMARKER : 0, SECSIZE);
+    memset(___fbuffer, file_fcb->mode & _IOTEXT ? __STDIO_EOFMARKER : 0, SECSIZE);
 
     // Read the current record if it's not aligned to the start
     if (offset != 0 || bytes_written == 0) {
@@ -39,8 +39,8 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) {
       bytes_to_copy = total_bytes - bytes_written;
     }
 
-    // Copy the bytes from the source to the buffer
-    memcpy(buffer + offset, (const uint8_t *)ptr + bytes_written, bytes_to_copy);
+    // Copy the bytes from the source to the ___fbuffer
+    memcpy(___fbuffer + offset, (const uint8_t *)ptr + bytes_written, bytes_to_copy);
 
     // Write the current record
     file_fcb->cpm_fcb.ranrec = record_num;

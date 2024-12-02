@@ -32,7 +32,7 @@ int fseek(FILE *stream, long offset, int origin) {
     file_fcb->rwptr = (file_fcb->cpm_fcb.ranrec * 128);
 
     if ((file_fcb->mode & _IOTEXT) && (file_fcb->rwptr >= 0)) {
-      cpm_f_dmaoff(AS_CPM_PTR(buffer));
+      cpm_f_dmaoff(AS_CPM_PTR(___fbuffer));
 
       file_fcb->cpm_fcb.ranrec--;
       if (cpm_f_readrand(AS_CPM_PTR(file_fcb)) != 0) {
@@ -42,7 +42,7 @@ int fseek(FILE *stream, long offset, int origin) {
       }
 
       int cnt = 127;
-      while (cnt > 0 && buffer[cnt] == __STDIO_EOFMARKER)
+      while (cnt > 0 && ___fbuffer[cnt] == __STDIO_EOFMARKER)
         cnt--;
 
       cnt = 127 - cnt;
