@@ -7,9 +7,21 @@
 
 #define MBASE_CONST_VARIABLE(T, c) (*(T)(((uint24_t)cpm_mbase | c)))
 
-typedef char (*CPM_FCB_t)[];
-#define CPM_SYS_FCB MBASE_CONST_VARIABLE(CPM_FCB_t, 0x005C)
-#define CPM_DMABUF  MBASE_CONST_VARIABLE(CPM_FCB_t, 0x0080) /* Default DMA buffer address */
+typedef struct cpm_fcb {
+  // 36 bytes of standard FCB
+  uint8_t  drive;       /* drive code 0*/
+  char     name[8];     /* file name 1*/
+  char     ext[3];      /* file type 9*/
+  uint8_t  extent;      /* file extent 12*/
+  char     filler[2];   /* not used 14*/
+  char     records;     /* number of records in present extent 15*/
+  char     discmap[16]; /* CP/M disc map 16 */
+  char     next_record; /* next record to read or write 32*/
+  uint24_t ranrec;      /* random record number (24 bit no. ) */
+} CPM_FCB;
+
+#define CPM_SYS_FCB MBASE_CONST_VARIABLE(CPM_FCB, 0x005C)
+#define CPM_DMABUF  MBASE_CONST_VARIABLE(CPM_FCB, 0x0080) /* Default DMA buffer address */
 
 // assigned to the start of the 64k CPM page (0x030000)
 extern void const *const cpm_mbase;
@@ -593,19 +605,6 @@ extern cpm_f_error_t cpm_f_size(near_ptr_t fcb);
 #define __STDIO_EOFMARKER 26 /* End of file marker (^Z) */
 #define __STDIO_BINARY    1  /* We should consider binary/text differences */
 #define __STDIO_CRLF      1  /* Automatically convert between CR and CRLF */
-
-typedef struct cpm_fcb {
-  // 36 bytes of standard FCB
-  uint8_t  drive;       /* drive code 0*/
-  char     name[8];     /* file name 1*/
-  char     ext[3];      /* file type 9*/
-  uint8_t  extent;      /* file extent 12*/
-  char     filler[2];   /* not used 14*/
-  char     records;     /* number of records in present extent 15*/
-  char     discmap[16]; /* CP/M disc map 16 */
-  char     next_record; /* next record to read or write 32*/
-  uint24_t ranrec;      /* random record number (24 bit no. ) */
-} CPM_FCB;
 
 #define CPM_ERR_OK               0
 #define CPM_ERR_DIR_FULL         1
