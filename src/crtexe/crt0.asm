@@ -79,12 +79,6 @@ __clear_mem:
 	jr	.loop
 
 
-	; TODO also move to there own file
-__get_sps:
-	; LD	A,-1
-	; LD	HL, -1
-	ret
-
 	section	bss_crt, "ax", @progbits
 	global	_cpm_mbase
 _cpm_mbase:

@@ -8,7 +8,7 @@
 
 __get_sps:
 	ld	hl, 0
-	ADD.S	hl, sp  ;//Is this safe - ius the definition of the upper byte perhaps undefined.
+	ADD.S	hl, sp  ;//Is this safe - is the definition of the upper byte perhaps undefined.
 	ld	de, (_cpm_mbase)
 	add	hl, de
 	ret
