@@ -31,9 +31,21 @@ __start:
 	ld	a, MB
 	ld	(_cpm_mbase+2), a
 
-	jp	_main
+	pop	hl				; discard return address
 
-_exit	equ	$200000
+	call	_main
+
+__crt_exit:
+	push	hl				; save return value
+	call	_run_atexit_funcs
+	pop	hl
+
+	jp	$200000
+
+_exit:
+	pop	hl				; discard return address
+	pop	hl				; retrieve return value
+	jr	__crt_exit
 
 
 	.extern	_length_of_bss
