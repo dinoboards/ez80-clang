@@ -24,3 +24,5 @@ int remove(const char *filename) {
 
   return 0; // Success
 }
+
+int unlink(const char *pathname) __attribute__((alias("remove")));
