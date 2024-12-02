@@ -11,7 +11,7 @@
 ;--------------------------------------------------------------
 
 	.assume	adl=1
-	extern _main
+	extern	_main
 	section	.header_adl, "ax", @progbits
 
 ; .ifdef CPM_HEADER
@@ -25,20 +25,51 @@
 	global	__get_sps
 
 __start:
-	; TODO: do we need to also clear bss
+	call	.clear_bss
+	call	.clear_bss_z80
+
 	ld	a, MB
 	ld	(_cpm_mbase+2), a
 
 	jp	_main
 
-_exit	equ	0x200000
+_exit	equ	$200000
+
+
+	.extern	_length_of_bss
+	.extern	_start_of_bss
+
+.clear_bss:
+	ld	hl, _start_of_bss
+	ld	bc, _length_of_bss
+	jp	__clear_mem
+
+	.extern	_length_of_bss_z80
+	.extern	_start_of_bss_z80
+
+.clear_bss_z80:
+	ld	hl, _start_of_bss_z80
+	ld	bc, _length_of_bss_z80
+	jp	__clear_mem
+
+__clear_mem:
+	xor	a
+	ld	d, a
+.loop:
+	ld	(HL), d
+	inc	hl
+	dec	bc
+	ld	a, b
+	or	c
+	jr	nz, .loop
+	ret
 
 
 	; TODO also move to there own file
 __get_sps:
 	; LD	A,-1
 	; LD	HL, -1
-	RET
+	ret
 
 	section	bss_crt, "ax", @progbits
 	global	_cpm_mbase

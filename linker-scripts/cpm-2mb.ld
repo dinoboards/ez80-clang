@@ -69,9 +69,12 @@ SECTIONS
     _length_of_bss = _end_of_bss - _start_of_bss;
 
     .bss64K(NOLOAD) : {
+    _start_of_bss_z80 = . ;
         *(.bss64k)
         *(.bss_z80)
     } > RAM64K
+    _end_of_bss_z80 = . ;
+    _length_of_bss_z80 = _end_of_bss_z80 - _start_of_bss_z80;
 
     .comment(NOLOAD) : { *(.comment) }
 }
