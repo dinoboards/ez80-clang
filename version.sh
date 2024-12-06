@@ -30,10 +30,11 @@ else
   # Check if the current commit is tagged with a version
   if [ "$LATEST_TAG_SHA" = "$CURRENT_SHA" ]; then
     EZ80_CLANG_VERSION="$LATEST_TAG"
-  elif [ "$BRANCH_NAME" = "main" ]; then
-    EZ80_CLANG_VERSION="${LATEST_TAG}-rc.${RC_NUMBER}"
   else
-    EZ80_CLANG_VERSION="${LATEST_TAG}-${CLEAN_BRANCH_NAME}.${RC_NUMBER}"
+  # elif [ "$BRANCH_NAME" = "main" ]; then
+    EZ80_CLANG_VERSION="${LATEST_TAG}-rc.${RC_NUMBER}"
+  # else
+  #   EZ80_CLANG_VERSION="${LATEST_TAG}-${CLEAN_BRANCH_NAME}.${RC_NUMBER}"
   fi
 fi
 
