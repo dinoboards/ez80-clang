@@ -57,6 +57,15 @@ extern uint8_t ez80_io_bus_cycles_get(void);
 extern void ez80_mem_bus_cycles_set(const uint8_t cycles);
 
 /**
+ * @brief Configure the eZ80 for RC's IO access bus configuration and timing (CS2)
+ *
+ * Invokes firmware function A=0, B=9 SYSUTL_IOTM_SET
+ *
+ * @param cycles the number of cycles or wait states to set
+ */
+extern void ez80_io_bus_cycles_set(const uint8_t cycles);
+
+/**
  * @brief Configure the eZ80 for RC's 1st extended linear memory bus configuration and timing (CS0)
  *
  * Invokes firmware function A=0, B=1 SYSUTL_MEM0TM_SET
