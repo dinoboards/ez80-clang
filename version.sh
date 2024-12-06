@@ -43,8 +43,5 @@ else
   fi
 fi
 
-echo "LATEST_TAG=${LATEST_TAG}"
-echo "EZ80_CLANG_VERSION=${EZ80_CLANG_VERSION}"
-
 export LATEST_TAG
 export EZ80_CLANG_VERSION

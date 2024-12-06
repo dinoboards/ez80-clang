@@ -5,8 +5,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define MBASE_CONST_VARIABLE(T, c) (*(T)(((uint24_t)cpm_mbase | c)))
-
 typedef struct cpm_fcb {
   // 36 bytes of standard FCB
   uint8_t  drive;       /* drive code 0*/
@@ -20,8 +18,8 @@ typedef struct cpm_fcb {
   uint24_t ranrec;      /* random record number (24 bit no. ) */
 } CPM_FCB;
 
-#define CPM_SYS_FCB MBASE_CONST_VARIABLE(CPM_FCB, 0x005C)
-#define CPM_DMABUF  MBASE_CONST_VARIABLE(CPM_FCB, 0x0080) /* Default DMA buffer address */
+extern CPM_FCB CPM_SYS_FCB; // 0x30005C;
+extern CPM_FCB CPM_DMABUF;  // 0x300080;
 
 // assigned to the start of the 64k CPM page (0x030000)
 extern void const *const cpm_mbase;
