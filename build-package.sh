@@ -5,7 +5,7 @@ set -e
 SCRIPT_DIR=$(dirname "$0")
 SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
 
-source "$SCRIPT_DIR/version.sh"  "${SCRIPT_DIR}"
+source "$SCRIPT_DIR/version.sh"
 
 export DOCKER_BUILDKIT=1
 

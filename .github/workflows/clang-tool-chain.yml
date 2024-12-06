@@ -24,12 +24,7 @@ jobs:
       - name: Source version.sh and set environment variables
         id: set-env-vars
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
-            TAG_NAME=${GITHUB_REF#refs/tags/}
-            source ./version.sh $TAG_NAME
-          else
-            source ./version.sh
-          fi
+          source ./version.sh
           echo "EZ80_CLANG_TOOLCHAIN_VERSION=$EZ80_CLANG_TOOLCHAIN_VERSION" >> $GITHUB_ENV
           echo "EZ80_CLANG_VERSION=$EZ80_CLANG_VERSION" >> $GITHUB_ENV
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV

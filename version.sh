@@ -6,6 +6,7 @@ export EZ80_CLANG_TOOLCHAIN_CACHE_FROM=""
 
 EZ80_CLANG_VERSION="0.0.0"
 
+
 # Get the current branch name
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 
@@ -18,14 +19,13 @@ LATEST_TAG=$(git tag -l 'v0.0.[0-9]*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | so
 # Get the current commit SHA
 CURRENT_SHA=$(git rev-parse HEAD)
 
-# if $1 is not empty, assume its the EZ80_CLANG_VERSION
-if [ -n "$1" ]; then
-  EZ80_CLANG_VERSION="$1"
-
-elif [ -z "$GITHUB_ACTIONS" ]; then
+if [ -z "$GITHUB_ACTIONS" ]; then
   TIME=$(date +"%Y%m")
   USER=${SUDO_USER:-$USER}
   EZ80_CLANG_VERSION="${LATEST_TAG}-${USER}.${TIME}"
+
+elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
+  EZ80_CLANG_VERSION="${GITHUB_REF#refs/tags/}"
 
 else
   RC_NUMBER="${GITHUB_RUN_NUMBER}"
