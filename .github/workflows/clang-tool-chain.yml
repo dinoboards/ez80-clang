@@ -35,18 +35,14 @@ jobs:
           make
           make package
 
+      - name: zip-package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz
+          path: ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz
+
       - name: Install GitHub CLI
         run: sudo apt-get install -y gh
-
-      - name: Create Pre Release
-        if: github.event_name == 'push'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Last full release: $LATEST_TAG"
-          RELEASE_NAME="Clang Pre Release ${{ env.EZ80_CLANG_VERSION }}"
-          CHANGELOG_URL="https://github.com/dinoboards/ez80-clang/compare/${LATEST_TAG}...${{ github.sha }}"
-          gh release create "${{ env.EZ80_CLANG_VERSION }}" "ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz" --repo ${{ github.repository }} --title "$RELEASE_NAME" --prerelease --draft --notes "**Full Changelog**: $CHANGELOG_URL"
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
