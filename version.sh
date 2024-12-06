@@ -18,10 +18,15 @@ LATEST_TAG=$(git tag -l 'v0.0.[0-9]*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | so
 # Get the current commit SHA
 CURRENT_SHA=$(git rev-parse HEAD)
 
-if [ -z "$GITHUB_ACTIONS" ]; then
+# if $1 is not empty, assume its the EZ80_CLANG_VERSION
+if [ -n "$1" ]; then
+  EZ80_CLANG_VERSION="$1"
+
+elif [ -z "$GITHUB_ACTIONS" ]; then
   TIME=$(date +"%Y%m")
   USER=${SUDO_USER:-$USER}
   EZ80_CLANG_VERSION="${LATEST_TAG}-${USER}.${TIME}"
+
 else
   RC_NUMBER="${GITHUB_RUN_NUMBER}"
   # Get the SHA of the latest tag
@@ -37,6 +42,9 @@ else
   #   EZ80_CLANG_VERSION="${LATEST_TAG}-${CLEAN_BRANCH_NAME}.${RC_NUMBER}"
   fi
 fi
+
+echo "LATEST_TAG=${LATEST_TAG}"
+echo "EZ80_CLANG_VERSION=${EZ80_CLANG_VERSION}"
 
 export LATEST_TAG
 export EZ80_CLANG_VERSION

@@ -24,22 +24,22 @@ jobs:
       - name: Source version.sh and set environment variables
         id: set-env-vars
         run: |
-          source ./version.sh
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+            source ./version.sh $TAG_NAME
+          else
+            source ./version.sh
+          fi
           echo "EZ80_CLANG_TOOLCHAIN_VERSION=$EZ80_CLANG_TOOLCHAIN_VERSION" >> $GITHUB_ENV
           echo "EZ80_CLANG_VERSION=$EZ80_CLANG_VERSION" >> $GITHUB_ENV
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+          echo VERSION: $EZ80_CLANG_VERSION
 
       - name: package clang and runtime
         run: |
           make download-llvm-release
           make
           make package
-
-      - name: zip-package
-        uses: actions/upload-artifact@v4
-        with:
-          name: ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz
-          path: ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz
 
       - name: Install GitHub CLI
         run: sudo apt-get install -y gh
