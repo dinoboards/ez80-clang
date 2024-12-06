@@ -35,11 +35,14 @@ jobs:
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
           echo VERSION: $EZ80_CLANG_VERSION
 
+      - name: download llvm for ez80
+        run: make download-llvm-release
+
+      - name: compile runtime
+        run: make
+
       - name: package clang and runtime
-        run: |
-          make download-llvm-release
-          make
-          make package
+        run: make package
 
       - name: Install GitHub CLI
         run: sudo apt-get install -y gh
