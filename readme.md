@@ -46,13 +46,34 @@ Your `~/.bashrc` file will be updated to source this file.
 
 ## Building an CP/M eZ80 Application
 
-Once installed, you can use the `ez80-cc` wrapper command to compile, assemble and link an application
+Once installed, you can use the `ez80-cc` wrapper command to compile, assemble and link an application.
 
 eg:
 
 ```
 ez80-cc HELOWRLD.COM hello-world.c
 ```
+
+## ez80-cc
+
+Usage: ez80-cc [--output-dir dir] [--iquote dir] [--optimise type] [output] source-files...
+Options:
+  --output-dir dir  Specify the output directory for the binary file.
+  --iquote dir      Specify an additional include directory for the compiler.
+  --optimise type   Specify the optimisation type (size or speed).
+  --lib type        Specify the library: v99x8-standard(default) or v99x8-hdmi.
+  --mem-model type  Specify the memory model: 64KB (default) or 2MB.
+  --help            Display this help message.
+
+Arguments:
+  output            The name of the output .com file. If not supplied,
+                    the name is inferred from the name of the first source-file.
+  source-files      The input files to be compiled or assembled. Must be
+                    .asm or .c files
+
+* 2MB files should have extension of .EXE to indicate non standard CP/M application.
+
+For loading and executing EXE files, see within the `ez80-for-RC` github repo, the `EXE.COM` application: [https://github.com/dinoboards/ez80-for-rc/tree/main/apps/exe](https://github.com/dinoboards/ez80-for-rc/tree/main/apps/exe)
 
 ## Building
 
