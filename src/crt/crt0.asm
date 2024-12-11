@@ -17,10 +17,25 @@
 
 	section	.header_z80, "ax", @progbits
 
-; .ifdef CPM_HEADER
-	jp	__start & $FFFF
-	; TODO ADD A HEADER HERE
-; .endif
+	; detect if running on eZ80
+	ld	hl, $0040
+	ld	ix, $0000
+
+	lea	hl, ix+0
+
+	ld	a, l
+	or	a
+	jr	z, __start
+_z80:
+
+	ld	c, 9			; print string
+	ld	de, require_eZ80 & $FFFF
+	call	5			; BDOS
+	jp	0
+
+require_eZ80:
+	defm	"This program requires an eZ80 CPU."
+	defb	13, 10, '$'
 
 	section	.startup_z80, "ax", @progbits
 	global	__start
