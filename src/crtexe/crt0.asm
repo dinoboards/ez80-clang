@@ -1,12 +1,6 @@
 ;--------------------------------------------------------------
-;
-;	C RUNTIME FUNCTION
-;	For the eZ80 Clang cross compiler
-;
-;  Original file source: https://github.com/CE-Programming/toolchain
-;  License: https://github.com/CE-Programming/toolchain?tab=LGPL-3.0-1-ov-file
-;
-; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
+; Custom startup code for 'EXE' programs
+; Expected to be loaded via EXE.COM on CP/M
 ;
 ;--------------------------------------------------------------
 
@@ -14,10 +8,10 @@
 	extern	_main
 	section	.header_adl, "ax", @progbits
 
-; .ifdef CPM_HEADER
 	jp	__start
-	; TODO ADD A HEADER HERE
-; .endif
+
+; TODO - add a header to the EXE file
+	ds	16		; reserve 16 bytes for the header
 
 	section	.startup_adl, "ax", @progbits
 	global	__start
