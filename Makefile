@@ -107,3 +107,5 @@ install:
 format:
 	@./clang-format.sh
 
+doc:
+	@doxygen Doxyfile
