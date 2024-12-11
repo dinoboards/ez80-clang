@@ -27,14 +27,46 @@ typedef struct {
 
 __BEGIN_DECLS
 
-void malloc_init(size_t stack_reserved);
+/**
+ * @brief Initializes the malloc system with a reserved stack size.
+ *
+ * @param heap_size The size of the heap to reserve.
+ *
+ * The heap is allocated from after the BSS section and grows upwards.
+ */
+void malloc_init(size_t heap_size);
 
+/**
+ * @brief Allocates memory for an array of nmemb elements of size bytes each and returns a pointer to the allocated memory.
+ *
+ * @param nmemb Number of elements to allocate.
+ * @param size Size of each element.
+ * @return void* Pointer to the allocated memory.
+ */
 void *calloc(size_t nmemb, size_t size) __attribute__((malloc));
 
+/**
+ * @brief Allocates size bytes and returns a pointer to the allocated memory.
+ *
+ * @param size Number of bytes to allocate.
+ * @return void* Pointer to the allocated memory.
+ */
 void *malloc(size_t size) __attribute__((malloc));
 
+/**
+ * @brief Changes the size of the memory block pointed to by ptr to size bytes.
+ *
+ * @param ptr Pointer to the memory block to be reallocated.
+ * @param size New size of the memory block.
+ * @return void* Pointer to the reallocated memory.
+ */
 void *realloc(void *ptr, size_t size) __attribute__((warn_unused_result));
 
+/**
+ * @brief Frees the memory space pointed to by ptr.
+ *
+ * @param ptr Pointer to the memory to be freed.
+ */
 void free(void *ptr) __NOEXCEPT;
 
 double atof(const char *nptr) __attribute__((nonnull(1)));
