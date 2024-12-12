@@ -30,11 +30,6 @@ typedef void *FILE;
 
 __BEGIN_DECLS
 
-/* weak user-defined functions */
-char inchar(void);
-
-void outchar(char character);
-
 /**
  * @brief Opens a file.
  *
@@ -69,14 +64,61 @@ void outchar(char character);
  */
 FILE *fopen(const char *__restrict filename, const char *__restrict mode);
 
+/**
+ * @brief Closes a file.
+ *
+ * The fclose function closes the file associated with the given stream and
+ * disassociates it. Any buffered output is written to the file.
+ *
+ * @param stream The file stream to be closed.
+ *
+ * @return 0 on success, EOF on error.
+ */
 int fclose(FILE *stream);
 
+/**
+ * @brief Flushes a file stream.
+ *
+ * The fflush function flushes the output buffer of a stream. If the stream is
+ * an output stream or update stream, the function writes any buffered data to
+ * the file.
+ *
+ * @param stream The file stream to be flushed.
+ *
+ * @return 0 on success, EOF on error.
+ */
 int fflush(FILE *stream);
 
+/**
+ * @brief Checks for a file error.
+ *
+ * The ferror function tests the error indicator for the given stream.
+ *
+ * @param stream The file stream to be checked.
+ *
+ * @return Non-zero if the error indicator is set, 0 otherwise.
+ */
 int ferror(FILE *stream);
 
+/**
+ * @brief Checks for end-of-file.
+ *
+ * The feof function tests the end-of-file indicator for the given stream.
+ *
+ * @param stream The file stream to be checked.
+ *
+ * @return Non-zero if the end-of-file indicator is set, 0 otherwise.
+ */
 int feof(FILE *stream);
 
+/**
+ * @brief Clears error indicators.
+ *
+ * The clearerr function clears the end-of-file and error indicators for the
+ * given stream.
+ *
+ * @param stream The file stream for which to clear the indicators.
+ */
 void clearerr(FILE *stream);
 
 int fputs(const char *__restrict str, FILE *__restrict stream);
@@ -121,6 +163,22 @@ int putchar(int character);
 
 int puts(const char *str);
 
+/**
+ * @brief Sends formatted output to stdout.
+ *
+ * The printf function sends formatted output to stdout using the format string
+ * specified. The format string can contain format specifiers that are replaced
+ * by the values specified in subsequent arguments.
+ *
+ * @param format The format string that specifies how subsequent arguments are
+ * converted for output.
+ * @param ... Additional arguments specifying the data to be printed according
+ * to the format string.
+ *
+ * @return The number of characters printed (excluding the null byte used to end
+ * output to strings). On failure, a negative number is returned.
+ *
+ */
 int printf(const char *__restrict format, ...) __attribute__((format(__printf__, 1, 2)));
 
 int vprintf(const char *__restrict format, va_list va) __attribute__((format(__printf__, 1, 0)));
@@ -141,7 +199,26 @@ typedef size_t rsize_t;
 
 char *gets_s(char *__restrict str, rsize_t n);
 int   scanf(const char *format, ...);
-int   sscanf(const char *s, const char *format, ...);
+
+/**
+ * @brief Reads formatted input from a string.
+ *
+ * The sscanf function reads data from the null-terminated string `string` and
+ * stores them according to the format string `fmt` into the locations pointed
+ * to by the additional arguments.
+ *
+ * @param string The null-terminated string to read data from.
+ * @param fmt The format string that specifies how to interpret the input.
+ * @param ... Pointers to variables where the converted values are stored.
+ *
+ * @return The number of input items successfully matched and assigned. If a
+ * matching failure occurs before the first input item is assigned, the function
+ * returns EOF.
+ *
+ * @note This function is part of the C standard library.
+ */
+int sscanf(const char *s, const char *format, ...);
+
 int   fscanf(FILE *fp, const char *fmt, ...);
 FILE *freopen(const char *__restrict filename, const char *__restrict mode, FILE *stream);
 int   ungetc(int c, FILE *stream);

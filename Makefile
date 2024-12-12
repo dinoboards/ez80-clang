@@ -1,4 +1,4 @@
-MAKEFLAGS += --no-builtin-rules
+MAKEFLAGS += --no-builtin-rules -B
 SHELL=/bin/bash
 BASH_ENV=~/.ez80-clang
 BASH_ENV=version.sh
