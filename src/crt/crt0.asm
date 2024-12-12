@@ -44,7 +44,9 @@ require_eZ80:
 	global	_cpm_mbase
 
 __start:
-	ld	((__restore_sps_onexit+1)&$FFFF), sp	; Save SPS stack
+	ld	((__restore_sps_onexit+1) & $FFFF), sp	; Save SPS stack
+
+	call.lil	.bss_init
 
 	; SAVE DEFAULT DISC
 	ld	c, 25
@@ -117,27 +119,54 @@ _exit:
 	section	code_crt_init, "ax", @progbits
 
 crt0_init:
-	.extern	_length_of_bss
-	.extern	_start_of_bss
-
-.clear_bss:
-	ld	hl, _start_of_bss
-	ld	bc, _length_of_bss
-
-	xor	a
-	ld	d, a
-.loop:
-	ld	(HL), d
-	inc	hl
-	dec	bc
-	ld	a, b
-	or	c
-	jr	nz, .loop
 
 	ld	a, MB
 	ld	(_cpm_mbase+2), a
 
 	section	code_crt_init_exit, "ax", @progbits
+	ret
+
+	.extern _on_chip_source
+	.extern _start_of_on_chip
+	.extern _length_of_on_chip
+.bss_init:
+.copy_text_on_chip:
+	ld	bc, _length_of_on_chip
+	ld	a, b
+	or	c
+	jr	z, .clear_bss
+	ld	hl, _on_chip_source
+	ld	de, _start_of_on_chip
+	ldir
+
+	.extern	_length_of_bss
+	.extern	_start_of_bss
+	.extern	_length_of_bss_on_chip
+	.extern	_start_of_bss_on_chip
+
+.clear_bss:
+	ld	hl, _start_of_bss
+	ld	bc, _length_of_bss
+	call	.clear_section
+
+	ld	hl, _start_of_bss_on_chip
+	ld	bc, _length_of_bss_on_chip
+	call	.clear_section
+	ret.l
+
+.clear_section:
+	xor	a
+	ld	d, a
+	jr	.test_clear
+.loop:
+	ld	(HL), d
+	inc	hl
+	dec	bc
+
+.test_clear:
+	ld	a, b
+	or	c
+	jr	nz, .loop
 	ret
 
 	section	code_crt_exit, "ax", @progbits

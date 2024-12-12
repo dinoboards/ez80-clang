@@ -263,7 +263,6 @@ void abort(void) __NOEXCEPT __attribute__((noreturn));
  */
 int atexit(void (*)(void)) __NOEXCEPT;
 
-
 /**
  * @brief Registers a function to be called at normal program termination.
  *
@@ -276,7 +275,6 @@ int atexit(void (*)(void)) __NOEXCEPT;
  * @return Zero on success, or a non-zero value on error.
  */
 int on_exit(void (*)(int, void *), void *) __NOEXCEPT;
-
 
 /**
  * @brief Causes normal program termination.
@@ -297,7 +295,6 @@ void exit(int) __NOEXCEPT __attribute__((noreturn));
  * @return Zero on success, or a non-zero value on error.
  */
 int at_quick_exit(void (*)(void)) __NOEXCEPT;
-
 
 /**
  * @brief Causes quick program termination.

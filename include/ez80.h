@@ -53,4 +53,26 @@ typedef uint16_t near_ptr_t;
  */
 extern near_ptr_t as_near_ptr_safe(const void *address, const uint8_t mbase, const char *file, const int line);
 
+/**
+ * @brief storage modifier to place variable in the eZ80's on-chip RAM.
+ *
+ * The variable will be initialised to 0.
+ *
+ */
+#define __bss_on_chip __attribute__((section(".bss_on_chip")))
+
+/**
+ * @brief storage modifier to place variable in the eZ80's on-chip RAM.
+ *
+ * The variable will be initialised as specified.
+ *
+ */
+#define __data_on_chip __attribute__((section(".data_on_chip")))
+
+/*
+ * @brief function modifier to copy function into the eZ80's on-chip RAM
+ * and then execute from there
+ */
+#define __func_on_chip __attribute__((section(".text_on_chip")))
+
 #endif

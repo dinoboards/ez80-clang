@@ -19,6 +19,8 @@
 	global	__get_sps
 
 __start:
+	call	.init_text_on_chip
+	call	.clear_bss_on_chip
 	call	.clear_bss
 	call	.clear_bss_z80
 
@@ -42,18 +44,39 @@ _exit:
 	jr	__crt_exit
 
 
+.init_text_on_chip:
+	.extern _on_chip_source
+	.extern _start_of_on_chip
+	.extern _length_of_on_chip
+	ld	bc, _length_of_on_chip
+	ld	a, b
+	or	c
+	ret	z
+	ld	hl, _on_chip_source
+	ld	de, _start_of_on_chip
+	ldir
+	ret
+
+.clear_bss_on_chip:
+	.extern	_length_of_bss_on_chip
+	.extern	_start_of_bss_on_chip
+
+	ld	hl, _start_of_bss_on_chip
+	ld	bc, _length_of_bss_on_chip
+	jp	__clear_mem
+
+.clear_bss:
 	.extern	_length_of_bss
 	.extern	_start_of_bss
 
-.clear_bss:
 	ld	hl, _start_of_bss
 	ld	bc, _length_of_bss
 	jp	__clear_mem
 
+.clear_bss_z80:
 	.extern	_length_of_bss_z80
 	.extern	_start_of_bss_z80
 
-.clear_bss_z80:
 	ld	hl, _start_of_bss_z80
 	ld	bc, _length_of_bss_z80
 	jp	__clear_mem
