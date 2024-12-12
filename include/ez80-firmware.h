@@ -77,4 +77,26 @@ extern void ez80_io_bus_cycles_set(const uint8_t cycles);
  */
 extern void ez80_mem0_bus_cycles_set(const uint8_t cycles);
 
+//
+
+/**
+ * @brief Retrieve the eZ80 memory configuration/timing
+ *
+ * Invokes firmware function A=0, B=15 SYSUTL_FLASHWS_GET
+ *
+ * Return the number (0-7) of wait states for the on-chip flash rom.
+ *
+ * @return uint8_t the number of wait states for the on-chip flash rom
+ */
+extern uint8_t ez80_flash_wait_cycles_get(void);
+
+/*
+ * @brief Configure the eZ80 for RC's on-chip flash rom bus configuration and timing
+ *
+ * Invokes firmware function A=0, B=14 SYSUTL_FLASHWS_SET
+ *
+ * @param cycles the number of wait states to set
+ */
+extern void ez80_flash_wait_cycles_set(const uint8_t cycles);
+
 #endif

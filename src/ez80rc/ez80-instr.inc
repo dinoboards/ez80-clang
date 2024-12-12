@@ -50,6 +50,18 @@
 	EZ80_FN
 .endm
 
+.macro	EZ80_UTIL_FLSHWS_SET
+	xor	a
+	ld	b, 14
+	EZ80_FN
+.endm
+
+.macro	EZ80_UTIL_FLSHWS_GET
+	xor	a
+	ld	b, 15
+	EZ80_FN
+.endm
+
 
 ;   #DEFINE EZ80_UTIL_VER_EXCH		XOR A \ LD B, 0 \ EZ80_FN
 ;   #DEFINE EZ80_UTIL_DELAY 		XOR A \ LD B, 1 \ EZ80_FN
