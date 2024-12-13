@@ -1,29 +1,24 @@
-/*
- * This file and function was extracted from the project umm_malloc.
- *
- * umm_malloc: https://github.com/rhempel/umm_malloc
- * Included in this project as a subtree at external/umm_malloc.
- *
- * License and copyrights are per the umm_malloc project.
- */
-
-#include "include/umm_malloc.h"
-#include <stddef.h>
-#include <stdint.h>
+#include "include/mm.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-/* ------------------------------------------------------------------------ */
+/*
+ * This file contains the implementation of the function calloc()
+ * For the details on malloc() and align4() refer the file malloc.c
+ * calloc() first creates the required chunk of memory using malloc()
+ * then it sets the values of each byte to 0 by iterating through it.
+ */
 
-void *calloc(size_t num, size_t item_size) {
-  void *ret;
+void *calloc(size_t number, size_t size) {
+  size_t *new;
 
-  ret = malloc((size_t)(item_size * num));
+  new = malloc(number * size);
 
-  if (ret) {
-    memset(ret, 0x00, (size_t)(item_size * num));
-  }
+  if (new)
+    memset(new, 0, number * size);
 
-  return ret;
+  return new;
 }

@@ -1,37 +1,53 @@
+#include "include/mm.h"
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 /*
- * This file and function was extracted from the project umm_malloc.
- *
- * umm_malloc: https://github.com/rhempel/umm_malloc
- * Included in this project as a subtree at external/umm_malloc.
- *
- * License and copyrights are per the umm_malloc project.
+ * This file contains the implementaion of the function free()
+ * For the details on few data structs such as meta_block and meta_ptr refer to the file malloc.c
  */
 
-#include "include/umm_malloc.h"
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
+/* The function merge_block() checks if the next block is free and merges it with the block passed as an argument */
+meta_ptr merge_blocks(meta_ptr block) {
+  if (block->next && block->next->free) {
+    block->size += META_BLOCK_SIZE + block->next->size;
+    block->next = block->next->next;
+  }
+  if (block->next) {
+    block->next->prev = block;
+  }
+  return block;
+}
 
-/* ------------------------------------------------------------------------ */
+/* The function get_block_addr() returns the address of the meta_block from taking the addr of data as an argument.
+ * Type casing the passed void pointer to char pointer and subtracting the size of the meta_block will give us the required address.
+ */
+meta_ptr get_block_addr(uint8_t *p) { return (meta_ptr)(p - META_BLOCK_SIZE); }
 
+/*
+ * The pointer is first checked if valid. If it's valid we set the free field value of the block to 1
+ * Then if the previous block exists, it is checked if its free and then merged with the current block.
+ * Same is done for the next block also.
+ * And finally if the freed block is at the end of the linkedlist, it is removed from the linkedlist and the break line
+ * of the heap is set to the corresponding last address in the linkedlist using the syscall brk()
+ */
 void free(void *ptr) {
-  /* If we're being asked to free a NULL pointer, well that's just silly! */
+  if (is_addr_valid(ptr)) {
+    meta_ptr block = get_block_addr(ptr);
+    block->free    = 1;
+    if (block->prev && block->prev->free) {
+      block = merge_blocks(block->prev);
+    }
 
-  if ((void *)0 == ptr) {
-    DBGLOG_DEBUG("free a null pointer -> do nothing\n");
-
-    return;
+    if (block->next) {
+      block = merge_blocks(block);
+    } else {
+      if (block->prev) {
+        block->prev->next = NULL;
+      } else {
+        // base = NULL;
+      }
+    }
   }
-
-  /* If we're being asked to free an out of range pointer - do nothing */
-  /* TODO: remove the check for NULL pointer later */
-
-  if ((ptr < umm_heap_current.pheap) || ((size_t)ptr >= (size_t)umm_heap_current.pheap + umm_heap_current.heap_size)) {
-    DBGLOG_DEBUG("free an out of range pointer -> do nothing\n");
-
-    return;
-  }
-
-  umm_free_core(ptr);
 }

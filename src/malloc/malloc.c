@@ -1,34 +1,33 @@
-/*
- * This file and function was extracted from the project umm_malloc.
- *
- * umm_malloc: https://github.com/rhempel/umm_malloc
- * Included in this project as a subtree at external/umm_malloc.
- *
- * License and copyrights are per the umm_malloc project.
- */
+#include "include/mm.h"
 
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
+meta_ptr base;
 
-#include "include/umm_malloc.h"
+static meta_ptr find_suitable_block(size_t size) {
+  meta_ptr b = base;
+  while (b) {
+    if (b->free && b->size >= size)
+      return b;
 
-/* ------------------------------------------------------------------------ */
-
-void *malloc(const size_t size) {
-  /*
-   * the very first thing we do is figure out if we're being asked to allocate
-   * a size of 0 - and if we are we'll simply return a null pointer. if not
-   * then reduce the size by 1 byte so that the subsequent calculations on
-   * the number of blocks to allocate are easier...
-   */
-
-  if (0 == size) {
-    DBGLOG_DEBUG("malloc a block of 0 bytes -> do nothing\n");
-
-    return NULL;
+    b = b->next;
   }
 
-  return umm_malloc_core(size);
+  return NULL;
+}
+
+void *malloc(size_t size) {
+  meta_ptr block;
+
+  if (!base)
+    return NULL;
+
+  block = find_suitable_block(size);
+  if (!block)
+    return NULL;
+
+  if (block->size - size >= (META_BLOCK_SIZE + 4))
+    split_space(block, size);
+
+  block->free = 0;
+
+  return block->data;
 }
