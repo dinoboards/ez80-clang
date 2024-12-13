@@ -129,7 +129,6 @@ ssize_t write(int fd, const void *buf, size_t count);
  * @return The resulting offset location as measured in bytes from the beginning of the file, or -1 on error and sets errno
  * appropriately.
  */
-
 off_t lseek(int fd, off_t offset, int whence);
 
 /**
