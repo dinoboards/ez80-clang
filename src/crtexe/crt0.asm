@@ -45,9 +45,9 @@ _exit:
 
 
 .init_text_on_chip:
-	.extern _on_chip_source
-	.extern _start_of_on_chip
-	.extern _length_of_on_chip
+	.extern	_on_chip_source
+	.extern	_start_of_on_chip
+	.extern	_length_of_on_chip
 	ld	bc, _length_of_on_chip
 	ld	a, b
 	or	c
@@ -61,39 +61,39 @@ _exit:
 	.extern	_length_of_bss_on_chip
 	.extern	_start_of_bss_on_chip
 
-	ld	hl, _start_of_bss_on_chip
-	ld	bc, _length_of_bss_on_chip
-	jp	__clear_mem
+	ld	de, _start_of_bss_on_chip
+	ld	hl, _length_of_bss_on_chip
+	jr	__clear_mem
 
 .clear_bss:
 	.extern	_length_of_bss
 	.extern	_start_of_bss
 
-	ld	hl, _start_of_bss
-	ld	bc, _length_of_bss
-	jp	__clear_mem
+	ld	de, _start_of_bss
+	ld	hl, _length_of_bss
+	jr	__clear_mem
 
 .clear_bss_z80:
 	.extern	_length_of_bss_z80
 	.extern	_start_of_bss_z80
 
-	ld	hl, _start_of_bss_z80
-	ld	bc, _length_of_bss_z80
-	jp	__clear_mem
+	ld	de, _start_of_bss_z80
+	ld	hl, _length_of_bss_z80
+	; jp	__clear_mem
 
 __clear_mem:
 	xor	a
-	ld	d, a
-
+	ld	bc, 0
+	jr	.loop_test
 .loop:
-	ld	a, b
-	or	c
-	ret	z
+	ld	(de), a
+	inc	de
+	dec	hl
 
-	ld	(HL), d
-	inc	hl
-	dec	bc
-	jr	.loop
+.loop_test:
+	sbc	hl, bc
+	jr	nz, .loop
+	ret
 
 
 	section	bss_crt, "ax", @progbits
