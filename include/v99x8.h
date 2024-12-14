@@ -39,7 +39,210 @@ extern uint8_t vdp_get_status(uint8_t r);
 
 #define vdp_reg_write(a, b) _vdp_reg_write((a)*256 + (b))
 
+/**
+ * @brief copy data from CPU to VRAM
+ *
+ * @param source the byte data to be copied
+ * @param vdp_address to destination address in VRAM
+ * @param length the number of bytes to be copied
+ */
+extern void vdp_cpu_to_vram(const uint8_t *const source, uint24_t vdp_address, uint16_t length);
+
+/**
+ * @brief copy data from CPU to VRAM address 0x000000
+ *
+ *
+ * @param source the byte data to be copied
+ * @param length the number of bytes to be copied
+ */
+extern void vdp_cpu_to_vram0(const uint8_t *const source, uint16_t length);
+
+#define DIX_RIGHT 0
+#define DIX_LEFT  4
+#define DIY_DOWN  0
+#define DIY_UP    8
+
+/**
+ * @brief VDP command 'High-speed move VDP to VRAM'
+ *
+ * Command Code: CMD_HMMV 0xC0
+ *
+ * The HMMV command is used to paint in a specified rectangular area of the VRAM or the expansion RAM.
+ * Since the data to be transferred is done in units of one byte, there is a limitation due to the display mode, on the value for x.
+ *
+ * @note that in the G4 and G6 modes, the lower one bit, and in the G5 mode, the lower two bits of x and width, are lost.
+ *
+ * @param x the starting x-coordinate of the rectangle
+ * @param y the starting y-coordinate of the rectangle
+ * @param width the width of the rectangle in pixels
+ * @param height the height of the rectangle in pixels
+ * @param colour the colour code to be painted (as per the current graphics mode)
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ */
+extern void vdp_cmd_vdp_to_vram(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t colour, uint8_t direction);
+
+/**
+ * @brief VDP command 'High-speed move CPU to VRAM'
+ *
+ * Command Code: CMD_HMMC 0xF0
+ *
+ * The HMMC command is used to transfer data from the CPU to the VRAM or the expansion RAM.
+ * Since the data to be transferred is done in units of one byte, there is a limitation due to the display mode, on the value for x.
+ *
+ * @note that in the G4 and G6 modes, the lower one bit, and in the G5 mode, the lower two bits of x and width, are lost.
+ *
+ * @param source the byte data to be copied to the VDP's VRAM
+ * @param x the starting x-coordinate of the rectangle
+ * @param y the starting y-coordinate of the rectangle
+ * @param width the width of the rectangle in pixels
+ * @param height the height of the rectangle in pixels
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param length the number of bytes to be copied (width * height)
+ */
+extern void vdp_cmd_move_cpu_to_vram(
+    const uint8_t *source, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
+
+/**
+ * @brief VDP command 'High-speed move VRAM to VRAM, y only'
+ *
+ * Command Code: CMD_YMMM 0xE0
+ *
+ * The YMMM command transfers data from the area specified by x, y, to_y, height and the right (or left) edge of the Video RAM, in
+ * the y-direction.
+ *
+ * @param x the starting x-coordinate of the rectangle
+ * @param from_y the starting y-coordinate of the rectangle
+ * @param to_y the y-coordinate of the top-left corner of the destination rectangle
+ * @param height the number of pixels to be copied in the y-direction
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ */
+extern void vdp_cmd_move_vram_to_vram_y(uint16_t x, uint16_t from_y, uint16_t to_y, uint16_t height, uint8_t direction);
+
+/**
+ * @brief VDP command 'High-speed move VRAM to VRAM'
+ *
+ * Command Code: CMD_HMMM 0xD0
+ *
+ * The HMMM command transfers data in a specified rectangular area from the VRAM or the expansion RAM to the VRAM or the expansion
+ * RAM. Since the data to be transferred is done in units of one byte, there is a limitation due to the display mode, on the value
+ * for x.
+ *
+ * @param x the starting x-coordinate of the source rectangle
+ * @param y the starting y-coordinate of the source rectangle
+ * @param to_x the starting x-coordinate of the destination rectangle
+ * @param to_y the starting y-coordinate of the destination rectangle
+ * @param width the width of the rectangle in pixels to be copied
+ * @param height the height of the rectangle in pixels to be copied
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ */
+extern void
+vdp_cmd_move_vram_to_vram(uint16_t x, uint16_t y, uint16_t to_x, uint16_t to_y, uint16_t width, uint16_t height, uint8_t direction);
+
+/**
+ * @brief VDP Command 'Logical Move CPU to VRAM'
+ *
+ * Command Code: CMD_LMMC 0xB0
+ *
+ * The LMMC command transfers data from the CPU to the Video or expansion RAM in a specified rectangular area (in x-y coordinates).
+ *
+ * @param source the byte data to be copied to the VDP's VRAM
+ * @param x the starting x-coordinate of the rectangle
+ * @param y the starting y-coordinate of the rectangle
+ * @param width the width of the rectangle in pixels
+ * @param height the height of the rectangle in pixels
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param length the number of bytes to be copied (width * height)
+ * @param operation the logical operation to be performed (CMD_LOGIC_IMP, CMD_LOGIC_AND, ...)
+ */
+extern void vdp_cmd_logical_move_cpu_to_vram(const uint8_t *source,
+                                             uint16_t       x,
+                                             uint16_t       y,
+                                             uint16_t       width,
+                                             uint16_t       height,
+                                             uint8_t        direction,
+                                             uint24_t       length,
+                                             uint8_t        operation);
+
+/**
+ * @brief VDP Command 'Logical Move VRAM to CPU'
+ *
+ * Command Code: CMD_LMCM 0xA0
+ *
+ * The LMCM command transfers data from the Video or expansion RAM to the CPU in a specified rectangular area (in x-y coordinates).
+ *
+ * @param destination the location to store the retrieve data from VRAM
+ * @param x the starting x-coordinate of the rectangle
+ * @param y the starting y-coordinate of the rectangle
+ * @param width the width of the rectangle in pixels
+ * @param height the height of the rectangle in pixels
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param length the number of bytes to be copied (width * height)
+ */
+extern void vdp_cmd_logical_move_vram_to_cpu(
+    uint8_t *destination, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
+
+/**
+ * @brief VDP Command 'Logical Move VRAM to VRAM'
+ *
+ * Command Code: CMD_LMMM 0x90
+ *
+ * The LMMM command transfers data in a specified rectangular area from the VRAM or the expansion RAM to the VRAM or the expansion.
+ * Since the data to be transferred is done in units of dots, logical operations may be done on the destination data.
+ *
+ * @param x the starting x-coordinate of the source rectangle
+ * @param y the starting y-coordinate of the source rectangle
+ * @param to_x the starting x-coordinate of the destination rectangle
+ * @param to_y the starting y-coordinate of the destination rectangle
+ * @param width the width of the rectangle in pixels to be copied
+ * @param height the height of the rectangle in pixels to be copied
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param operation the logical operation to be performed (CMD_LOGIC_IMP, CMD_LOGIC_AND, ...)
+ */
+extern void vdp_cmd_logical_move_vram_to_vram(
+    uint16_t x, uint16_t y, uint16_t to_x, uint16_t to_y, uint16_t width, uint16_t height, uint8_t direction, uint8_t operation);
+
+/**
+ * @brief VDP Command 'Logical Move VDP to VRAM'
+ *
+ * Command Code: CMD_LMMV 0x80
+ *
+ * The LMMV command paints in a specified rectangular area of the Video or Expansion RAM according to a specified color code.
+ * The data is transferred in units of one dot, and a logical operation may be done on the destination data.
+ *
+ * @param x the starting x-coordinate of the rectangle
+ * @param y the starting y-coordinate of the rectangle
+ * @param width the width of the rectangle in pixels
+ * @param height the height of the rectangle in pixels
+ * @param colour the colour code to be painted
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param operation the logical operation to be performed (CMD_LOGIC_IMP, CMD_LOGIC_AND, ...)
+ */
+extern void vdp_cmd_logical_move_vdp_to_vram(
+    uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t colour, uint8_t direction, uint8_t operation);
+
+extern void vdp_cmd_line(
+    uint16_t x, uint16_t y, uint16_t long_length, uint16_t short_length, uint8_t direction, uint8_t colour, uint8_t operation);
+
+extern int16_t vdp_cmd_search(uint16_t x, uint16_t y, uint8_t colour, uint8_t operation);
+
+extern void vdp_cmd_pset(uint16_t x, uint16_t y, uint8_t colour, uint8_t operation);
+
+extern uint8_t vdp_cmd_point(uint16_t x, uint16_t y);
+
 #define REGISTER_COUNT 12
+
+#define CMD_POINT 0x40
+#define CMD_PSET  0x50
+#define CMD_SRCH  0x60
+#define _CMD_LINE 0x70
+#define CMD_LMMV  0x80
+#define CMD_LMMM  0x90
+#define CMD_LMCM  0xA0
+#define CMD_LMMC  0xB0
+#define CMD_HMMV  0xC0
+#define CMD_HMMM  0xD0
+#define CMD_YMMM  0xE0
+#define CMD_HMMC  0xF0
 
 #define CMD_VDP_TO_VRAM 0xC0
 #define CMD_LINE(op)    (0x70 | op)

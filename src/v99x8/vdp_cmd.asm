@@ -12,7 +12,7 @@ _vdp_cmd:
 	ld	a, 36
 	DELAY_1_7US
 	out	(BC), a
-	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
+	DELAY_1_7US					; DELAY and LD provide the ~2us required delay
 	ld	a, 0x80|17				; measured on CPU running @25Mhz
 	out	(BC), a
 
@@ -26,6 +26,7 @@ _vdp_cmd:
 							; of 8us after the 2nd byte is written
 	ld	e, (HL)					; but we seem to get a way with 2us just fine???
 	out	(BC), e
+	DELAY_1_7US
 	inc	hl
 	dec	a
 	jr	nz, .outs
