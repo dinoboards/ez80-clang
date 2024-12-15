@@ -84,7 +84,9 @@ SECTIONS
         *(.text_on_chip.*)
     } > RAMONCHIP
 
-    .dataOnChip : {
+    LMA_DATA_ADDR = LOADADDR(.textOnChip) + SIZEOF(.textOnChip);
+
+    .dataOnChip : AT(LMA_DATA_ADDR) {
         *(.data_on_chip)
         *(.data_on_chip.*)
         _end_of_on_chip = . ;
