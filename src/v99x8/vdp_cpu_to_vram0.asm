@@ -25,15 +25,19 @@ _vdp_cpu_to_vram0:
 	xor	a
 
 	ld	bc, VDP_ADDR
-	out	(BC), a			; value for reg 14 (B16..B14)
+	DELAY_1_7US
+	out	(bc), a			; value for reg 14 (B16..B14)
 	ld	a, $80+14		; VDP register 14
-	out	(BC), a
+	DELAY_1_7US
+	out	(bc), a
 
 	xor	a
-	out	(BC), a			; submit bits 0 to 7
+	DELAY_1_7US
+	out	(bc), a			; submit bits 0 to 7
 
 	ld	a, %01000000		; enable write mode
-	out	(BC), a			; submit bits 8 to 13
+	DELAY_1_7US
+	out	(bc), a			; submit bits 8 to 13
 
 	ld	de, (iy+6)		; length
 	ld	hl, (iy+3)		; source
@@ -42,7 +46,8 @@ _vdp_cpu_to_vram0:
 loop:
 	ld	a, (hl)
 	inc	hl
-	out	(BC), a
+	DELAY_1_7US
+	out	(bc), a
 	dec	de
 	ld	a, e		; warning only 16bit counter
 	or	d

@@ -12,6 +12,42 @@
 */
 
 /**
+ * @brief Retrieve the current timer tick count value
+ *
+ * Invokes firmware function A=2, B=0 SYSTMR_TICKS_GET
+ *
+ * @return uint24_t the current timer tick count value
+ */
+extern uint24_t ez80_timers_ticks_get(void);
+
+/**
+ * @brief Set the current timer tick count value
+ *
+ * Invokes firmware function A=2, B=2 SYSTMR_TICKS_SET
+ *
+ * @param ticks the new tick count value
+ */
+extern void ez80_timers_ticks_set(const uint24_t ticks);
+
+/**
+ * @brief Retrieve the current timer tick frequency
+ *
+ * Invokes firmware function A=2, B=4 SYSTMR_FREQTICK_GET
+ *
+ * @return uint8_t the current timer tick frequency in ticks/second (typically 50 or 60)
+ */
+extern uint8_t ez80_timers_freq_tick_get(void);
+
+/**
+ * @brief Set the timer tick frequency
+ *
+ * Invokes firmware function A=2, B=3 SYSTMR_FREQTICK_SET
+ *
+ * @param freq new tick frequency in ticks/second (typically 50 or 60)
+ */
+extern void ez80_timers_freq_tick_set(const uint8_t freq);
+
+/**
  * @brief Retrieve the eZ80 CPU frequency
  *
  * Invokes firmware function A=0, B=5 SYSUTL_CPU_FREQ_GET

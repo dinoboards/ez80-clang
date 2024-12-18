@@ -19,6 +19,10 @@ CMD_HMMV	equ	$C0
 	POP	AF
 	PUSH	AF
 	POP	AF
+	PUSH	AF
+	POP	AF
+	PUSH	AF
+	POP	AF
 	NOP
 	NOP
 .endm
