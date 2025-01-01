@@ -3,8 +3,9 @@
     https://github.com/wntrblm/Castor_and_Pollux/blob/main/firmware/scripts/samd21g18a.ld
 */
 
-START_OF_ONCHIP_RAM = 0x02E100;
-ONCHIP_RAM_SIZE = 0x1B00;      /* reserve just 6192 bytes for the on-chip RAM  (low 256 reserved for firmware and last 1k for stack)*/
+START_OF_ONCHIP_RAM = 0x02E000;
+ONCHIP_RAM_SIZE = 0x1400;      /* reserve just 5120 (5K) bytes for the on-chip RAM */
+                               /* stack high, depending on firmware version, will be approx: 02 F7C0 */
 
 START_OF_RAM    = 0x034000;
 RAM_SIZE        = 0x003FFF;     /* restrict to a 16k page */
