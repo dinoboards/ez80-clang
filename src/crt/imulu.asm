@@ -26,7 +26,7 @@ __imulu:
 ;				; a		ude		uhl		u(sp)
 Mul_UHL_UBC_UHL:		;--------------+---------------+---------------+----------------------------------------
 	push	af		;						u(sp)=AF
-	push	de		;							u(sp)=UDE
+	push	de		;						u(sp)=UDE
 	ld	d, b
 	ld	e, h		;		 de=BH
 	mlt	de		;		ude=H*B
@@ -34,13 +34,13 @@ Mul_UHL_UBC_UHL:		;--------------+---------------+---------------+--------------
 	dec	sp
 	push	hl
 	push	bc
-	inc	sp		;								 (sp)=[HLU]H
-				;									 (sp)=[BCU]B
-	pop	de		;		 de=[BCU]B						--
+	inc	sp		;						 (sp)=[HLU]H
+				;						 (sp)=[BCU]B
+	pop	de		;		 de=[BCU]B
 	ld	e, l		;		 de=[BCU]L
 	mlt	de		;		ude=L*BCU
 	add	a, e		; a=H*B+L*BCU
-	pop	de		;		 de=[HLU]H					--
+	pop	de		;		 de=[HLU]H
 	ld	e, c		;		 de=[HLU]C
 	mlt	de		;		ude=HLU*C
 	add	a, e		; a=HLU*C+H*B+L*BCU

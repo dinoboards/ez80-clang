@@ -103,6 +103,30 @@ extern void vdp_cmd_move_cpu_to_vram(
     const uint8_t *source, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
 
 /**
+ * @brief Prepare VDP command 'High-speed move CPU to VRAM'
+ *
+ * This function issues the same command as vdp_cmd_move_cpu_to_vram. The difference is that it expects
+ * the data to be sent via the vdp_cmd_send_byte function.
+ *
+ * @param first_byte the first data byte to be sent to the VDP
+ * @param x the starting x-coordinate of the rectangle
+ * @param y the starting y-coordinate of the rectangle
+ * @param width the width of the rectangle in pixels
+ * @param height the height of the rectangle in pixels
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param length the number of bytes to be copied (width * height)
+ */
+extern void vdp_cmd_move_data_to_vram(
+    uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
+
+/**
+ * @brief transmit the next data byte to the VDP for the current pending command
+ *
+ * @param next_byte the data to be sent to the VDP
+ */
+static inline void vdp_cmd_send_byte(uint8_t next_byte) { VDP_REGS = next_byte; }
+
+/**
  * @brief VDP command 'High-speed move VRAM to VRAM, y only'
  *
  * Command Code: CMD_YMMM 0xE0

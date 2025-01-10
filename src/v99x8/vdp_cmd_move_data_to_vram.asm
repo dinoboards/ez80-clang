@@ -9,17 +9,11 @@
 	section	.text, "ax", @progbits
 	.assume	adl=1
 
-	.global	_vdp_cmd_move_cpu_to_vram
+	.global	_vdp_cmd_move_data_to_vram
 
-; void vdp_cmd_move_cpu_to_vram(const uint8_t *source,
-;			    const uint16_t x,
-;			    const uint16_t y,
-;			    const uint16_t width,
-;			    const uint16_t height,
-;			    const uint8_t direction,
-;			    const uint24_t length)
+; extern void vdp_cmd_move_data_to_vram(uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
 
-	; source => iy + 3
+	; first_byte => iy + 3
 	; x => iy + 6
 	; y => iy + 9
 	; width => iy + 12
@@ -27,7 +21,7 @@
 	; direction => iy + 18
 	; length => iy + 21
 
-_vdp_cmd_move_cpu_to_vram:
+_vdp_cmd_move_data_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
@@ -65,9 +59,7 @@ _vdp_cmd_move_cpu_to_vram:
 	out	(bc), h					; high byte into #R43
 
 	DELAY_VDP
-	ld	hl, (iy+3)				; load source
-	ld	a, (hl)					; load first byte
-	inc	hl
+	ld	a, (iy+3)				; load first byte
 	out	(bc), a					; into #R44
 
 	DELAY_VDP
@@ -86,6 +78,9 @@ _vdp_cmd_move_cpu_to_vram:
 	DELAY_VDP
 	ld	a, $80|17				; to register 17
 	out	(bc), a
+
+	ret
+
 
 	ld	bc, VDP_REGS
 
