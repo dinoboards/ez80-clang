@@ -12,6 +12,8 @@ export DOCKER_BUILDKIT=1
 CLANG_BIN_DIR="./tmp/opt/ez80-clang/bin"
 CLANG_INCLUDE_DIR="./tmp/opt/ez80-clang/include/"
 
+docker pull ${EZ80_CLANG_TOOLCHAIN_BUILDER}
+
 docker rm -f temp-llvmez80 > /dev/null 2>&1
 trap 'docker rm -f temp-llvmez80  > /dev/null 2>&1' EXIT
 docker create --name temp-llvmez80 ${EZ80_CLANG_TOOLCHAIN_BUILDER} > /dev/null 2>&1
