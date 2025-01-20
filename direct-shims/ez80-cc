@@ -77,21 +77,33 @@ while [[ "$#" -gt 0 ]]; do
       CLANG_DEFINES+=("-D${1#*=}")
       shift
       ;;
+    --defsym)
+      AS_DEFINES+=("--defsym ${2}")
+      shift 2
+      ;;
+      --defsym=*)
+      AS_DEFINES+=("--defsym ${1#*=}")
+      shift
+      ;;
     --help)
       echo "Usage: $0 [--output-dir dir] [--iquote dir] [--optimise type] [output] source-files..."
       echo "Options:"
-      echo "  --output-dir dir  Specify the output directory for the binary file."
-      echo "  --iquote dir      Specify an additional include directory for the compiler."
-      echo "  --optimise type   Specify the optimisation type (size or speed)."
-      echo "  --lib type        Specify the library type: v99x8-standard(default) or v99x8-hdmi."
-      echo "  --mem-model type  Specify the memory model: 64KB (default) or 2MB."
-      echo "  --help            Display this help message."
+      echo "  --output-dir dir   Specify the output directory for the binary file."
+      echo "  --iquote dir       Specify an additional include directory for the compiler."
+      echo "  --optimise type    Specify the optimisation type (size or speed)."
+      echo "  --lib type         Specify the library type: v99x8-standard(default) or v99x8-hdmi."
+      echo "  --mem-model type   Specify the memory model: 64KB (default) or 2MB."
+      echo "  -D<macro>=<value>  Define c <macro> to <value> (or 1 if <value> omitted)"
+      echo "    --define-macro <macro>          (alternative form)"
+      echo "    --define-macro <macro>=<value>  (alternative form)"
+      echo "  --defsym SYM=value Define assembler symbol SYM to given value for"
+      echo "  --help             Display this help message."
       echo
       echo "Arguments:"
-      echo "  output            The name of the output .com file. If not supplied,"
-      echo "                    the name is inferred from the name of the first source-file."
-      echo "  source-files      The input files to be compiled or assembled. Must be"
-      echo "                    .asm or .c files."
+      echo "  output             The name of the output .com file. If not supplied,"
+      echo "                     the name is inferred from the name of the first source-file."
+      echo "  source-files       The input files to be compiled or assembled. Must be"
+      echo "                     .asm or .c files."
       exit 0
       ;;
     *)
@@ -180,11 +192,11 @@ for FILE in "$@"; do
 
   if [ "$EXT" == "c" ]; then
     echo "Compiling $FILE"
-    ez80-clang ${CFLAGS} ${CLANG_DEFINES} "$FILE"  -c -o  "$TMP_BASENAME.c.o"
+    ez80-clang ${CFLAGS} ${CLANG_DEFINES[@]} "$FILE"  -c -o  "$TMP_BASENAME.c.o"
     OBJECT_FILES+=("$TMP_BASENAME.c.o")
   elif [ "$EXT" == "asm" ]; then
-    echo "Assembling $FILE"
-    ez80-as ${CLANG_DEFINES} -march=ez80+full ${FILE} -o "$TMP_BASENAME.o"
+    echo "Assembling $FILE with ${AS_DEFINES}"
+    ez80-as ${AS_DEFINES[@]} -march=ez80+full ${FILE} -o "$TMP_BASENAME.o"
     OBJECT_FILES+=("$TMP_BASENAME.o")
   else
     echo "Unsupported file type: $FILE"
@@ -200,6 +212,6 @@ if [ "$MEM_MODEL" == "2MB" ]; then
   LDFLAGS="--whole-archive -lcrtexe --no-whole-archive $LDFLAGS"
 fi
 
-ez80-ld ${CLANG_DEFINES} -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -l${LIB_TYPE} -lez80 -lmalloc -lio -lez80rc --end-group --oformat binary -o "$OUTPUT_BINARY"
+ez80-ld -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -l${LIB_TYPE} -lez80 -lmalloc -lio -lez80rc --end-group --oformat binary -o "$OUTPUT_BINARY"
 
 echo "Build complete: $OUTPUT_BINARY"
