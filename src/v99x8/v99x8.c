@@ -3,42 +3,7 @@
 #include <stdlib.h>
 #include <v99x8.h>
 
-static void set_base_registers(uint8_t *pReg) {
-  DI;
-
-  for (uint8_t i = 0; i < REGISTER_COUNT; i++) {
-    vdp_reg_write(i, *pReg); // if we inline the increment, the compiler (with -Oz seems to pre-increment the pointer)
-    pReg++;
-  }
-
-  EI;
-}
-
-static void set_video_signal(uint8_t *pReg, uint8_t lines, uint8_t mode) {
-  if (lines == 212)
-    pReg[9] |= 0x80;
-
-  if (mode == PAL)
-    pReg[9] |= 0x02;
-}
-
-static uint8_t mode_6_registers[REGISTER_COUNT] = {
-    0x0A, // R0 - M5 = 1, M4 = 0, M3 = 1
-    0x40, // R1 - ENABLE SCREEN, DISABLE INTERRUPTS, M1 = 0, M2 = 0
-    0x1F, // R2 - PATTERN NAME TABLE := 0, A16 = 0
-    0x00, // R3 - NO COLOR TABLE
-    0x00, // R4 - N/A???
-    0xF7, // R5 - SPRITE ATTRIBUTE TABLE -> FA00
-    0x1E, // R6 - SPRITE PATTERN => F000
-    0x00, // R7 - a background colour?
-    0x8A, // R8 - COLOUR BUS INPUT, DRAM 64K, DISABLE SPRITE
-    0x00, // R9 - LN = 1(212 lines), S1, S0 = 0, IL = 0, EO = 0, NT = 1 (PAL),
-          // DC = 0
-    0x00, // R10 - color table - n/a
-    0x01  // R11 - SPRITE ATTRIBUTE TABLE -> FA00
-};
-
-static uint8_t mode_7_registers[REGISTER_COUNT] = {
+static uint8_t registers_mirror[REGISTER_COUNT] = {
     0x0E, // R0 - M5 = 1, M4 = 1, M3 = 1
     0x40, // R1 - ENABLE SCREEN, DISABLE INTERRUPTS, M1 = 0, M2 = 0
     0x1F, // R2 - PATTERN NAME TABLE := 0, A16 = 0
@@ -54,18 +19,97 @@ static uint8_t mode_7_registers[REGISTER_COUNT] = {
     0x01  // R11 - SPRITE ATTRIBUTE TABLE -> FA00
 };
 
+static void set_base_registers() {
+  DI;
+  uint8_t *pReg = registers_mirror;
+
+  for (uint8_t i = 0; i < REGISTER_COUNT; i++) {
+    vdp_reg_write(i, *pReg); // if we inline the increment, the compiler (with -Oz seems to pre-increment the pointer)
+    pReg++;
+  }
+
+  EI;
+}
+
 static uint8_t vdp_current_mode = 255;
 
+void vdp_set_lines(const uint8_t lines) {
+  switch (lines) {
+  case 212:
+    registers_mirror[9] |= 0x80;
+    break;
+
+  case 192:
+    registers_mirror[9] &= ~0x80;
+    break;
+  }
+}
+
+void vdp_set_refresh(const uint8_t refresh_rate) {
+  switch (refresh_rate) {
+  case PAL:
+    registers_mirror[9] |= 0x02;
+    break;
+
+  case NTSC:
+    registers_mirror[9] &= ~0x02;
+    break;
+  }
+}
+
+void vdp_set_graphic_7() {
+  uint8_t *r = registers_mirror;
+
+  *r++ = 0x0E; // R0 - M5 = 1, M4 = 1, M3 = 1
+  r++;         // 0x40 R1 - ENABLE SCREEN, DISABLE INTERRUPTS, M1 = 0, M2 = 0
+  *r++ = 0x1F; // R2 - PATTERN NAME TABLE := 0, A16 = 0
+  *r++ = 0x00; // R3 - NO COLOR TABLE
+  *r++ = 0x00; // R4 - N/A???
+  *r++ = 0xF7; // R5 - SPRITE ATTRIBUTE TABLE -> FA00
+  *r++ = 0x1E; // R6 - SPRITE PATTERN => F000
+  r++;         // 0x00 R7 - background colour?
+  r++;         // 0x8A R8 - COLOUR BUS INPUT, DRAM 64K, DISABLE SPRITE
+  r++;         // 0x00 R9 LN = 1(212 lines), S1, S0 = 0, IL = 0, EO = 0, NT = 1 (PAL), DC = 0
+  r++;         // 0x00 R10 - color table - n/a
+  *r = 0x01;   // R11 - SPRITE ATTRIBUTE TABLE -> FA00
+
+  set_base_registers();
+  vdp_current_mode = 7;
+}
+
+void vdp_set_graphic_6() {
+  uint8_t *r = registers_mirror;
+
+  *r++ = 0x0A; // R0 - M5 = 1, M4 = 0, M3 = 1
+  r++;         // 0x40 R1 - ENABLE SCREEN, DISABLE INTERRUPTS, M1 = 0, M2 = 0
+  *r++ = 0x1F; // R2 - PATTERN NAME TABLE := 0, A16 = 0
+  *r++ = 0x00; // R3 - NO COLOR TABLE
+  *r++ = 0x00; // R4 - N/A???
+  *r++ = 0xF7; // R5 - SPRITE ATTRIBUTE TABLE -> FA00
+  *r++ = 0x1E; // R6 - SPRITE PATTERN => F000
+  r++;         // 0x00 R7 - a background colour?
+  r++;         // 0x8A R8 - COLOUR BUS INPUT, DRAM 64K, DISABLE SPRITE
+  r++;         // 0x00 R9 LN = 1(212 lines), S1, S0 = 0, IL = 0, EO = 0, NT = 1 (PAL), DC = 0
+  r++;         // 0x00 R10 - color table - n/a
+  *r++ = 0x01; // R11 - SPRITE ATTRIBUTE TABLE -> FA00
+
+  set_base_registers();
+  vdp_current_mode = 6;
+}
+
+/**
+ * deprecated
+ */
 void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh_rate) {
-  vdp_current_mode = mode;
+  vdp_set_lines(lines);
+  vdp_set_refresh(refresh_rate);
+
   switch (mode) {
   case 6:
-    set_video_signal(mode_6_registers, lines, refresh_rate);
-    set_base_registers(mode_6_registers);
+    vdp_set_graphic_6();
     break;
   case 7:
-    set_video_signal(mode_7_registers, lines, mode);
-    set_base_registers(mode_7_registers);
+    vdp_set_graphic_7();
     break;
   }
 }
@@ -73,22 +117,21 @@ void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh
 void vdp_set_page(const uint8_t page) {
   switch (vdp_current_mode) {
   case 6:
-    mode_6_registers[2] = page ? 0x3F : 0x1F;
-    vdp_reg_write(2, mode_6_registers[2]); // Set Indirect register Access
-    mode_6_registers[6] = page ? 0x3E : 0x1E;
-    vdp_reg_write(6, mode_6_registers[6]); // Set Indirect register Access
-    mode_6_registers[11] = page ? 0x03 : 0x01;
-    vdp_reg_write(11, mode_6_registers[11]); // Set Indirect register Access
+    registers_mirror[2] = page ? 0x3F : 0x1F;
+    vdp_reg_write(2, registers_mirror[2]); // Set Indirect register Access
+    registers_mirror[6] = page ? 0x3E : 0x1E;
+    vdp_reg_write(6, registers_mirror[6]); // Set Indirect register Access
+    registers_mirror[11] = page ? 0x03 : 0x01;
+    vdp_reg_write(11, registers_mirror[11]); // Set Indirect register Access
+    break;
 
-    // set_base_registers(mode_6_registers);
   case 7:
-    mode_7_registers[2] = page ? 0x3F : 0x1F;
-    vdp_reg_write(2, mode_7_registers[2]); // Set Indirect register Access
-    mode_7_registers[6] = page ? 0x3E : 0x1E;
-    vdp_reg_write(6, mode_7_registers[6]); // Set Indirect register Access
-    mode_7_registers[11] = page ? 0x03 : 0x01;
-    vdp_reg_write(11, mode_7_registers[11]); // Set Indirect register Access
-    // set_base_registers(mode_7_registers);
+    registers_mirror[2] = page ? 0x3F : 0x1F;
+    vdp_reg_write(2, registers_mirror[2]); // Set Indirect register Access
+    registers_mirror[6] = page ? 0x3E : 0x1E;
+    vdp_reg_write(6, registers_mirror[6]); // Set Indirect register Access
+    registers_mirror[11] = page ? 0x03 : 0x01;
+    vdp_reg_write(11, registers_mirror[11]); // Set Indirect register Access
     break;
   }
 }

@@ -296,17 +296,6 @@ extern uint8_t  vdp_cmdp_r46;
 #define vdp_cmdp_maj vdp_cmdp_r40
 #define vdp_cmdp_min vdp_cmdp_r42
 
-#define vdp_cmd_vdp_to_vram(from_x, from_y, to_dx, to_dy, colour, direction)                                                       \
-  vdp_cmdp_dx        = (from_x);                                                                                                   \
-  vdp_cmdp_dy        = (from_y);                                                                                                   \
-  vdp_cmdp_nx        = (to_dx);                                                                                                    \
-  vdp_cmdp_ny        = (to_dy);                                                                                                    \
-  vdp_cmdp_color     = (colour);                                                                                                   \
-  vdp_cmdp_dir       = (direction);                                                                                                \
-  vdp_cmdp_operation = CMD_VDP_TO_VRAM;                                                                                            \
-  vdp_cmd_wait_completion();                                                                                                       \
-  vdp_cmd()
-
 #define vdp_draw_line(fromX, fromY, toX, toY, color, operation)                                                                    \
   vdp_cmdp_dx        = (fromX);                                                                                                    \
   vdp_cmdp_dy        = (fromY);                                                                                                    \

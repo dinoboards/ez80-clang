@@ -28,7 +28,7 @@ _vdp_get_status:
 	; RESTORE READ REGISTER TO DEFAULT OF 0
 	xor	a
 	out	(BC), a
-	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
+	DELAY_1_7US					; DELAY and LD provide the ~2us required delay
 	ld	a, 0x80|15				; measured on CPU running @25Mhz
 	out	(BC), a
 	ei

@@ -18,8 +18,8 @@
 ; VDP_REGS:	equ	$FF9B		; VDP register access (write only)
 ; VDP_ADDR:	equ	$FF99		; VDP address (write only)
 
-	section	.text,"ax",@progbits
-	.assume	adl = 1
+	section	.text, "ax", @progbits
+	.assume	adl=1
 
 	.global	_vdp_cmd_vdp_to_vram
 
@@ -32,7 +32,7 @@
 	; colour => iy + 15
 	; direction => iy + 18
 
-_Xvdp_cmd_vdp_to_vram:
+_vdp_cmd_vdp_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
@@ -40,41 +40,41 @@ _Xvdp_cmd_vdp_to_vram:
 	ld	a, 36					; submit 36, with auto increment
 	out	(bc), a
 	DELAY_VDP
-	ld	a, 0x80 | 17				; to register 17
+	ld	a, 0x80|17				; to register 17
 	out	(bc), a
 
 	ld	bc, VDP_REGS
 
-	ld	hl, (iy + 3)				; load x
+	ld	hl, (iy+3)				; load x
 	DELAY_VDP
 	out	(bc), l					; low byte into #R36
 	DELAY_VDP
 	out	(bc), h					; high byte into #R37
 
-	ld	hl, (iy + 6)				; load y
+	ld	hl, (iy+6)				; load y
 	DELAY_VDP
 	out	(bc), l					; low byte into #R38
 	DELAY_VDP
 	out	(bc), h					; high byte into #R39
 
-	ld	hl, (iy + 9)				; load width
+	ld	hl, (iy+9)				; load width
 	DELAY_VDP
 	out	(bc), l					; low byte into #R40
 	DELAY_VDP
 	out	(bc), h					; high byte into #R41
 
-	ld	hl, (iy + 12)				; load height
+	ld	hl, (iy+12)				; load height
 	DELAY_VDP
 	out	(bc), l					; low byte into #R42
 	DELAY_VDP
 	out	(bc), h					; high byte into #R43
 
 	DELAY_VDP
-	ld	a, (iy + 15)				; load colour
+	ld	a, (iy+15)				; load colour
 	out	(bc), a					; into #R44
 
 	DELAY_VDP
-	ld	a, (iy + 18)				; load direction
+	ld	a, (iy+18)				; load direction
 	out	(bc), a					; into #R45
 
 	DELAY_VDP
