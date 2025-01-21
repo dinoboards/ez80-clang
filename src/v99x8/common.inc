@@ -9,6 +9,8 @@ VDP_REGS:	equ	$FF9B		; VDP register access (write only)
 CMD_HMMC	equ	$F0
 CMD_HMMV	equ	$C0
 
+CMD_LINE	equ	$70
+
 .macro	EZ80_DELAY
 	RST.L	$18
 .endm
