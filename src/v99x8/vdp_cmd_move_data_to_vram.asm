@@ -25,14 +25,14 @@ _vdp_cmd_move_data_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
-	ld	bc, VDP_ADDR				;
+	ld	bc, (_VDP_IO_ADDR)
 	ld	a, 36					; submit 36 with auto increment
 	out	(bc), a
 	DELAY_VDP
 	ld	a, $80|17				; to register 17
 	out	(bc), a
 
-	ld	bc, VDP_REGS
+	ld	bc, (_VDP_IO_REGS)
 
 	ld	hl, (iy+6)				; load x
 	DELAY_VDP
@@ -72,7 +72,7 @@ _vdp_cmd_move_data_to_vram:
 
 	ld	de, (iy+21)				; load length
 
-	ld	bc, VDP_ADDR				;
+	ld	bc, (_VDP_IO_ADDR)				;
 	ld	a, $80|44				; submit 44 without auto increment
 	out	(bc), a
 	DELAY_VDP
@@ -82,7 +82,7 @@ _vdp_cmd_move_data_to_vram:
 	ret
 
 
-	ld	bc, VDP_REGS
+	ld	bc, (_VDP_IO_REGS)
 
 loop:
 	DELAY_VDP

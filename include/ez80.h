@@ -14,7 +14,7 @@ extern uint24_t __attribute__((pure)) get_address_in_base(const uint16_t a);
  * (uses a common function to avoid code duplication)
  *
  */
-#define port_out(port, value) _port_out(((((uint24_t)&port)) << 8) + ((uint24_t)(value)))
+#define port_out(port, value) _port_out(((((uint24_t)port)) << 8) + ((uint24_t)(value)))
 extern void _port_out(const uint24_t data);
 
 /* The address space for eZ80's I/O 64k PORT addresses */
@@ -25,7 +25,7 @@ extern void _port_out(const uint24_t data);
  * such that reads/writes will be translated to appropriate
  * eZ80 in/out instructions.
  */
-#define PORT_IO(c) (*((volatile uint8_t IO_SPACE *)c))
+#define PORT_IO(c) (*((volatile uint8_t IO_SPACE *)((uint24_t)c)))
 
 #define DI __asm__("DI")
 #define EI __asm__("EI")

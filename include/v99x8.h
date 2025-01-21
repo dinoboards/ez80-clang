@@ -15,15 +15,21 @@ typedef struct {
   uint8_t green;
 } RGB;
 
-#define VDP_DATA PORT_IO(0xFF98)
-#define VDP_ADDR PORT_IO(0xFF99)
-#define VDP_PALT PORT_IO(0xFF9A)
-#define VDP_REGS PORT_IO(0xFF9B)
+extern uint16_t VDP_IO_DATA;
+extern uint16_t VDP_IO_ADDR;
+extern uint16_t VDP_IO_STAT;
+extern uint16_t VDP_IO_PALT;
+extern uint16_t VDP_IO_REGS;
 
-#define vdp_out_cmd(v)      port_out(VDP_ADDR, v)
-#define vdp_out_dat(v)      port_out(VDP_DATA, v)
-#define vdp_out_pal(v)      port_out(VDP_PALT, v)
-#define vdp_out_reg_byte(v) port_out(VDP_REGS, v)
+#define VDP_DATA PORT_IO(VDP_IO_DATA)
+#define VDP_ADDR PORT_IO(VDP_IO_ADDR)
+#define VDP_PALT PORT_IO(VDP_IO_PALT)
+#define VDP_REGS PORT_IO(VDP_IO_REGS)
+
+#define vdp_out_cmd(v)      port_out(VDP_IO_ADDR, v)
+#define vdp_out_dat(v)      port_out(VDP_IO_DATA, v)
+#define vdp_out_pal(v)      port_out(VDP_IO_PALT, v)
+#define vdp_out_reg_byte(v) port_out(VDP_IO_REGS, v)
 
 extern void vdp_clear_all_memory(void);
 extern void vdp_set_palette(RGB *);
@@ -244,6 +250,20 @@ extern void vdp_cmd_logical_move_vram_to_vram(
 extern void vdp_cmd_logical_move_vdp_to_vram(
     uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t colour, uint8_t direction, uint8_t operation);
 
+/**
+ * @brief VDP LINE drawing command
+ *
+ * The LINE command draws a straight line in the Video or Expansion RAM. The line drawn is the hypotenuse that results after the
+ * long and short sides of a triangle are defined. The two sides are defined as distances from a single point.
+ *
+ * @param x the starting x-coordinate of the rectangle
+ * @param y the starting y-coordinate of the rectangle
+ * @param long_length the number of pixels on the long side
+ * @param short_length the number of pixels on the short side
+ * @param colour the colour code to be painted
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param operation the logical operation to be performed (CMD_LOGIC_IMP, CMD_LOGIC_AND, ...)
+ */
 extern void vdp_cmd_line(
     uint16_t x, uint16_t y, uint16_t long_length, uint16_t short_length, uint8_t direction, uint8_t colour, uint8_t operation);
 

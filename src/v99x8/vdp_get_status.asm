@@ -11,7 +11,7 @@ _vdp_get_status:
 	ld	iy, 0
 	add	iy, sp
 	ld	l, (IY+3)
-	ld	bc, VDP_ADDR
+	ld	bc, (_VDP_IO_ADDR)
 
 	di
 	; SET READ REGISTER TO 15

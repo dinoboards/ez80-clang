@@ -17,7 +17,7 @@ _vdp_cmd:
 	out	(BC), a
 
 	ld	hl, _vdp_cmdp_r36
-	ld	bc, VDP_REGS
+	ld	bc, (_VDP_IO_REGS)
 	ld	a, 11
 .outs:							; loop calibrated to have appro 2us
 	push	af					; between rights
@@ -31,7 +31,7 @@ _vdp_cmd:
 	dec	a
 	jr	nz, .outs
 
-	ld	bc, VDP_ADDR
+	ld	bc, (_VDP_IO_ADDR)
 	xor	a
 	DELAY_1_7US
 	out	(BC), a

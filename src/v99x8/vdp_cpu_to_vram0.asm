@@ -24,7 +24,7 @@ _vdp_cpu_to_vram0:
 
 	xor	a
 
-	ld	bc, VDP_ADDR
+	ld	bc, (_VDP_IO_ADDR)
 	DELAY_1_7US
 	out	(bc), a			; value for reg 14 (B16..B14)
 	ld	a, $80+14		; VDP register 14
@@ -41,7 +41,7 @@ _vdp_cpu_to_vram0:
 
 	ld	de, (iy+6)		; length
 	ld	hl, (iy+3)		; source
-	ld	bc, VDP_DATA
+	ld	bc, (VDP_IO_DATA)
 
 loop:
 	ld	a, (hl)

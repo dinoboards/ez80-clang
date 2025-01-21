@@ -9,7 +9,7 @@
 _vdp_cmd_wait_completion:
 	di
 	; Set read register to 2
-	ld	bc, VDP_ADDR
+	ld	bc, (_VDP_IO_ADDR)
 
 	ld	a, 2
 	out	(BC), a

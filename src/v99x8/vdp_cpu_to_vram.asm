@@ -38,7 +38,7 @@ _vdp_cpu_to_vram:
 	or	b			; merge with B16
 
 
-	ld	bc, VDP_ADDR
+	ld	bc, (_VDP_IO_ADDR)
 	out	(BC), a			; value for reg 14 (B16..B14)
 	ld	a, $80+14		; VDP register 14
 	out	(BC), a
@@ -53,7 +53,7 @@ _vdp_cpu_to_vram:
 
 	ld	de, (iy+9)		; length
 	ld	hl, (iy+3)		; source
-	ld	bc, VDP_DATA
+	ld	bc, (VDP_IO_DATA)
 
 loop:
 	ld	a, (hl)

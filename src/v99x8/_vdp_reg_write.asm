@@ -12,7 +12,7 @@ __vdp_reg_write:
 	ld	iy, 0
 	add	iy, sp
 	ld	hl, (IY+3)
-	ld	bc, VDP_ADDR
+	ld	bc, (_VDP_IO_ADDR)
 	out	(BC), l
 	ld	a, 0x80
 	or	h
