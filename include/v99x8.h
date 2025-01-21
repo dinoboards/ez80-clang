@@ -313,17 +313,7 @@ extern uint8_t  vdp_cmdp_r46;
 #define vdp_cmdp_dir       vdp_cmdp_r45
 #define vdp_cmdp_operation vdp_cmdp_r46
 
-#define vdp_cmdp_maj vdp_cmdp_r40
-#define vdp_cmdp_min vdp_cmdp_r42
-
-#define vdp_draw_line(fromX, fromY, toX, toY, color, operation)                                                                    \
-  vdp_cmdp_dx        = (fromX);                                                                                                    \
-  vdp_cmdp_dy        = (fromY);                                                                                                    \
-  vdp_cmdp_color     = (color);                                                                                                    \
-  vdp_cmdp_operation = CMD_LINE((operation));                                                                                      \
-  _vdp_draw_line(toX, toY)
-
-extern void _vdp_draw_line(uint16_t toX, uint16_t toY);
+extern void vdp_draw_line(uint16_t from_x, uint16_t from_y, uint16_t to_x, uint16_t to_y, uint8_t colour, uint8_t operation);
 
 #define pointSet(x, y, color, operation)                                                                                           \
   vdp_cmdp_dx        = (x);                                                                                                        \
