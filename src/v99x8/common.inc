@@ -1,8 +1,8 @@
 
 CMD_HMMC	equ	$F0
 CMD_HMMV	equ	$C0
-
 CMD_LINE	equ	$70
+CMD_LMMV	equ	$80
 
 .macro	EZ80_DELAY
 	rst.l	$18
