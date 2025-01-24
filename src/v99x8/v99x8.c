@@ -13,7 +13,7 @@ static uint8_t registers_mirror[REGISTER_COUNT] = {
     0x1E, // R6 - SPRITE PATTERN => F000
     0x00, // R7 - a background colour?
     0x8A, // R8 - COLOUR BUS INPUT, DRAM 64K, DISABLE SPRITE
-    0x00, // R9 LN = 1(212 lines), S1, S0 = 0, IL = 0, EO = 0, NT = 1 (PAL), DC
+    0x00, // R9 LN = 0(212 lines), S1, S0 = 0, IL = 0, EO = 0, NT = 1 (PAL), DC
           // = 0
     0x00, // R10 - color table - n/a
     0x01  // R11 - SPRITE ATTRIBUTE TABLE -> FA00
@@ -32,6 +32,22 @@ static void set_base_registers() {
 }
 
 static uint8_t vdp_current_mode = 255;
+
+uint24_t vdp_get_screen_width() {
+  switch (vdp_current_mode) {
+  case 7:
+    return 256;
+
+  case 6:
+    return 512;
+
+  default:
+    return -1;
+  }
+}
+
+// TODO: interlaced double line not applied in result
+uint24_t vdp_get_screen_height() { return (registers_mirror[9] & 0x80) ? 212 : 192; }
 
 void vdp_set_lines(const uint8_t lines) {
   switch (lines) {

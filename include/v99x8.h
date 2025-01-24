@@ -45,6 +45,9 @@ extern uint8_t vdp_get_status(uint8_t r);
 
 #define vdp_reg_write(a, b) _vdp_reg_write((a)*256 + (b))
 
+extern uint24_t vdp_get_screen_width();
+extern uint24_t vdp_get_screen_height();
+
 /**
  * @brief copy data from CPU to VRAM
  *
