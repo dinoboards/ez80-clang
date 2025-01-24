@@ -35,14 +35,19 @@ static uint8_t vdp_current_mode = 255;
 
 uint24_t vdp_get_screen_width() {
   switch (vdp_current_mode) {
+  case 1:
+  case 2:
+  case 3:
+  case 4:
   case 7:
     return 256;
 
+  case 5:
   case 6:
     return 512;
 
   default:
-    return -1;
+    return 256;
   }
 }
 
@@ -101,16 +106,36 @@ void vdp_set_graphic_6() {
   *r++ = 0x1F; // R2 - PATTERN NAME TABLE := 0, A16 = 0
   *r++ = 0x00; // R3 - NO COLOR TABLE
   *r++ = 0x00; // R4 - N/A???
-  *r++ = 0xF7; // R5 - SPRITE ATTRIBUTE TABLE -> FA00
+  *r++ = 0xF7; // R5 - SPRITE ATTRIBUTE TABLE -> F800
   *r++ = 0x1E; // R6 - SPRITE PATTERN => F000
   r++;         // 0x00 R7 - a background colour?
   r++;         // 0x8A R8 - COLOUR BUS INPUT, DRAM 64K, DISABLE SPRITE
   r++;         // 0x00 R9 LN = 1(212 lines), S1, S0 = 0, IL = 0, EO = 0, NT = 1 (PAL), DC = 0
   r++;         // 0x00 R10 - color table - n/a
-  *r++ = 0x01; // R11 - SPRITE ATTRIBUTE TABLE -> FA00
+  *r++ = 0x01; // R11 - SPRITE ATTRIBUTE TABLE -> F800
 
   set_base_registers();
   vdp_current_mode = 6;
+}
+
+void vdp_set_graphic_4() {
+  uint8_t *r = registers_mirror;
+
+  *r++ = 0x06; // R0: N/A, DG = 0, IE2 =0, IE1 =0, M5 = 0, M4 = 1, M3 = 1, N/A
+  r++;         // R1: N/A, BL(ENABLE SCREEN) = 1, IE0(HORZ_INT) = 0, M1 = 0, M2 = 0, N/A, SI(SPRITE SIZE) = 0, MA(SPRITE EXPAN.) = 0
+  *r++ = 0x1F; // R2: N/A, A16 = 0, A15 = 0, 1, 1, 1, 1, 1
+  *r++ = 0x00; // R3 - NO COLOR TABLE
+  *r++ = 0x00; // R4 - N/A???
+  *r++ = 0xF0; // R5 - SPRITE ATTRIBUTE TABLE -> 7800
+  *r++ = 0x0E; // R6 - SPRITE PATTERN => 7000
+  r++;         // 0x00 R7 - a background colour?
+  r++;         // 0x8A R8 - COLOUR BUS INPUT, DRAM 64K, DISABLE SPRITE
+  r++;         // 0x00 R9 LN = 1(212 lines), S1, S0 = 0, IL = 0, EO = 0, NT = 1 (PAL), DC = 0
+  r++;         // 0x00 R10 - color table - n/a
+  *r++ = 0x00; // R11 - SPRITE ATTRIBUTE TABLE -> 7800
+
+  set_base_registers();
+  vdp_current_mode = 4;
 }
 
 /**
@@ -121,6 +146,9 @@ void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh
   vdp_set_refresh(refresh_rate);
 
   switch (mode) {
+  case 4:
+    vdp_set_graphic_4();
+    break;
   case 6:
     vdp_set_graphic_6();
     break;

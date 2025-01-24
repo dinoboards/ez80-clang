@@ -318,6 +318,7 @@ extern uint8_t  vdp_cmdp_r46;
 
 extern void vdp_draw_line(uint16_t from_x, uint16_t from_y, uint16_t to_x, uint16_t to_y, uint8_t colour, uint8_t operation);
 
+// dprecated
 #define pointSet(x, y, color, operation)                                                                                           \
   vdp_cmdp_dx        = (x);                                                                                                        \
   vdp_cmdp_dy        = (y);                                                                                                        \
@@ -326,3 +327,9 @@ extern void vdp_draw_line(uint16_t from_x, uint16_t from_y, uint16_t to_x, uint1
   vdp_cmd()
 
 #endif
+
+extern void vdp_set_lines(const uint8_t lines);
+extern void vdp_set_refresh(const uint8_t refresh_rate);
+extern void vdp_set_graphic_7();
+extern void vdp_set_graphic_6();
+extern void vdp_set_graphic_4();
