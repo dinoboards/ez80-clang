@@ -297,7 +297,9 @@ extern uint8_t vdp_cmd_point(uint16_t x, uint16_t y);
 #define CMD_LOGIC_IMP   0x00
 #define CMD_LOGIC_AND   0x01
 
+// deprecated
 extern void vdp_cmd(void);
+
 extern void vdp_cmd_wait_completion(void);
 
 extern uint16_t vdp_cmdp_r36;

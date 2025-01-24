@@ -19,11 +19,22 @@ _vdp_cmd_wait_completion:
 
 	DELAY_1_7US
 
+
+	ld	hl, 0
 _vdp_cmd_wait_completion_wait:
 	in	a, (BC)
 	rrca
-	jr	c, _vdp_cmd_wait_completion_wait
+	jr	nc, _vdp_cmd_wait_completion_ready
+	dec	hl
+	ld	a, l
+	or	h
+	jr	nz, _vdp_cmd_wait_completion_wait
 
+;  If here, command has not completed - probably waiting for additional data
+; can we issue a reset command here??
+
+
+_vdp_cmd_wait_completion_ready:
 	xor	a
 	DELAY_1_7US
 	out	(BC), a
