@@ -11,8 +11,8 @@
 
 typedef struct {
   uint8_t red;
-  uint8_t blue;
   uint8_t green;
+  uint8_t blue;
 } RGB;
 
 extern uint16_t VDP_IO_DATA;
@@ -334,4 +334,5 @@ extern void vdp_set_lines(const uint8_t lines);
 extern void vdp_set_refresh(const uint8_t refresh_rate);
 extern void vdp_set_graphic_7();
 extern void vdp_set_graphic_6();
+extern void vdp_set_graphic_5();
 extern void vdp_set_graphic_4();
