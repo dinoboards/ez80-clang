@@ -254,7 +254,7 @@ void vdp_erase_bank0(uint8_t color) {
   vdp_out_reg_int16(212);               // NY
   vdp_out_reg_byte(color * 16 + color); // COLOUR for both pixels (assuming G7 mode)
   vdp_out_reg_byte(0);                  // Direction: VRAM, Right, Down
-  vdp_out_reg_byte(CMD_VDP_TO_VRAM);
+  vdp_out_reg_byte(CMD_HMMV);
   EI;
 }
 
@@ -271,7 +271,7 @@ void vdp_erase_bank1(uint8_t color) {
   vdp_out_reg_int16(212);               // NY
   vdp_out_reg_byte(color * 16 + color); // COLOUR for both pixels (assuming G7 mode)
   vdp_out_reg_byte(0x0);                // Direction: ExpVRAM, Right, Down
-  vdp_out_reg_byte(CMD_VDP_TO_VRAM);
+  vdp_out_reg_byte(CMD_HMMV);
   EI;
 }
 

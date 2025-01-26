@@ -3,6 +3,7 @@
 CMD_PSET	equ	$50
 CMD_LINE	equ	$70
 CMD_LMMV	equ	$80
+CMD_LMMM	equ	$90
 CMD_HMMV	equ	$C0
 CMD_HMMC	equ	$F0
 

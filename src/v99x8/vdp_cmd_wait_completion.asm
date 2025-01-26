@@ -12,10 +12,10 @@ _vdp_cmd_wait_completion:
 	ld	bc, (_VDP_IO_ADDR)
 
 	ld	a, 2
-	out	(BC), a
+	out	(bc), a
 	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
 	ld	a, 0x80|15				; measured on CPU running @25Mhz
-	out	(BC), a
+	out	(bc), a
 
 	DELAY_1_7US
 

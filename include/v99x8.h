@@ -291,11 +291,8 @@ extern uint8_t vdp_cmd_point(uint16_t x, uint16_t y);
 #define CMD_YMMM  0xE0
 #define CMD_HMMC  0xF0
 
-#define CMD_VDP_TO_VRAM 0xC0
-#define CMD_LINE(op)    (0x70 | op)
-#define CMD_PSET(op)    (0x50 | op)
-#define CMD_LOGIC_IMP   0x00
-#define CMD_LOGIC_AND   0x01
+#define CMD_LOGIC_IMP 0x00
+#define CMD_LOGIC_AND 0x01
 
 // deprecated
 extern void vdp_cmd(void);
