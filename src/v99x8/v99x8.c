@@ -69,10 +69,12 @@ void vdp_set_lines(const uint8_t lines) {
 void vdp_set_refresh(const uint8_t refresh_rate) {
   switch (refresh_rate) {
   case PAL:
+  case 50:
     registers_mirror[9] |= 0x02;
     break;
 
   case NTSC:
+  case 60:
     registers_mirror[9] &= ~0x02;
     break;
   }
