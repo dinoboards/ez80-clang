@@ -210,8 +210,16 @@ echo "Building $OUTPUT_BINARY"
 if [ "$MEM_MODEL" == "2MB" ]; then
   LINKER_SCRIPT=${EZ80_CLANG_LS_PATH}/cpm-2mb.ld
   LDFLAGS="--whole-archive -lcrtexe --no-whole-archive $LDFLAGS"
-fi
 
-ez80-ld -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -l${LIB_TYPE} -lez80 -lmalloc -lio -lez80rc --end-group --oformat binary -o "$OUTPUT_BINARY"
+  ez80-ld -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -l${LIB_TYPE} -lez80 -lmalloc -lio -lez80rc --end-group --oformat binary -o "${OUTPUT_BINARY}.020000"
+
+  LINKER_SCRIPT=${EZ80_CLANG_LS_PATH}cpm-2mb-4.ld
+  ez80-ld -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -l${LIB_TYPE} -lez80 -lmalloc -lio -lez80rc --end-group --oformat binary -o "${OUTPUT_BINARY}.040000"
+
+  create-with-relocation-table.sh "${OUTPUT_BINARY}.020000" "${OUTPUT_BINARY}.040000" "${OUTPUT_BINARY}"
+else
+  ez80-ld -T ${LINKER_SCRIPT} ${LDFLAGS} "${OBJECT_FILES[@]}" --start-group -llibc -lcrt -lcpm -l${LIB_TYPE} -lez80 -lmalloc -lio -lez80rc --end-group --oformat binary -o "$OUTPUT_BINARY"
+
+fi
 
 echo "Build complete: $OUTPUT_BINARY"

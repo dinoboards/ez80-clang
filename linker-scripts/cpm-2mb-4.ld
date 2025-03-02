@@ -10,12 +10,12 @@ ONCHIP_RAM_SIZE = 0x1400;      /* reserve just 5120 (5K) bytes for the on-chip R
 START_OF_RAM    = 0x034000;
 RAM_SIZE        = 0x003FFF;     /* restrict to a 16k page */
 
-START_OF_2MB_RAM = 0x200000;
+START_OF_2MB_RAM = 0x400000;
 RAM_2MB_SIZE = 0x1FFFFF;        /* 2MB for the SRAM Module */
 
 CRT_ORG_CODE = START_OF_2MB_RAM + 0x0400;
 
-cpm_bdos_adl	=	0x200005;
+cpm_bdos_adl	=	0x400005;
 
 EXTERN(__start)
 
@@ -26,13 +26,10 @@ MEMORY
     RAM2MB (rwx) : ORIGIN = START_OF_2MB_RAM, LENGTH = RAM_2MB_SIZE
 }
 
-
 SECTIONS
 {
-     /* PROVIDE(my_symbol = 0x038000); */
-
     start_of_header = . ;
-    .header 0x200400  : AT(0x200400) { *(.header_adl) } > RAM2MB
+    .header 0x400400  : AT(0x400400) { *(.header_adl) } > RAM2MB
     end_of_header = . ;
 
     start_of_startup = . ;

@@ -78,7 +78,7 @@ For loading and executing EXE files, see within the `ez80-for-RC` github repo, t
 ## Building
 
 ```
-make package
+make package-local
 ```
 
 ## Installing from local build
