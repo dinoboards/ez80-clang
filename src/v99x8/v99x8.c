@@ -46,13 +46,36 @@ uint24_t vdp_get_screen_width() {
   case 6:
     return 512;
 
+  case 16:
+    return 180;
+
+  case 17:
+    return 360;
+
+  case 18:
+    return 720;
+
   default:
     return 256;
   }
 }
 
 // TODO: interlaced double line not applied in result
-uint24_t vdp_get_screen_height() { return (registers_mirror[9] & 0x80) ? 212 : 192; }
+uint24_t vdp_get_screen_height() {
+  switch (vdp_current_mode) {
+  case 16:
+    return (registers_mirror[9] & 0x02) ? 144 : 120;
+
+  case 17:
+    return (registers_mirror[9] & 0x02) ? 288 : 240;
+
+  case 18:
+    return (registers_mirror[9] & 0x02) ? 576 : 480;
+
+  default:
+    return (registers_mirror[9] & 0x80) ? 212 : 192;
+  }
+}
 
 void vdp_set_lines(const uint8_t lines) {
   switch (lines) {
@@ -80,6 +103,31 @@ void vdp_set_refresh(const uint8_t refresh_rate) {
   }
 }
 
+void vdp_set_super_graphic_1() {
+  vdp_set_graphic_7();
+  vdp_current_mode = 16;
+  vdp_reg_write(31, 1);
+}
+
+void vdp_set_super_graphic_2() {
+  vdp_set_graphic_7();
+  vdp_current_mode = 17;
+  vdp_reg_write(31, 3);
+}
+
+void vdp_set_super_graphic_3() {
+  vdp_set_graphic_7();
+  vdp_current_mode = 18;
+  vdp_reg_write(31, 5);
+}
+
+void vdp_set_super_colour(RGB rgb) {
+  vdp_reg_write(30, 0x80);
+  vdp_reg_write(29, rgb.red);
+  vdp_reg_write(29, rgb.green);
+  vdp_reg_write(29, rgb.blue);
+}
+
 void vdp_set_graphic_7() {
   uint8_t *r = registers_mirror;
 
@@ -98,6 +146,7 @@ void vdp_set_graphic_7() {
 
   set_base_registers();
   vdp_current_mode = 7;
+  vdp_reg_write(31, 0);
 }
 
 void vdp_set_graphic_6() {
@@ -118,6 +167,7 @@ void vdp_set_graphic_6() {
 
   set_base_registers();
   vdp_current_mode = 6;
+  vdp_reg_write(31, 0);
 }
 
 /*
@@ -147,6 +197,7 @@ void vdp_set_graphic_4() {
 
   set_base_registers();
   vdp_current_mode = 4;
+  vdp_reg_write(31, 0);
 }
 
 /*
@@ -176,6 +227,7 @@ void vdp_set_graphic_5() {
 
   set_base_registers();
   vdp_current_mode = 5;
+  vdp_reg_write(31, 0);
 }
 
 /**

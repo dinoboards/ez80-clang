@@ -18,15 +18,15 @@ _vdp_cmd_wait_completion:
 
 	DELAY_1_7US
 
-
-	ld	hl, 0
+	ld	de, $080000
 _vdp_cmd_wait_completion_wait:
 	in	a, (BC)
 	rrca
 	ret	nc ;, _vdp_cmd_wait_completion_ready
-	dec	hl
-	ld	a, l
-	or	h
+	dec	de
+	ld	hl, 0
+	xor	a
+	sbc	hl, de
 	jr	nz, _vdp_cmd_wait_completion_wait
 
 	ret

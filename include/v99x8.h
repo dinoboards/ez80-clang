@@ -329,7 +329,112 @@ extern void vdp_draw_line(uint16_t from_x, uint16_t from_y, uint16_t to_x, uint1
 
 extern void vdp_set_lines(const uint8_t lines);
 extern void vdp_set_refresh(const uint8_t refresh_rate);
+
+/**
+ * @brief Sets the VDP to Graphics Mode 7 (G7)
+ *
+ * Graphics Mode 7 characteristics:
+ * - Resolution: 256 x 212 pixels (50Hz) or 256 x 192 pixels (60Hz)
+ * - Colors: 256 colors per screen from a fixed color space
+ * - VRAM Usage: 128KB (supports two screens)
+ * - Sprite Mode: 2
+ *
+ * Color encoding:
+ * Each pixel is represented by 1 byte with the following bit layout:
+ * - Bits 7-6: Green (2 bits)
+ * - Bits 5-3: Red (3 bits)
+ * - Bits 2-0: Blue (3 bits)
+ *
+ * The pattern name table contains one byte per pixel that directly
+ * specifies its color (not a palette index).
+ *
+ * Controls
+ * - Graphics - VRAN pattern name table
+ * - Background color: Set by low-order four bits of Register 7
+ * - Sprites: Uses VRAM sprite attribute table and sprite pattern table
+ *
+ */
 extern void vdp_set_graphic_7();
+
+/**
+ * @brief Sets the VDP to Graphics Mode 6 (G6)
+ *
+ * Graphics Mode 6 characteristics:
+ * - Resolution: 512 x 212 pixels (50Hz) or 512 x 192 pixels (60Hz)
+ * - Colors: 16 colors per screen from a palette of 512 colors
+ * - VRAM Usage: 128KB (supports two screens)
+ * - Sprite Mode: 2
+ *
+ * Pattern name table characteristics:
+ * - One byte represents two horizontal pixels
+ * - Each pixel can be assigned one of 16 colors
+ * - Colors are selected from a palette of 512 possible colors
+ *
+ * Controls:
+ * - Background color: Set by low-order four bits of Register 7
+ * - Sprites: Uses VRAM sprite attribute table and sprite pattern table
+ */
 extern void vdp_set_graphic_6();
+
+/**
+ * @brief Sets the VDP to Graphics Mode 5 (G5)
+ *
+ * Graphics Mode 5 characteristics:
+ * - Resolution: 512 x 212 pixels (50Hz) or 512 x 192 pixels (60Hz)
+ * - Colors: 4 colors per screen from a palette of 512 colors
+ * - VRAM Usage: 32KB per screen
+ * - Sprite Mode: 2
+ *
+ * Pattern name table characteristics:
+ * - One byte represents four horizontal pixels
+ * - Each pixel can be assigned one of 4 colors
+ * - Colors are selected from a palette of 512 possible colors
+ *
+ * Hardware tiling features:
+ * - Separate color control for even/odd dots
+ * - Higher-order two bits specify even dot colors
+ * - Lower-order two bits specify odd dot colors
+ * - Applies to both sprite and background colors
+ * - Sprite dots can display two colors when using tiling
+ *
+ * Controls:
+ * - Background color: Set by low-order four bits of Register 7
+ * - Sprite attributes: Set in Register 5 and Register 11
+ * - Sprite patterns: Set in Register 6
+ * - Sprites: Uses VRAM sprite attribute table and pattern table
+ *
+ * @note Sprites in this mode are twice the width of graphics dots but can
+ *       show two colors per dot when using the tiling function
+ */
 extern void vdp_set_graphic_5();
+
+/**
+ * @brief Sets the VDP to Graphics Mode 4 (G4)
+ *
+ * Graphics Mode 4 characteristics:
+ * - Resolution: 256 x 212 pixels (50Hz) or 256 x 192 pixels (60Hz)
+ * - Colors: 16 colors per screen from a palette of 512 colors
+ * - VRAM Usage: 32KB per screen
+ * - Sprite Mode: 2
+ *
+ * Pattern name table characteristics:
+ * - One byte represents two horizontal pixels
+ * - Each pixel can be assigned one of 16 colors
+ * - Colors are selected from a palette of 512 possible colors
+ *
+ * Controls:
+ * - Background color: Set by low-order four bits of Register 7
+ * - Sprite attributes: Set in Register 5 and Register 11
+ * - Sprite patterns: Set in Register 6
+ * - Sprites: Uses VRAM sprite attribute table and pattern table
+ *
+ * @note This is a bit-mapped graphics mode with direct color specification
+ *       for each pixel pair
+ */
 extern void vdp_set_graphic_4();
+
+extern void vdp_set_super_graphic_1();
+extern void vdp_set_super_graphic_2();
+extern void vdp_set_super_graphic_3();
+
+extern void vdp_set_super_colour(RGB rgb);
