@@ -41,7 +41,7 @@ _vdp_cpu_to_vram0:
 
 	ld	de, (iy+6)		; length
 	ld	hl, (iy+3)		; source
-	ld	bc, (VDP_IO_DATA)
+	ld	bc, (_VDP_IO_DATA)
 
 loop:
 	ld	a, (hl)

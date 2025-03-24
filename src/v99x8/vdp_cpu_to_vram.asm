@@ -6,6 +6,7 @@
 
 	.global	_vdp_cpu_to_vram
 
+	.extern _VDP_IO_ADDR
 ; fast hdmi version
 
 ; void vdp_cpu_to_vram(const uint8_t* const source, uint24_t vdp_address, uint16_t length)
@@ -25,7 +26,7 @@ _vdp_cpu_to_vram:
 
 	ld	a, (iy+8) 		; vdp_address bits 16..23
 
-	and	%00000001		; extract only bit 16
+	and	%00000111		; extract bit 16..18 (super supports upto 18bit address)
 	rlca				; move 'B16' to B1
 	rlca				; move 'B16' to B2
 	ld	b, a			; save
@@ -35,11 +36,11 @@ _vdp_cpu_to_vram:
 	and	%11000000		; extract bits 15 and 14
 	rlca				; move 'B15' to B0, 'B14' to B7
 	rlca				; move 'B15' to B1, 'B14' to B0
-	or	b			; merge with B16
+	or	b			; merge with B16 to B18
 
 
 	ld	bc, (_VDP_IO_ADDR)
-	out	(BC), a			; value for reg 14 (B16..B14)
+	out	(BC), a			; value for reg 14 (B18..B14)
 	ld	a, $80+14		; VDP register 14
 	out	(BC), a
 
@@ -53,7 +54,7 @@ _vdp_cpu_to_vram:
 
 	ld	de, (iy+9)		; length
 	ld	hl, (iy+3)		; source
-	ld	bc, (VDP_IO_DATA)
+	ld	bc, (_VDP_IO_DATA)
 
 loop:
 	ld	a, (hl)

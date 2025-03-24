@@ -21,6 +21,11 @@ extern uint16_t VDP_IO_STAT;
 extern uint16_t VDP_IO_PALT;
 extern uint16_t VDP_IO_REGS;
 
+extern uint8_t vdp_current_mode; /* private */
+
+#define REGISTER_COUNT 12
+extern uint8_t registers_mirror[REGISTER_COUNT]; /* private */
+
 #define VDP_DATA PORT_IO(VDP_IO_DATA)
 #define VDP_ADDR PORT_IO(VDP_IO_ADDR)
 #define VDP_PALT PORT_IO(VDP_IO_PALT)
@@ -31,9 +36,80 @@ extern uint16_t VDP_IO_REGS;
 #define vdp_out_pal(v)      port_out(VDP_IO_PALT, v)
 #define vdp_out_reg_byte(v) port_out(VDP_IO_REGS, v)
 
+extern void set_base_registers(); /* private */
+
 extern void vdp_clear_all_memory(void);
-extern void vdp_set_palette(RGB *);
+
+/**
+ * @brief Sets the VDP palette registers
+ *
+ * Updates all 16 palette registers with new RGB color values. Each color component
+ * (red, green, blue) can have a value from 0-7, giving 512 possible colors.
+ *
+ * Palette organization:
+ * - 16 palette entries total
+ * - Each entry contains RGB values
+ * - Used by graphics modes 4-6
+ *
+ * @param palette Pointer to an array of 16 RGB structures containing the new palette colors
+ *
+ * @note For Graphics Mode 7, the palette is fixed and cannot be changed
+ */
+extern void vdp_set_palette(RGB *palette);
+
+/**
+ * @brief Sets the VDP extended palette registers
+ *
+ * Updates all 256 palette registers with new RGB color values. Each color component
+ * (red, green, blue) can have a value from 0-255.
+ *
+ * Extended Palette features:
+ * - 256 palette entries total
+ * - Each entry contains RGB values
+ * - Used by super graphics modes
+ *
+ * @param pPalette Pointer to an array of 256 RGB structures containing the new palette colors
+ *
+ * @note This feature is only available with the Super HDMI Tang Nano FPGA module
+ */
+extern void vdp_set_extended_palette(RGB *pPalette);
+
+/**
+ * @brief Sets a single entry in the VDP extended palette
+ *
+ * Updates a single palette register with new RGB color values in the 256-color
+ * extended palette. Each color component (red, green, blue) can have a value
+ * from 0-255.
+ *
+ * @param index The palette entry to update (0-255)
+ * @param palette_entry RGB structure containing the new color values
+ *
+ * @note This feature is only available with the Super HDMI Tang Nano FPGA module
+ * @see vdp_set_extended_palette
+ */
+extern void vdp_set_extended_palette_entry(uint8_t index, RGB palette_entry);
+
 extern void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh_rate);
+
+/**
+ * @brief Switches between VRAM pages in supported graphics modes
+ *
+ * Changes the active VRAM page for graphics modes that support page flipping (G6 and G7).
+ * Each page represents a complete screen buffer of 128KB. Switching pages allows for
+ * double-buffering techniques.
+ *
+ * Register changes:
+ * - Register 2: Pattern name table base address
+ * - Register 6: Sprite pattern table base address
+ * - Register 11: Sprite attribute table base address
+ *
+ * @param page Page number to switch to (0 or 1)
+ *   - 0: First 128KB page (0x00000-0x1FFFF)
+ *   - 1: Second 128KB page (0x20000-0x3FFFF)
+ *
+ * @note Only works in Graphics modes 6 and 7
+ * @warning Has no effect in other graphics modes
+ */
 extern void vdp_set_page(const uint8_t page);
 
 extern void vdp_erase_bank0(uint8_t color);
@@ -43,9 +119,30 @@ extern void vdp_out_reg_int16(uint16_t b);
 
 extern uint8_t vdp_get_status(uint8_t r);
 
-#define vdp_reg_write(a, b) _vdp_reg_write((a)*256 + (b))
+#define vdp_reg_write(reg_num, value) _vdp_reg_write((reg_num)*256 + (value))
 
+/**
+ * @brief Get the current screen width
+ *
+ * Returns the width in pixels of the current video mode:
+ * - Standard modes: 256 or 512 pixels
+ * - Super Graphics Mode 1: 360 pixels
+ * - Super Graphics Mode 2: 720 pixels
+ *
+ * @return uint24_t The current screen width in pixels
+ */
 extern uint24_t vdp_get_screen_width();
+
+/**
+ * @brief Get the current screen height
+ *
+ * Returns the height in pixels of the current video mode:
+ * - Standard modes: 192 (60Hz) or 212 (50Hz) lines
+ * - Super Graphics Mode 1: 240 (60Hz) or 288 (50Hz) lines
+ * - Super Graphics Mode 2: 480 (60Hz) or 576 (50Hz) lines
+ *
+ * @return uint24_t The current screen height in pixels
+ */
 extern uint24_t vdp_get_screen_height();
 
 /**
@@ -276,8 +373,6 @@ extern void vdp_cmd_pset(uint16_t x, uint16_t y, uint8_t colour, uint8_t operati
 
 extern uint8_t vdp_cmd_point(uint16_t x, uint16_t y);
 
-#define REGISTER_COUNT 12
-
 #define CMD_POINT 0x40
 #define CMD_PSET  0x50
 #define CMD_SRCH  0x60
@@ -317,15 +412,13 @@ extern uint8_t  vdp_cmdp_r46;
 
 extern void vdp_draw_line(uint16_t from_x, uint16_t from_y, uint16_t to_x, uint16_t to_y, uint8_t colour, uint8_t operation);
 
-// dprecated
+// deprecated
 #define pointSet(x, y, color, operation)                                                                                           \
   vdp_cmdp_dx        = (x);                                                                                                        \
   vdp_cmdp_dy        = (y);                                                                                                        \
   vdp_cmdp_color     = (color);                                                                                                    \
   vdp_cmdp_operation = CMD_PSET((operation));                                                                                      \
   vdp_cmd()
-
-#endif
 
 extern void vdp_set_lines(const uint8_t lines);
 extern void vdp_set_refresh(const uint8_t refresh_rate);
@@ -433,8 +526,4 @@ extern void vdp_set_graphic_5();
  */
 extern void vdp_set_graphic_4();
 
-extern void vdp_set_super_graphic_1();
-extern void vdp_set_super_graphic_2();
-extern void vdp_set_super_graphic_3();
-
-extern void vdp_set_super_colour(RGB rgb);
+#endif
