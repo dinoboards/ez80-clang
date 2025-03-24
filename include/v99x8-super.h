@@ -6,6 +6,21 @@
 extern uint8_t register_31_mirror;
 
 /**
+ * @brief Sets the base VRAM page for VDP command operations
+ *
+ * Defines the base VRAM address (page) that will be used for all VDP command
+ * operations (vdp_cmd_XXXX functions). This allows command operations to target
+ * different VRAM pages without changing the display page.
+ *
+ * @param page The VRAM page number to used.
+ *
+ * @note This feature is only available with the Super HDMI Tang Nano FPGA module
+ * @note Does not change which page is being displayed
+ * @see vdp_set_page
+ */
+extern void vdp_set_command_page(const uint8_t page);
+
+/**
  * @brief Sets the VDP extended palette registers
  *
  * Updates all 256 palette registers with new RGB color values. Each color component

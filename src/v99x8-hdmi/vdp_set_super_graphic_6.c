@@ -9,7 +9,7 @@ void vdp_set_super_graphic_6() {
   vdp_current_mode   = 128 + 6;
   register_31_mirror = 5;
   vdp_reg_write(29, 255);
-  vdp_reg_write(30, 3);                  // reset viewport and base addr
+  vdp_reg_write(30, 7);                  // reset viewport and base addr
   vdp_reg_write(31, register_31_mirror); // set SUPER_RES mode
 
   vdp_reg_write(29, 0);

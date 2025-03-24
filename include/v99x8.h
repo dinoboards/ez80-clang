@@ -94,21 +94,15 @@ extern void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t 
 /**
  * @brief Switches between VRAM pages in supported graphics modes
  *
+ * @param page The VRAM page number to be used.
+ *
  * Changes the active VRAM page for graphics modes that support page flipping (G6 and G7).
  * Each page represents a complete screen buffer of 128KB. Switching pages allows for
  * double-buffering techniques.
  *
- * Register changes:
- * - Register 2: Pattern name table base address
- * - Register 6: Sprite pattern table base address
- * - Register 11: Sprite attribute table base address
+ * The number of pages available are dependant on the available memory and the mode selected
  *
- * @param page Page number to switch to (0 or 1)
- *   - 0: First 128KB page (0x00000-0x1FFFF)
- *   - 1: Second 128KB page (0x20000-0x3FFFF)
- *
- * @note Only works in Graphics modes 6 and 7
- * @warning Has no effect in other graphics modes
+ * @note Only works in Graphics modes 6 and 7 and (super graphics modes if available)
  */
 extern void vdp_set_page(const uint8_t page);
 
