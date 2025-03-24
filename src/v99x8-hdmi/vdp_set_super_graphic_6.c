@@ -3,14 +3,14 @@
 #include <stdlib.h>
 #include <v99x8-super.h>
 
-void vdp_set_super_graphic_2() {
+void vdp_set_super_graphic_6() {
   vdp_set_refresh(50);
   vdp_set_graphic_7();
-  vdp_current_mode   = 128 + 2;
-  register_31_mirror = 3;
+  vdp_current_mode   = 128 + 6;
+  register_31_mirror = 5;
   vdp_reg_write(29, 255);
-  vdp_reg_write(30, 3);                  // reset VIEW PORT and BASE ADDR
-  vdp_reg_write(31, register_31_mirror); // set SUPER_MID mode
+  vdp_reg_write(30, 3);                  // reset viewport and base addr
+  vdp_reg_write(31, register_31_mirror); // set SUPER_RES mode
 
   vdp_reg_write(29, 0);
   vdp_reg_write(30, 0x28); // 0:VIEW_PORT_START_X  Low  byte 40 (0x28)
