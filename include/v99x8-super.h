@@ -269,4 +269,21 @@ extern void vdp_set_super_graphic_10();
  */
 extern void vdp_set_super_graphic_11();
 
+/**
+ * @brief Sets the VDP to Super Graphics Mode 12
+ *
+ * Super Graphics Mode 12 characteristics:
+ * - Resolution: 640 x 256 @ 50Hz
+ * - Colors: Uses 256 palette colors
+ * - VRAM Usage: 163,840 bytes
+ *
+ * Memory organization:
+ * - Each pixel uses one byte to specify its color
+ * - Colors are selected from palette registers
+ *
+ * @note Only supported on the Super HDMI Tang Nano 20K
+ *       custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_12();
+
 #endif
