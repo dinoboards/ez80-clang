@@ -79,7 +79,7 @@ _vdp_cmd_move_vram_to_vram:
 	out	(bc), l					; low byte into #R45
 
 	DELAY_VDP
-	ld	a, CMD_LMMM
+	ld	a, CMD_HMMM
 	out	(bc), a					; into #R46
 
 	ret
