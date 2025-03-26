@@ -66,8 +66,8 @@ extern void vdp_set_extended_palette_entry(uint8_t index, RGB palette_entry);
   10: 720x288 @ 50Hz
 
   //TODO MODES
-  11: 640x256 @ 50hz (720-80)*(576/2-32)
-  12: 640x240 @ 60hz (720-80)*(480/2)
+  11: 640x240 @ 60hz (720-80)*(480/2)
+  12: 640x256 @ 50hz (720-80)*(576/2-32)
 */
 
 /**
@@ -251,5 +251,22 @@ extern void vdp_set_super_graphic_9();
  *       custom kit with the SUPER_RES extensions enabled.
  */
 extern void vdp_set_super_graphic_10();
+
+/**
+ * @brief Sets the VDP to Super Graphics Mode 11
+ *
+ * Super Graphics Mode 11 characteristics:
+ * - Resolution: 640 x 240 @ 60Hz
+ * - Colors: Uses 256 palette colors
+ * - VRAM Usage: 153,600 bytes
+ *
+ * Memory organization:
+ * - Each pixel uses one byte to specify its color
+ * - Colors are selected from palette registers
+ *
+ * @note Only supported on the Super HDMI Tang Nano 20K
+ *       custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_11();
 
 #endif
