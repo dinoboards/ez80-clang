@@ -54,14 +54,20 @@ extern void vdp_set_extended_palette_entry(uint8_t index, RGB palette_entry);
 
 /*
   Super Graphics Modes:
-  1: 320x200 @ 60hz
-  2: 320x240 @ 50hz
-  3: 360x240 @ 60hz
-  4: 360x288 @ 50hz
-  5: 640x400 @ 60hz
-  6: 640x480 @ 50hz
-  7: 720x480 @ 60Hz
-  8: 720x576 @ 50Hz
+   1: 320x200 @ 60hz
+   2: 320x240 @ 50hz
+   3: 360x240 @ 60hz
+   4: 360x288 @ 50hz
+   5: 640x400 @ 60hz
+   6: 640x480 @ 50hz
+   7: 720x480 @ 60Hz
+   8: 720x576 @ 50Hz
+   9: 720x240 @ 60Hz
+  10: 720x288 @ 50Hz
+
+  //TODO MODES
+  11: 640x256 @ 50hz (720-80)*(576/2-32)
+  12: 640x240 @ 60hz (720-80)*(480/2)
 */
 
 /**
@@ -211,5 +217,39 @@ extern void vdp_set_super_graphic_7();
  *       custom kit with the SUPER_RES extensions enabled.
  */
 extern void vdp_set_super_graphic_8();
+
+/**
+ * @brief Sets the VDP to Super Graphics Mode 9
+ *
+ * Super Graphics Mode 9 characteristics:
+ * - Resolution: 720 x 240 @ 60Hz
+ * - Colors: Uses 256 palette colors
+ * - VRAM Usage: 172,800 bytes
+ *
+ * Memory organization:
+ * - Each pixel uses one byte to specify its color
+ * - Colors are selected from palette registers
+ *
+ * @note Only supported on the Super HDMI Tang Nano 20K
+ *       custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_9();
+
+/**
+ * @brief Sets the VDP to Super Graphics Mode 10
+ *
+ * Super Graphics Mode 10 characteristics:
+ * - Resolution: 720 x 288 @ 50Hz
+ * - Colors: Uses 256 palette colors
+ * - VRAM Usage: 207,360 bytes
+ *
+ * Memory organization:
+ * - Each pixel uses one byte to specify its color
+ * - Colors are selected from palette registers
+ *
+ * @note Only supported on the Super HDMI Tang Nano 20K
+ *       custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_10();
 
 #endif
