@@ -8,6 +8,7 @@
 	extern	_main
 	section	.header_adl, "ax", @progbits
 
+application_load_addr:
 	jp	__start
 
 ; TODO - add a header to the EXE file
@@ -36,7 +37,7 @@ __crt_exit:
 	call	_run_atexit_funcs
 	pop	hl
 
-	jp	$200000
+	jp	application_load_addr - $400
 
 _exit:
 	pop	hl				; discard return address
