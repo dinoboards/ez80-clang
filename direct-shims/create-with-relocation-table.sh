@@ -13,6 +13,12 @@ if [[ ! -f "$file1" || ! -f "$file2" ]]; then
   exit 1
 fi
 
+# Set up cleanup trap
+cleanup() {
+    rm -f "$file1" "$file2"
+}
+trap cleanup EXIT
+
 # check if both files are the same length
 size1=$(stat -c%s "$file1")
 size2=$(stat -c%s "$file2")
@@ -25,7 +31,7 @@ fi
 # The output file is identical to the first file, plus the relocation data append to the end
 cp "$file1" "$output_file"
 
-#get the start address of the relocation tabler
+#get the start address of the relocation table
 relocation_table_start=$(stat -c%s "$output_file")
 
 relocation_count=0
