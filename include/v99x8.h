@@ -36,6 +36,19 @@ extern uint8_t registers_mirror[REGISTER_COUNT]; /* private */
 #define vdp_out_pal(v)      port_out(VDP_IO_PALT, v)
 #define vdp_out_reg_byte(v) port_out(VDP_IO_REGS, v)
 
+#define VDP_TMS   1
+#define VDP_V9938 2
+#define VDP_V9958 3
+#define VDP_SUPER 4
+
+/**
+ * @brief Discover version of VDP and initialise its internal registers
+ *
+ * @note does not enable any specific graphics mode
+ * @note should be called before any vdp operations
+ */
+extern uint8_t vdp_init();
+
 extern void set_base_registers(); /* private */
 
 extern void vdp_clear_all_memory(void);
