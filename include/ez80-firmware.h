@@ -113,7 +113,17 @@ extern void ez80_io_bus_cycles_set(const uint8_t cycles);
  */
 extern void ez80_mem0_bus_cycles_set(const uint8_t cycles);
 
-//
+/**
+ * @brief Configure the eZ80 for RC's 1st extended linear memory bus configuration and timing (CS1)
+ *
+ * Invokes firmware function A=0, B=2 SYSUTL_MEM1TM_SET
+ *
+ * The cycle byte's top bit represents the bus mode (0 = eZ80, 1 = Z80) and the lower 3 bits represent the number of cycles or wait
+ * states.
+ *
+ * @param cycles the number of cycles or wait states to set
+ */
+extern void ez80_mem1_bus_cycles_set(const uint8_t cycles);
 
 /**
  * @brief Retrieve the eZ80 memory configuration/timing

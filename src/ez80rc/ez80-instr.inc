@@ -44,6 +44,12 @@
 	EZ80_FN
 .endm
 
+.macro	EZ80_UTIL_MEM1TM_SET
+	xor	a
+	ld	b, 2
+	EZ80_FN
+.endm
+
 .macro	EZ80_UTIL_DEBUG
 	xor	a
 	ld	b, 7
