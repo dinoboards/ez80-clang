@@ -6,6 +6,7 @@
 
 	include	"src/v99x8/common.inc"
 
+	; section	.text_on_chip, "ax", @progbits
 	section	.text, "ax", @progbits
 	.assume	adl=1
 
@@ -28,8 +29,13 @@
 	; length => iy + 21
 
 _vdp_cmd_move_cpu_to_vram:
+	;backup interrupt
 	ld	iy, 0
 	add	iy, sp
+
+	ld	a, i ; P = IEF2
+	di
+	push	af
 
 	ld	bc, (_VDP_IO_ADDR)				;
 	ld	a, 36					; submit 36 with auto increment
@@ -80,17 +86,34 @@ _vdp_cmd_move_cpu_to_vram:
 
 	ld	de, (iy+21)				; load length
 
-	ld	bc, (_VDP_IO_ADDR)				;
+	ld	bc, (_VDP_IO_ADDR)			;
 	ld	a, $80|44				; submit 44 without auto increment
 	out	(bc), a
 	DELAY_VDP
 	ld	a, $80|17				; to register 17
 	out	(bc), a
 
+	; SET STATUS REGISTER to #02
+	ld	a, 2
+	out	(BC), a
+	DELAY_1_7US
+	ld	a, 0x80|15
+	out	(BC), a
+
+	exx
+	ld	bc, (_VDP_IO_ADDR)
+	exx
+
 	ld	bc, (_VDP_IO_REGS)
 
 loop:
-	DELAY_VDP
+	exx
+.wait:
+	in	a, (bc)
+	bit	7, a
+	jr	z, .wait
+	exx
+
 	ld	a, (hl)					; load next byte
 	inc	hl
 	out	(bc), a					; submit to VDP
@@ -100,4 +123,16 @@ loop:
 	or	d
 	jr	nz, loop
 
+	exx
+	; RESTORE READ REGISTER TO DEFAULT OF 0
+	xor	a
+	out	(BC), a
+	DELAY_1_7US
+	ld	a, 0x80|15
+	out	(BC), a
+
+	pop	af
+	jp	po, .skipEI
+	ei
+.skipEI:
 	ret
