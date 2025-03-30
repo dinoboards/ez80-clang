@@ -75,4 +75,27 @@ extern near_ptr_t as_near_ptr_safe(const void *address, const uint8_t mbase, con
  */
 #define __func_on_chip __attribute__((section(".text_on_chip")))
 
+/**
+ * @brief Get the application's allocated memory
+ *
+ * For a standard COM application, the address returned is the MBASE address (eg: 0x030000)
+ * For an EXE application, the start extended memory address the application was loaded into. (eg: 0x200000)
+ *
+ * @return uint8_t* The starting address allocated to the application.
+ */
+extern uint8_t *get_memory_start();
+
+/**
+ * @brief Get the the first address after the application's allocated memory
+ *
+ * For standard COM application, the address returned is the MBASE+1 address (eg: 0x040000)
+ * For an EXE application, the address returned is the first byte address beyond the allocated memory. eg (0x400000)
+ *
+ * For EXE, the top of memory is free for use.
+ * For COM, the top of memory is used by CPM.
+ *
+ * @return uint8_t* the end address allocated to the application.
+ */
+extern uint8_t *get_memory_end();
+
 #endif

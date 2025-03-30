@@ -16,6 +16,8 @@
 	extern	__push_cpm_cmdline_args
 
 	section	.header_z80, "ax", @progbits
+	global	_get_memory_start
+	global	_get_memory_end
 
 	; detect if running on eZ80
 	ld	hl, $0040
@@ -125,6 +127,19 @@ crt0_init:
 
 	section	code_crt_init_exit, "ax", @progbits
 	ret
+
+
+_get_memory_start:
+	ld	hl, (_cpm_mbase)
+	ret
+
+_get_memory_end:
+	ld	hl,(_cpm_mbase)
+	ld	bc, 0x10000
+	add	hl, bc
+	ret
+
+	global	_get_memory_end
 
 	.extern _on_chip_source
 	.extern _start_of_on_chip

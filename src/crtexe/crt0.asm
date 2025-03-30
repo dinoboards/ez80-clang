@@ -8,6 +8,12 @@
 	extern	_main
 	section	.header_adl, "ax", @progbits
 
+	global	_get_memory_start
+	global	_get_memory_end
+
+_extended_memory_start:	EQU 	application_load_addr -$400 + $0A
+_extended_memory_end:	EQU	application_load_addr -$400 + $0D
+
 application_load_addr:
 	jp	__start
 
@@ -95,6 +101,14 @@ __clear_mem:
 	sbc	hl, bc
 	jr	nz, .loop
 	ret
+
+_get_memory_start:
+	LD	HL, (_extended_memory_start)
+	RET
+
+_get_memory_end:
+	LD	HL, (_extended_memory_end)
+	RET
 
 
 	section	bss_crt, "ax", @progbits
