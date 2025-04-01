@@ -23,6 +23,8 @@ _vdp_cmd_vdp_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
+	DI_AND_SAVE
+
 	ld	bc, (_VDP_IO_ADDR)
 	ld	a, 36					; submit 36, with auto increment
 	out	(bc), a
@@ -67,5 +69,7 @@ _vdp_cmd_vdp_to_vram:
 	DELAY_VDP
 	ld	a, CMD_HMMV				; submit command
 	out	(bc), a
+
+	RESTORE_EI
 
 	ret

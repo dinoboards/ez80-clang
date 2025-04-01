@@ -26,6 +26,8 @@ _vdp_cmd_logical_move_vram_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
+	DI_AND_SAVE
+
 	ld	bc, (_VDP_IO_ADDR)
 	ld	a, 32					; submit 36, with auto increment
 	out	(bc), a
@@ -83,5 +85,7 @@ _vdp_cmd_logical_move_vram_to_vram:
 	ld	a, (iy+24)				; load operation
 	or	CMD_LMMM
 	out	(bc), a					; into #R46
+
+	RESTORE_EI
 
 	ret

@@ -36,3 +36,16 @@ CMD_HMMC	equ	$F0
 .macro	DELAY_VDP
 .endm
 .endif
+
+.macro	DI_AND_SAVE
+	ld	a, i ; P = IEF2
+	di
+	push	af
+.endm
+
+.macro	RESTORE_EI
+	pop	af
+	jp	po, .skipEI
+	ei
+.skipEI:
+.endm

@@ -8,6 +8,9 @@
 	.global	_vdp_cmd_wait_completion
 _vdp_cmd_wait_completion:
 	; Set read register to 2
+
+	DI_AND_SAVE
+
 	ld	bc, (_VDP_IO_ADDR)
 
 	ld	a, 2
@@ -18,29 +21,17 @@ _vdp_cmd_wait_completion:
 
 	DELAY_1_7US
 
-	ld	de, $080000
+	ld	de, $100000
 _vdp_cmd_wait_completion_wait:
 	in	a, (BC)
 	rrca
-	ret	nc ;, _vdp_cmd_wait_completion_ready
+	jr	nc, .exit ;, _vdp_cmd_wait_completion_ready
 	dec	de
 	ld	hl, 0
 	xor	a
 	sbc	hl, de
 	jr	nz, _vdp_cmd_wait_completion_wait
 
+.exit:
+	RESTORE_EI
 	ret
-
-;  If here, command has not completed - probably waiting for additional data
-; can we issue a reset command here??
-
-
-; _vdp_cmd_wait_completion_ready:
-; 	xor	a
-; 	DELAY_1_7US
-; 	out	(BC), a
-; 	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
-; 	ld	a, 0x80|15				; measured on CPU running @25Mhz
-; 	out	(BC), a
-
-; 	ret

@@ -33,9 +33,7 @@ _vdp_cmd_move_cpu_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
-	ld	a, i ; P = IEF2
-	di
-	push	af
+	DI_AND_SAVE
 
 	ld	bc, (_VDP_IO_ADDR)				;
 	ld	a, 36					; submit 36 with auto increment
@@ -131,8 +129,6 @@ loop:
 	ld	a, 0x80|15
 	out	(BC), a
 
-	pop	af
-	jp	po, .skipEI
-	ei
-.skipEI:
+	RESTORE_EI
+
 	ret

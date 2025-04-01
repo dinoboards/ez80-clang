@@ -25,6 +25,8 @@ _vdp_cmd_move_data_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
+	DI_AND_SAVE
+
 	ld	bc, (_VDP_IO_ADDR)
 	ld	a, 36					; submit 36 with auto increment
 	out	(bc), a
@@ -79,20 +81,6 @@ _vdp_cmd_move_data_to_vram:
 	ld	a, $80|17				; to register 17
 	out	(bc), a
 
-	ret
-
-
-	ld	bc, (_VDP_IO_REGS)
-
-loop:
-	DELAY_VDP
-	ld	a, (hl)					; load next byte
-	inc	hl
-	out	(bc), a					; submit to VDP
-
-	dec	de
-	ld	a, e
-	or	d
-	jr	nz, loop
+	RESTORE_EI
 
 	ret

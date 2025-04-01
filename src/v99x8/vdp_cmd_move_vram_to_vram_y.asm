@@ -23,6 +23,8 @@ _vdp_cmd_move_vram_to_vram_y:
 	ld	iy, 0
 	add	iy, sp
 
+	DI_AND_SAVE
+
 	ld	bc, (_VDP_IO_ADDR)
 	ld	a, 34					; submit 34, with auto increment
 	out	(bc), a
@@ -50,10 +52,11 @@ _vdp_cmd_move_vram_to_vram_y:
 	DELAY_VDP
 	out	(bc), h					; high byte into #R39
 
-	xor	a
 	DELAY_VDP
+	xor	a
 	out	(bc), a					; N/A #R40
 	DELAY_VDP
+	xor	a
 	out	(bc), a					; N/A #R41
 
 	ld	hl, (iy+12)				; load height
@@ -73,5 +76,7 @@ _vdp_cmd_move_vram_to_vram_y:
 	DELAY_VDP
 	ld	a, CMD_HMMM
 	out	(bc), a					; into #R46
+
+	RESTORE_EI
 
 	ret
