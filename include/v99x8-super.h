@@ -286,4 +286,5 @@ extern void vdp_set_super_graphic_11();
  */
 extern void vdp_set_super_graphic_12();
 
+extern void vdp_set_super_graphic(uint8_t mode);
 #endif
