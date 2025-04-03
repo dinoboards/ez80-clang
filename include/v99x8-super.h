@@ -222,9 +222,9 @@ extern void vdp_set_super_graphic_8();
  * @brief Sets the VDP to Super Graphics Mode 9
  *
  * Super Graphics Mode 9 characteristics:
- * - Resolution: 720 x 240 @ 60Hz
+ * - Resolution: 720 x 512 @ 50Hz
  * - Colors: Uses 256 palette colors
- * - VRAM Usage: 172,800 bytes
+ * - VRAM Usage: 368,640 bytes
  *
  * Memory organization:
  * - Each pixel uses one byte to specify its color
@@ -234,57 +234,6 @@ extern void vdp_set_super_graphic_8();
  *       custom kit with the SUPER_RES extensions enabled.
  */
 extern void vdp_set_super_graphic_9();
-
-/**
- * @brief Sets the VDP to Super Graphics Mode 10
- *
- * Super Graphics Mode 10 characteristics:
- * - Resolution: 720 x 288 @ 50Hz
- * - Colors: Uses 256 palette colors
- * - VRAM Usage: 207,360 bytes
- *
- * Memory organization:
- * - Each pixel uses one byte to specify its color
- * - Colors are selected from palette registers
- *
- * @note Only supported on the Super HDMI Tang Nano 20K
- *       custom kit with the SUPER_RES extensions enabled.
- */
-extern void vdp_set_super_graphic_10();
-
-/**
- * @brief Sets the VDP to Super Graphics Mode 11
- *
- * Super Graphics Mode 11 characteristics:
- * - Resolution: 640 x 240 @ 60Hz
- * - Colors: Uses 256 palette colors
- * - VRAM Usage: 153,600 bytes
- *
- * Memory organization:
- * - Each pixel uses one byte to specify its color
- * - Colors are selected from palette registers
- *
- * @note Only supported on the Super HDMI Tang Nano 20K
- *       custom kit with the SUPER_RES extensions enabled.
- */
-extern void vdp_set_super_graphic_11();
-
-/**
- * @brief Sets the VDP to Super Graphics Mode 12
- *
- * Super Graphics Mode 12 characteristics:
- * - Resolution: 640 x 256 @ 50Hz
- * - Colors: Uses 256 palette colors
- * - VRAM Usage: 163,840 bytes
- *
- * Memory organization:
- * - Each pixel uses one byte to specify its color
- * - Colors are selected from palette registers
- *
- * @note Only supported on the Super HDMI Tang Nano 20K
- *       custom kit with the SUPER_RES extensions enabled.
- */
-extern void vdp_set_super_graphic_12();
 
 extern void vdp_set_super_graphic(uint8_t mode);
 #endif

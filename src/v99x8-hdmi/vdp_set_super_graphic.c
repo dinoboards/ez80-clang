@@ -26,18 +26,6 @@ extern void vdp_set_super_graphic(uint8_t mode) {
   case 8:
     vdp_set_super_graphic_8();
     return;
-  case 9:
-    vdp_set_super_graphic_9();
-    return;
-  case 10:
-    vdp_set_super_graphic_10();
-    return;
-  case 11:
-    vdp_set_super_graphic_11();
-    return;
-  case 12:
-    vdp_set_super_graphic_12();
-    return;
 
   default:
     return;

@@ -41,15 +41,6 @@ uint24_t vdp_get_screen_width() {
     return 720;
 
   case 128 + 9:
-    return 720;
-
-  case 128 + 10:
-    return 720;
-
-  case 128 + 11:
-    return 640;
-
-  case 128 + 12:
     return 640;
 
   default:
