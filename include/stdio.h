@@ -35,24 +35,18 @@ __BEGIN_DECLS
  *
  * @details The `fopen` function opens the file whose name is the string pointed to by `filename` and associates a stream with it.
  *
- * The `mode` argument is a string that indicates the type of access requested for the file. The allowed modes are:
- * - `"r"` : Open text file for reading. The stream is positioned at the beginning of the file.
- * - `"w"` : Truncate to zero length or create text file for writing. The stream is positioned at the beginning of the file.
+ * The `mode` argument is a string that indicates the type of access requested for the file. The allowed modes are combinations off:
+ * - `"r"` : Open file for reading. The stream is positioned at the beginning of the file.
+ * - `"w"` : Truncate to zero length or create file for writing. The stream is positioned at the beginning of the file.
  * - `"a"` : Open for writing. The file is created if it does not exist. The stream is positioned at the end of the file.
  * - `"r+"`: Open for reading and writing. The stream is positioned at the beginning of the file.
  * - `"w+"`: Truncate to zero length or create text file for reading and writing. The stream is positioned at the beginning of the
  * file.
  * - `"a+"`: Open for reading and writing. The file is created if it does not exist. The stream is positioned at the end of the
  * file.
- * - `"rb"`: Open binary file for reading. The stream is positioned at the beginning of the file.
- * - `"wb"`: Truncate to zero length or create binary file for writing. The stream is positioned at the beginning of the file.
- * - `"ab"`: Open binary file for writing. The file is created if it does not exist. The stream is positioned at the end of the
- * file.
- * - `"r+b"` or `"rb+"`: Open binary file for reading and writing. The stream is positioned at the beginning of the file.
- * - `"w+b"` or `"wb+"`: Truncate to zero length or create binary file for reading and writing. The stream is positioned at the
- * beginning of the file.
- * - `"a+b"` or `"ab+"`: Open binary file for reading and writing. The file is created if it does not exist. The stream is
- * positioned at the end of the file.
+ * - `"t"`: Open in text translation mode.  trailing CTRL+Z are treated as EOF and not returned on read, and padded as needed on
+ * write.
+ * - `"b"`: Default behaviour, no translation of line endings nor processing of trailing CTRL+Z.
  *
  * The `fopen` function returns a pointer to a `FILE` object that can be used to identify the stream in subsequent operations. If
  * the file cannot be opened, a `NULL` pointer is returned.

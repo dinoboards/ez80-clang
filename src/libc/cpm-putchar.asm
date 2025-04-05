@@ -11,7 +11,7 @@ _putchar:
 	pop	de ; character
 
 	ld	a, (__stdin)
-	bit	0, a				; _stdin.mode & _O_TEXT
+	bit	0, a				; _stdin.mode & _IOTEXT_TRANSLATION
 	jr	z, .skip
 
 	ld	a, 10	; CR			; LF

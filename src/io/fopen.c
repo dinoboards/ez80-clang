@@ -18,37 +18,52 @@ FILE *fopen(const char *filename, const char *mode) {
   }
 
   cpm_f_error_t result;
-  if (strcmp(mode, "r") == 0) {
-    result          = cpm_f_open(AS_CPM_PTR(file_fcb));
-    file_fcb->flags = O_RDONLY;
-    file_fcb->mode  = _IOTEXT;
+  uint8_t       has_read = 0, has_write = 0, has_plus = 0, has_text = 0;
+  const char   *p;
 
-  } else if (strcmp(mode, "r+") == 0) {
-    result          = cpm_f_open(AS_CPM_PTR(file_fcb));
-    file_fcb->flags = O_RDWR;
-    file_fcb->mode  = _IOTEXT;
-
-  } else if (strcmp(mode, "w") == 0) {
-    cpm_f_delete(AS_CPM_PTR(file_fcb));
-    result          = cpm_f_make(AS_CPM_PTR(file_fcb));
-    file_fcb->flags = O_WRONLY;
-    file_fcb->mode  = _IOTEXT;
-
-  } else if (strcmp(mode, "wb") == 0) {
-    cpm_f_delete(AS_CPM_PTR(file_fcb));
-    result          = cpm_f_make(AS_CPM_PTR(file_fcb));
-    file_fcb->flags = O_WRONLY;
-    file_fcb->mode  = 0;
-
-  } else if (strcmp(mode, "rb") == 0) {
-    result          = cpm_f_open(AS_CPM_PTR(file_fcb));
-    file_fcb->flags = O_RDONLY;
-    file_fcb->mode  = 0;
-
-  } else {
-    errno = EINVAL;
-    return NULL; // Unsupported mode
+  for (p = mode; *p; p++) {
+    switch (*p) {
+    case 'r':
+      has_read = 1;
+      break;
+    case 'w':
+      has_write = 1;
+      break;
+    case '+':
+      has_plus = 1;
+      break;
+    case 't':
+      has_text = 1;
+      break;
+    case 'b':
+      has_text = 0;
+      break;
+    default:
+      errno = EINVAL;
+      return NULL;
+    }
   }
+
+  if (has_read && has_write) {
+    errno = EINVAL;
+    return NULL;
+  }
+
+  if (!has_read && !has_write) {
+    errno = EINVAL;
+    return NULL;
+  }
+
+  if (has_write) {
+    cpm_f_delete(AS_CPM_PTR(file_fcb));
+    result          = cpm_f_make(AS_CPM_PTR(file_fcb));
+    file_fcb->flags = has_plus ? O_RDWR : O_WRONLY;
+  } else { // has_read
+    result          = cpm_f_open(AS_CPM_PTR(file_fcb));
+    file_fcb->flags = has_plus ? O_RDWR : O_RDONLY;
+  }
+
+  file_fcb->mode = has_text ? _IOTEXT : _IOBINARY;
 
   if (result != CPM_ERR_OK) {
     errno = EIO;

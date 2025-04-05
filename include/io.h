@@ -4,17 +4,17 @@
 #include <fcntl.h>
 #include <io.h>
 
-/* Do not translate CRLF to LF on input/output */
-#define _O_BINARY 0
-
 /* Translate CRLF to LF on input/output */
-#define _O_TEXT 1
+/* default for console */
+/* Not supported for file i/o */
+#define _IOTEXT_TRANSLATION 1
 
-/* For managing CP/M DMABUF fills. For text files remove/insert trailing CTR+Z chars*/
-#define _IOTEXT 64
+/* remove/insert trailing CTR+Z chars*/
+#define _IOTEXT 2
 
-/*  For managing CP/M DMABUF fills. Write 0 at end of files */
-#define _IOBINARY 128
+/* Write 0 at end of files, no CRLF translation */
+/* File IO default */
+#define _IOBINARY 4
 
 int _setmode(int fd, int mode);
 
