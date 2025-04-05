@@ -273,6 +273,7 @@
 | log           | ✓ |
 | log10         | ✓ |
 | malloc        | ✓ |
+| memchr        | ✓ |
 | memcmp        | ✗ |
 | memcpy        | ✓ |
 | memmove       | ✓ |
