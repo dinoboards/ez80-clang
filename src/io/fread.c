@@ -43,10 +43,23 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) {
       bytes_to_copy = total_bytes - bytes_read;
     }
 
+    if (file_fcb->mode & _IOTEXT) {
+      // In text mode, scan for Ctrl+Z
+      void *found = memchr(___fbuffer + offset, __STDIO_EOFMARKER, bytes_to_copy);
+      if (found) {
+        file_fcb->eof = true;
+        bytes_to_copy = (uint8_t *)found - (___fbuffer + offset);
+      }
+    }
+
     // Copy the bytes from the ___fbuffer to the destination
     memcpy((uint8_t *)ptr + bytes_read, ___fbuffer + offset, bytes_to_copy);
     bytes_read += bytes_to_copy;
     file_fcb->rwptr += bytes_to_copy;
+
+    if (file_fcb->eof) {
+      break; // Exit the read loop if we found CTRL+Z
+    }
   }
 
   return bytes_read / size;
