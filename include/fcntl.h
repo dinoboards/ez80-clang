@@ -4,10 +4,6 @@
 #include <sys/types.h> // For mode_t, off_t
 #include <unistd.h>    // For ssize_t
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* File access modes */
 #define O_RDONLY 0x0000 /* Open for reading only */
 #define O_WRONLY 0x0001 /* Open for writing only */
@@ -77,9 +73,5 @@ int open(const char *pathname, int flags, ...);
 int creat(const char *pathname, mode_t mode);
 
 // int fcntl(int fd, int cmd, ...);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _FCNTL_H */

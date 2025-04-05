@@ -11,9 +11,9 @@
 ;--------------------------------------------------------------
 
 ; Updated by Paul Cawte 13/06/2023
+; Additional modifications by Dean Netherton 05/04/2025
 ;
-; Modifed to output CR/LF rather than just LF at end of line
-; Detects NULL pointer (11/07/2023) - and just prints newline
+; Detects NULL pointer (11/07/2023) - and just prints (NULL)
 
 	.assume	adl=1
 

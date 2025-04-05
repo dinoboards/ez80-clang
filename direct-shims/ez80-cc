@@ -31,6 +31,8 @@ MEM_MODEL_SUPPLIED=0
 # Temporary array to hold non-option arguments
 ARGS=()
 
+CLANG_DEFINES+=("-D__EZ80__")
+
 # First pass: parse options
 while [[ "$#" -gt 0 ]]; do
   case $1 in
