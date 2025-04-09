@@ -8,9 +8,9 @@
 ;
 ; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
 ;
-; This function adds two 24-bit numbers together
-; Arguments: HL = 24-bit number, BC = 24-bit number
-; Returns: HL = HL + BC
+; This function adds two 32-bit numbers together
+; Arguments: EUHL = 32-bit number, AUBC = 32-bit number
+; Returns: EUHL = EUHL + AUBC
 ;--------------------------------------------------------------
 
 	.assume	adl=1
