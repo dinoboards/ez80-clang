@@ -1,94 +1,37 @@
-;--------------------------------------------------------------
-;
-;	C RUNTIME FUNCTION
-;	For the eZ80 Clang cross compiler
-;
-;  Original file source: https://github.com/CE-Programming/toolchain
-;  License: https://github.com/CE-Programming/toolchain?tab=LGPL-3.0-1-ov-file
-;
-; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
-;
-;--------------------------------------------------------------
+; (c) Copyright 2001-2008 Zilog, Inc.
+
+; Input:
+;	EuHL = dividend
+;	AuBC = divisor
+; Output:
+;	EuIX = quotient
+;	AuHL = remainder
 
 	.assume	adl=1
-
-	section	.text, "ax", @progbits
-	;;; struct u32div_t {
-;;;     uint32_t rem;
-;;;     uint32_t quot;
-;;; };
-;;; u32div_t _ldvrmu(uint32_t dividend, uint32_t divisor) {
 	.global	__ldvrmu
+	section	.text, "ax", @progbits
 
 __ldvrmu:
-; I: EUHL=dividend, AUBC=divisor
-; O: a[uhl']=EUHL%AUBC, bcu=0, b=A, c=?, euhl=EUHL/AUBC, eubc'=AUBC, zf=!IEF2
-
-;;;     u32div_t result;
-;;;     result.quot = dividend;
-					; euhl : result.quot
-
-	push	bc
-
-	ld	c, a			; c = A
-	ld	a, i			; a = I
-					; pf = IEF2
-	di
-
-	ld	a, c			; a = A
-	exx
-	pop	bc
-	ld	e, a			; eubc' : divisor
-
-	push	af
-
-;;;     result.rem = 0;
+	push	hl
+	pop	ix
+	ld	iyh, a
+	ld	iyl, 32
 	xor	a, a
-	sbc	hl, hl			; auhl' : result.rem
-
-;;;     int i = 32;
-	exx
-	ld	b, 32			; b : i
-
-;;;     do {
-.loop:
-
-;;;         bool dividendBit = result.quot >> 31;
-;;;         result.quot <<= 1;
-	add	hl, hl
+	sbc	hl, hl
+_loop:
+	add	ix, ix		;shift AuHLEuIX left
 	rl	e
-;;;         result.rem = (result.rem << 1) + dividendBit;
-	exx
 	adc	hl, hl
-	adc	a, a
-
-;;;         bool quotBit = result.rem >= divisor;
-;;;         result.rem -= divisor;
+	rla
 	sbc	hl, bc
-	sbc	a, e
-
-;;;         if (!quotBit) {
-	jr	nc, .restore_skip
-;;;             result.rem += divisor;
+	sbc	a, iyh
+	jr	nc, _L1
 	add	hl, bc
-	adc	a, e
-;;;         }
-.restore_skip:
-
-;;;         if (quotBit) {
-	exx
-	jr	c, .1_skip
-;;;             result.quot++;
-	inc	l
-;;;         }
-.1_skip:
-
-;;;     } while (--i != 0);
-	djnz	.loop
-
-;;;     return result;
-	pop	bc
-	bit	2, c
+	adc	a, iyh
+	jr	_L2
+_L1:
+	inc	ix
+_L2:
+	dec	iyl
+	jr	nz, _loop
 	ret
-;;; }
-

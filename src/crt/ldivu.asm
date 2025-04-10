@@ -1,33 +1,30 @@
-;--------------------------------------------------------------
+; (c) Copyright 2001-2008 Zilog, Inc.
+;-------------------------------------------------------------------------
+; Long Division Unsigned
+; Input:
+;	Operand1:
+;		  EuHL : 32 bits
 ;
-;	C RUNTIME FUNCTION
-;	For the eZ80 Clang cross compiler
+;	Operand2:
+;		  AuBC : 32 bits
+; Output:
+;	Result:   EuHL : 32 bits
 ;
-;  Original file source: https://github.com/CE-Programming/toolchain
-;  License: https://github.com/CE-Programming/toolchain?tab=LGPL-3.0-1-ov-file
-;
-; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
-;
-;--------------------------------------------------------------
-
+; Registers Used:
+;	none
+;-------------------------------------------------------------------------
 	.assume	adl=1
-
-	section	.text, "ax", @progbits
 	.global	__ldivu
+	section	.text, "ax", @progbits
 
 __ldivu:
-; I: EUHL=dividend, AUBC=divisor
-; O: euhl=EUHL/AUBC
-
-	push	bc
-
+	push	ix
+	push	iy
 	call	__ldvrmu
-
-	ld	a, b
-	pop	bc
-
-	ret	z
-	ei
+	ld	a, iyh
+	push	ix
+	pop	hl
+	pop	iy
+	pop	ix
 	ret
 
-	extern	__ldvrmu

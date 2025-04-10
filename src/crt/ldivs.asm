@@ -1,44 +1,51 @@
-;--------------------------------------------------------------
+; (c) Copyright 2001-2008 Zilog, Inc.
+;-------------------------------------------------------------------------
+; Long Division Signed
+; Input:
+;	Operand1:
+;		  eHL : 32 bits
 ;
-;	C RUNTIME FUNCTION
-;	For the eZ80 Clang cross compiler
+;	Operand2:
+;		  aBC :	 32 bits
+; Output:
+;	Result:     : 24 bits
 ;
-;  Original file source: https://github.com/CE-Programming/toolchain
-;  License: https://github.com/CE-Programming/toolchain?tab=LGPL-3.0-1-ov-file
+; Registers Used:
 ;
-; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
-;
-;--------------------------------------------------------------
-
+;-------------------------------------------------------------------------
 	.assume	adl=1
-
-	section	.text, "ax", @progbits
 	.global	__ldivs
-
+	section	.text, "ax", @progbits
+	.extern	__ldivu, __lneg
 __ldivs:
-; I: EUHL=dividend, AUBC=divisor
-; O: euhl=EUHL/AUBC
-
-	bit	7, e
-	push	af
 	push	bc
-
-	call	__ldivs_lrems_common
-
+	push	af
+	push	de
+	bit	7, a
+	jr	z, _L1
+	push	hl
+	or	a, a		; CR 7885
+	sbc	hl, hl
+	sbc	hl, bc
+	adc	a, 0
+	neg
+	push	hl
+	pop	bc
+	pop	hl
+_L1:
+	bit	7, e
+	jr	z, _L2
+	call	__lneg
+_L2:
 	call	__ldivu
-
 	pop	bc
 	pop	af
+	ld	b, a
+	xor	a, c
+	jp	p, _L3
+	call	__lneg
+_L3:
+	ld	a, b
+	pop	bc
+	ret
 
-	rlca
-	rrca
-	jr	nz, .pos_dividend_skip
-	ccf
-.pos_dividend_skip:
-
-	ret	c
-	jp	__lneg
-
-	extern	__ldivs_lrems_common
-	extern	__ldivu
-	extern	__lneg
