@@ -197,7 +197,7 @@ for FILE in "$@"; do
     ez80-clang ${CFLAGS} ${CLANG_DEFINES[@]} "$FILE"  -c -o  "$TMP_BASENAME.c.o"
     OBJECT_FILES+=("$TMP_BASENAME.c.o")
   elif [ "$EXT" == "asm" ]; then
-    echo "Assembling $FILE with ${AS_DEFINES}"
+    echo "Assembling $FILE"
     ez80-as ${AS_DEFINES[@]} -march=ez80+full ${FILE} -o "$TMP_BASENAME.o"
     OBJECT_FILES+=("$TMP_BASENAME.o")
   else

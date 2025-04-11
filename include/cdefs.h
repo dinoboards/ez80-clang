@@ -31,7 +31,7 @@
 
 #ifndef SIZE_T_DEFINED
 #define SIZE_T_DEFINED
-typedef __SIZE_TYPE__ size_t;
+typedef unsigned int size_t;
 #endif /* SIZE_T_DEFINED */
 
 #endif /* _CDEFS_H */
