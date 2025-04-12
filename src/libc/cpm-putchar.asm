@@ -3,14 +3,14 @@
 	section	.text, "ax", @progbits
 	.global	_putchar
 	extern	_cpm_c_write
-	extern  __stdin
+	extern  __stdout
 
 ; int putchar(int character);
 _putchar:
 	pop	hl ; return address
 	pop	de ; character
 
-	ld	a, (__stdin)
+	ld	a, (__stdout)
 	bit	0, a				; _stdin.mode & _IOTEXT_TRANSLATION
 	jr	z, .skip
 
