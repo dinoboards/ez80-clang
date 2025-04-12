@@ -16,6 +16,7 @@ RAM_2MB_SIZE = 0x1FFFFF;        /* 2MB for the SRAM Module */
 CRT_ORG_CODE = START_OF_2MB_RAM + 0x0400;
 
 cpm_bdos_adl	=	0x400005;
+hbios_adl = 0x400010;
 
 EXTERN(__start)
 

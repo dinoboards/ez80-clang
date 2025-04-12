@@ -67,6 +67,7 @@ endef
 .PHONY: all clean
 
 $(eval $(call build_lib,ez80))
+$(eval $(call build_lib,hbios))
 $(eval $(call build_lib,crt))
 $(eval $(call build_lib,crtexe))
 $(eval $(call build_lib,libc))
