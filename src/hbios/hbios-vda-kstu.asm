@@ -9,7 +9,7 @@
 ;   uint8_t keyCode[6];
 ; } usb_keyboard_report_t;
 ;
-; int8_t hbios_vda_kstu(uint8_t video_unit, usb_keyboard_report_t* usb_keyboard_report);
+; int16_t hbios_vda_kstu(uint8_t video_unit, usb_keyboard_report_t* usb_keyboard_report);
 
 _hbios_vda_kstu:
 	ld	iy, 0
@@ -22,15 +22,19 @@ _hbios_vda_kstu:
 	ld	b, $4C
 	call	hbios_adl
 	pop	iy
+	ld	l, a
+	ld	h, b
 	ex	af, af'
 	ld	(iy), a
-	ex	af, af'
+	exx
 	ld	(iy+2), b
 	ld	(iy+3), c
 	ld	(iy+4), e
 	ld	(iy+5), d
 	ld	(iy+6), l
 	ld	(iy+7), h
+	exx
+
 	ret
 
 

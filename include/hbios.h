@@ -1,6 +1,7 @@
 #ifndef __HBIOS
 #define __HBIOS
 
+#include "usb-keyboard.h"
 #include <stdint.h>
 
 /* HBIOS standard result codes */
@@ -120,40 +121,25 @@ extern int8_t hbios_vda_krd(uint8_t video_unit, vda_keyrd_info_t *info);
 extern int8_t hbios_vda_kst(uint8_t video_unit);
 
 /**
- * @brief USB HID Keyboard Input Report structure
- *
- * Structure matching the USB HID Keyboard report format as per USB HID specification.
- * See https://wiki.osdev.org/USB_Human_Interface_Devices for details.
- */
-typedef struct {
-  uint8_t bModifierKeys; /* Modifier keys state bitmap */
-  uint8_t bReserved;     /* Reserved byte */
-  uint8_t keyCode[6];    /* Array of up to 6 concurrent key codes */
-} usb_keyboard_report_t;
-
-/** Modifier key bit masks for bModifierKeys field */
-#define KEY_MOD_LCTRL  0x01 /* Left Control key */
-#define KEY_MOD_LSHIFT 0x02 /* Left Shift key */
-#define KEY_MOD_LALT   0x04 /* Left Alt key */
-#define KEY_MOD_LMETA  0x08 /* Left Meta/Windows key */
-#define KEY_MOD_RCTRL  0x10 /* Right Control key */
-#define KEY_MOD_RSHIFT 0x20 /* Right Shift key */
-#define KEY_MOD_RALT   0x40 /* Right Alt key */
-#define KEY_MOD_RMETA  0x80 /* Right Meta/Windows key */
-
-/**
- * @brief Gets the current USB keyboard state
- *
- * Extended version of hbios_vda_kst that returns the complete USB keyboard state.
- * This function is only supported by the USB keyboard driver.
+ * @brief Query USB keyboard state and retrieve buffered report
  *
  * @param video_unit The video unit number to query
- * @param usb_keyboard_report Pointer to structure to receive the keyboard report
- * @return int8_t Standard HBIOS result code
+ * @param usb_keyboard_report Pointer to receive the USB keyboard report data
+ * @return int16_t Combined status where:
+ *         - Low byte: Standard HBIOS result code
+ *         - High byte: Number of remaining reports in buffer (including current)
  *
- * @note This function returns the instantaneous keyboard state independent of
- *       the character input queue.
+ * @details This function extends hbios_vda_kst to provide full USB keyboard state
+ * information. It retrieves and removes one buffered report from the keyboard queue.
+ * Only the USB keyboard driver supports this functionality.
+ *
+ * The function maintains a separate queue from hbios_vda_krd and only stores state
+ * changes. This means reading infrequently may return older state transitions that
+ * were buffered.
+ *
+ * @note A return value with high byte ≥1 indicates valid report data was written
+ * to usb_keyboard_report. A high byte of 0 means no reports are available.
  */
-extern int8_t hbios_vda_kstu(uint8_t video_unit, usb_keyboard_report_t *usb_keyboard_report);
+extern int16_t hbios_vda_kstu(uint8_t video_unit, usb_keyboard_report_t *usb_keyboard_report);
 
 #endif
