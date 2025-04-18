@@ -142,4 +142,25 @@ extern int8_t hbios_vda_kst(uint8_t video_unit);
  */
 extern int16_t hbios_vda_kstu(uint8_t video_unit, usb_keyboard_report_t *usb_keyboard_report);
 
+typedef struct {
+  uint8_t key_code; /* Modifier keys state bitmap in high byte, code in low byte */
+  uint8_t key_down; /* true key pressed down event, false, key up event */
+} usb_keyboard_key_t;
+
+/**
+ * @brief Retrieve buffered USB keyboard key events
+ *
+ * @param usb_key Pointer to receive the next key event data
+ * @return uint8_t Number of events remaining in buffer (including current),
+ *         or 0 if buffer is empty
+ *
+ * @details Processes the USB keyboard state buffer using hbios_vda_kstu to extract
+ * individual key press and release events. Returns immediately if no events are
+ * available.
+ *
+ * @note Modifier keys (Ctrl, Shift, Alt, etc.) are mapped to special key codes
+ * ranging from E0-E7, corresponding to USB_KEY_LCTRL through to USB_KEY_RMETA
+ */
+extern uint8_t usb_kyb_get_scan_code(usb_keyboard_key_t *usb_key);
+
 #endif

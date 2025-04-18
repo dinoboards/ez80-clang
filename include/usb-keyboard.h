@@ -200,6 +200,15 @@
 #define USB_KEY_KP_DECIMAL     0xDC
 #define USB_KEY_KP_HEX         0xDD
 
+#define USB_KEY_LCTRL  0xE0 /* Left Control key */
+#define USB_KEY_LSHIFT 0xE1 /* Left Shift key */
+#define USB_KEY_LALT   0xE2 /* Left Alt key */
+#define USB_KEY_LMETA  0xE3 /* Left Meta/Windows key */
+#define USB_KEY_RCTRL  0xE4 /* Right Control key */
+#define USB_KEY_RSHIFT 0xE5 /* Right Shift key */
+#define USB_KEY_RALT   0xE6 /* Right Alt key */
+#define USB_KEY_RMETA  0xE7 /* Right Meta/Windows key */
+
 /**
  * @brief USB HID Keyboard Input Report structure
  *
