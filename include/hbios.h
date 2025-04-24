@@ -120,47 +120,4 @@ extern int8_t hbios_vda_krd(uint8_t video_unit, vda_keyrd_info_t *info);
  */
 extern int8_t hbios_vda_kst(uint8_t video_unit);
 
-/**
- * @brief Query USB keyboard state and retrieve buffered report
- *
- * @param video_unit The video unit number to query
- * @param usb_keyboard_report Pointer to receive the USB keyboard report data
- * @return int16_t Combined status where:
- *         - Low byte: Standard HBIOS result code
- *         - High byte: Number of remaining reports in buffer (including current)
- *
- * @details This function extends hbios_vda_kst to provide full USB keyboard state
- * information. It retrieves and removes one buffered report from the keyboard queue.
- * Only the USB keyboard driver supports this functionality.
- *
- * The function maintains a separate queue from hbios_vda_krd and only stores state
- * changes. This means reading infrequently may return older state transitions that
- * were buffered.
- *
- * @note A return value with high byte ≥1 indicates valid report data was written
- * to usb_keyboard_report. A high byte of 0 means no reports are available.
- */
-extern int16_t hbios_vda_kstu(uint8_t video_unit, usb_keyboard_report_t *usb_keyboard_report);
-
-typedef struct {
-  uint8_t key_code; /* Modifier keys state bitmap in high byte, code in low byte */
-  uint8_t key_down; /* true key pressed down event, false, key up event */
-} usb_keyboard_key_t;
-
-/**
- * @brief Retrieve buffered USB keyboard key events
- *
- * @param usb_key Pointer to receive the next key event data
- * @return uint8_t Number of events remaining in buffer (including current),
- *         or 0 if buffer is empty
- *
- * @details Processes the USB keyboard state buffer using hbios_vda_kstu to extract
- * individual key press and release events. Returns immediately if no events are
- * available.
- *
- * @note Modifier keys (Ctrl, Shift, Alt, etc.) are mapped to special key codes
- * ranging from E0-E7, corresponding to USB_KEY_LCTRL through to USB_KEY_RMETA
- */
-extern uint8_t usb_kyb_get_scan_code(usb_keyboard_key_t *usb_key);
-
 #endif
