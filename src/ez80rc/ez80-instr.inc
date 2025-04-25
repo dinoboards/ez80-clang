@@ -32,7 +32,7 @@
 	EZ80_FN
 .endm
 
-.macro EZ80_UTIL_IOTM_SET
+.macro	EZ80_UTIL_IOTM_SET
 	xor	a
 	ld	b, 9
 	EZ80_FN
@@ -68,39 +68,45 @@
 	EZ80_FN
 .endm
 
-.macro EZ80_UTIL_TMR_FREQTICK_GET
+.macro	EZ80_UTIL_TMR_FREQTICK_GET
 	ld	a, 2
 	ld	b, 4
 	EZ80_FN
 .endm
 
-.macro EZ80_UTIL_TMR_FREQTICK_SET
+.macro	EZ80_UTIL_TMR_FREQTICK_SET
 	ld	a, 2
 	ld	b, 5
 	EZ80_FN
 .endm
 
-.macro EZ80_UTIL_TMR_TICK_GET
+.macro	EZ80_UTIL_TMR_TICK_GET
 	ld	a, 2
 	ld	b, 0
 	EZ80_FN
 .endm
 
-.macro EZ80_UART_OUT
+.macro	EZ80_UART_OUT
 	ld	a, 3
 	ld	b, 1
 	EZ80_FN
 .endm
 
-.macro EZ80_UART_IN
+.macro	EZ80_UART_IN
 	ld	a, 3
 	ld	b, 0
 	EZ80_FN
 .endm
 
-.macro EZ80_USB_KYB_RPT
+.macro	EZ80_USB_KYB_RPT
 	ld	a, 6
 	ld	b, 35
+	EZ80_FN
+.endm
+
+.macro	EZ80_USBT_GET_DESC2
+	ld	a, 6
+	ld	b, 133
 	EZ80_FN
 .endm
 

@@ -6,6 +6,8 @@
 	.global	_ez80_uart_in
 
 _ez80_uart_in:
+	push	ix
 	EZ80_UART_IN
+	pop	ix
 	ld	a, e
 	ret

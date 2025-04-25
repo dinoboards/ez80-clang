@@ -10,5 +10,7 @@ _ez80_usb_kyb_report:
 	add	iy, sp
 
 	LD	HL, (iy+3)
+	push	ix
 	EZ80_USB_KYB_RPT
+	pop	ix
 	ret

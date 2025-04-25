@@ -10,5 +10,7 @@ _ez80_uart_out:
 	add	iy, sp
 
 	LD	E, (iy+3)
+	push	ix
 	EZ80_UART_OUT
+	pop	ix
 	ret
