@@ -1,6 +1,7 @@
 #ifndef __EZ80_FIRMWARE_H__
 #define __EZ80_FIRMWARE_H__
 
+#include "usb-keyboard.h"
 #include <stdint.h>
 
 /*
@@ -144,5 +145,11 @@ extern uint8_t ez80_flash_wait_cycles_get(void);
  * @param cycles the number of wait states to set
  */
 extern void ez80_flash_wait_cycles_set(const uint8_t cycles);
+
+extern uint8_t ez80_uart_out(const char ch);
+
+extern uint8_t ez80_uart_in();
+
+extern uint8_t ez80_usb_kyb_report(usb_keyboard_report_t *rpt);
 
 #endif

@@ -86,6 +86,24 @@
 	EZ80_FN
 .endm
 
+.macro EZ80_UART_OUT
+	ld	a, 3
+	ld	b, 1
+	EZ80_FN
+.endm
+
+.macro EZ80_UART_IN
+	ld	a, 3
+	ld	b, 0
+	EZ80_FN
+.endm
+
+.macro EZ80_USB_KYB_RPT
+	ld	a, 6
+	ld	b, 35
+	EZ80_FN
+.endm
+
 ;A=2, B=0 SYSTMR_TICKS_GET
 ;   #DEFINE EZ80_UTIL_VER_EXCH		XOR A \ LD B, 0 \ EZ80_FN
 ;   #DEFINE EZ80_UTIL_DELAY 		XOR A \ LD B, 1 \ EZ80_FN
