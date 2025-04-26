@@ -86,26 +86,32 @@ typedef struct _endpoint_descriptor {
 } endpoint_descriptor_t;
 
 extern usb_error_t usbtrn_get_descriptor(device_descriptor_t *const buffer);
-extern usb_error_t usbtrn_get_descriptor2(device_descriptor_t *const buffer, const uint8_t device_address);
+extern usb_error_t usbtrn_get_descriptor2(device_descriptor_t *const buffer, uint8_t device_address);
 
-extern usb_error_t usbtrn_get_config_descriptor(config_descriptor_t *const buffer,
-                                                const uint8_t              config_index,
-                                                const uint8_t              buffer_size,
-                                                const uint8_t              device_address,
-                                                const uint8_t              max_packet_size);
+extern usb_error_t usbtrn_get_config_descriptor(
+    config_descriptor_t *const buffer, uint8_t config_index, uint8_t buffer_size, uint8_t device_address, uint8_t max_packet_size);
 
-extern usb_error_t usbtrn_get_full_config_descriptor(const uint8_t  config_index,
-                                                     const uint8_t  device_address,
-                                                     const uint8_t  max_packet_size,
-                                                     const uint8_t  max_buffer_size,
-                                                     uint8_t *const buffer);
+extern usb_error_t usbtrn_get_full_config_descriptor(
+    uint8_t config_index, uint8_t device_address, uint8_t max_packet_size, uint8_t max_buffer_size, uint8_t *const buffer);
+
+extern usb_error_t usbtrn_set_configuration(uint8_t device_address, uint8_t max_packet_size, uint8_t configuration);
+
+extern usb_error_t usbtrn_set_address(uint8_t device_address);
+
+extern usb_error_t usbtrn_clear_endpoint_halt(uint8_t endpoint_number, uint8_t device_address, uint8_t max_packet_size);
+
+typedef struct _setup_packet {
+  uint8_t  bmRequestType;
+  uint8_t  bRequest;
+  uint8_t  bValue[2];
+  uint8_t  bIndex[2];
+  uint16_t wLength;
+} setup_packet_t;
 
 extern usb_error_t
-usbtrn_set_configuration(const uint8_t device_address, const uint8_t max_packet_size, const uint8_t configuration);
+usb_control_transfer(setup_packet_t *const cmd_packet, void *const buffer, uint8_t device_address, uint8_t max_packet_size);
 
-extern usb_error_t usbtrn_set_address(const uint8_t device_address);
-
-extern usb_error_t
-usbtrn_clear_endpoint_halt(const uint8_t endpoint_number, const uint8_t device_address, const uint8_t max_packet_size);
+// extern usb_error_t
+// usb_data_in_transfer(uint8_t *buffer, uint16_t buffer_size, uint8_t device_address, endpoint_param_t *const endpoint);
 
 #endif
