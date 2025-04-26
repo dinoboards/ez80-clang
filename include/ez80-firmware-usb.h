@@ -111,7 +111,7 @@ typedef struct _setup_packet {
 extern usb_error_t
 usb_control_transfer(setup_packet_t *const cmd_packet, void *const buffer, uint8_t device_address, uint8_t max_packet_size);
 
-// extern usb_error_t
-// usb_data_in_transfer(uint8_t *buffer, uint16_t buffer_size, uint8_t device_address, endpoint_param_t *const endpoint);
+extern usb_error_t usb_data_in_transfer(
+    uint8_t *buffer, uint16_t buffer_size, uint8_t device_address, uint8_t number, uint8_t max_packet_size, uint8_t *toggle);
 
 #endif

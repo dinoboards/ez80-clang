@@ -122,6 +122,11 @@
 	EZ80_FN
 .endm
 
+.macro	EZ80_USB_DATA_IN_TRANSFER
+	ld	a, 6
+	ld	b, 129
+	EZ80_FN
+.endm
 
 ;A=2, B=0 SYSTMR_TICKS_GET
 ;   #DEFINE EZ80_UTIL_VER_EXCH		XOR A \ LD B, 0 \ EZ80_FN
