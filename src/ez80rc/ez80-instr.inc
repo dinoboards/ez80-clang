@@ -128,6 +128,19 @@
 	EZ80_FN
 .endm
 
+.macro	EZ80_USB_GET_DEV_TYP
+	ld	a, 6
+	ld	b, 253
+	EZ80_FN
+.endm
+
+.macro	EZ80_USB_MSE_INIT
+	ld	a, 6
+	ld	b, 48
+	EZ80_FN
+.endm
+
+
 ;A=2, B=0 SYSTMR_TICKS_GET
 ;   #DEFINE EZ80_UTIL_VER_EXCH		XOR A \ LD B, 0 \ EZ80_FN
 ;   #DEFINE EZ80_UTIL_DELAY 		XOR A \ LD B, 1 \ EZ80_FN
