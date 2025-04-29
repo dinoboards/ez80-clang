@@ -153,4 +153,12 @@ extern uint8_t ez80_usb_kyb_event(ez80_usb_kyb_event_t *usb_key);
 
 extern uint8_t ez80_usb_mse_init(uint8_t dev_index);
 
+typedef struct {
+  uint8_t buttons;
+  int8_t  x;
+  int8_t  y;
+} ez80_usb_mse_report_t;
+
+extern uint8_t ez80_usb_mse_read(ez80_usb_mse_report_t *rpt);
+
 #endif
