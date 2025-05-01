@@ -161,6 +161,8 @@ typedef struct {
 
 extern uint8_t ez80_usb_mse_read(ez80_usb_mse_report_ex_t *rpt);
 
+extern uint8_t ez80_usb_mse_state(ez80_usb_mse_report_ex_t *rpt);
+
 extern usb_device_t ez80_usb_get_device_type(uint8_t dev_index);
 
 extern uint8_t ez80_usb_find_device_index(usb_device_t dev_type);

@@ -9,7 +9,7 @@ usb_error_t ez80_usb_get_product(const uint8_t dev_index, char *const buffer, co
   device_descriptor_t my_device_descriptor;
   memset(&my_device_descriptor, 0, sizeof(device_descriptor_t));
 
-  buffer[0] = 0;
+  memset(buffer, 0, buffer_size);
 
   const uint8_t device_address = ez80_usb_get_device_address(dev_index);
   CHECK(usbtrn_get_descriptor2(&my_device_descriptor, device_address));
