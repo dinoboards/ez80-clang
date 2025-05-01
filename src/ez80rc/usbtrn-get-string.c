@@ -1,18 +1,11 @@
 #include "ez80-firmware-usb.h"
+#include "include/ez80rc.h"
 #include <stdbool.h>
 #include <stdint.h>
 
 const setup_packet_t cmd_get_device_descriptor = {0x80, 6, {0, 1}, {0, 0}, 8};
 
-#define CHECK(fn)                                                                                                                  \
-  {                                                                                                                                \
-    result = fn;                                                                                                                   \
-    if (result != USB_ERR_OK)                                                                                                      \
-      goto done;                                                                                                                   \
-  }
-
-usb_error_t
-usbtrn_get_string(uint8_t *const buffer, const uint8_t buf_length, const uint8_t device_address, const uint8_t str_index) {
+usb_error_t usbtrn_get_string(char *const buffer, const uint8_t buf_length, const uint8_t device_address, const uint8_t str_index) {
   usb_error_t    result;
   uint16_t       lang_id;
   uint8_t        str_length;

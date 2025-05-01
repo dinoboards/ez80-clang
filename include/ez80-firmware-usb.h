@@ -112,7 +112,7 @@ extern usb_error_t usbtrn_set_address(uint8_t device_address);
 
 extern usb_error_t usbtrn_clear_endpoint_halt(uint8_t endpoint_number, uint8_t device_address, uint8_t max_packet_size);
 
-extern usb_error_t usbtrn_get_string(uint8_t *const buffer, uint8_t buf_length, uint8_t device_address, uint8_t str_index);
+extern usb_error_t usbtrn_get_string(char *const buffer, uint8_t buf_length, uint8_t device_address, uint8_t str_index);
 
 typedef struct _setup_packet {
   uint8_t  bmRequestType;
@@ -166,5 +166,9 @@ extern usb_device_t ez80_usb_get_device_type(uint8_t dev_index);
 extern uint8_t ez80_usb_find_device_index(usb_device_t dev_type);
 
 extern uint8_t ez80_usb_get_device_address(uint8_t dev_index);
+
+extern usb_error_t ez80_usb_get_manufacturer(uint8_t dev_index, char *buffer, uint8_t buffer_size);
+
+extern usb_error_t ez80_usb_get_product(uint8_t dev_index, char *buffer, uint8_t buffer_size);
 
 #endif
