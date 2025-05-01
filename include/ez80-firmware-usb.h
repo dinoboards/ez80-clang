@@ -112,6 +112,8 @@ extern usb_error_t usbtrn_set_address(uint8_t device_address);
 
 extern usb_error_t usbtrn_clear_endpoint_halt(uint8_t endpoint_number, uint8_t device_address, uint8_t max_packet_size);
 
+extern usb_error_t usbtrn_get_string(uint8_t *const buffer, uint8_t buf_length, uint8_t device_address, uint8_t str_index);
+
 typedef struct _setup_packet {
   uint8_t  bmRequestType;
   uint8_t  bRequest;
@@ -125,8 +127,6 @@ usb_control_transfer(setup_packet_t *const cmd_packet, void *const buffer, uint8
 
 extern usb_error_t usb_data_in_transfer(
     uint8_t *buffer, uint16_t buffer_size, uint8_t device_address, uint8_t number, uint8_t max_packet_size, uint8_t *toggle);
-
-extern usb_device_t usb_get_device_type(uint8_t dev_index);
 
 extern uint8_t ez80_usb_kyb_report(usb_keyboard_report_t *rpt);
 
@@ -160,5 +160,11 @@ typedef struct {
 } ez80_usb_mse_report_t;
 
 extern uint8_t ez80_usb_mse_read(ez80_usb_mse_report_t *rpt);
+
+extern usb_device_t ez80_usb_get_device_type(uint8_t dev_index);
+
+extern uint8_t ez80_usb_find_device_index(usb_device_t dev_type);
+
+extern uint8_t ez80_usb_get_device_address(uint8_t dev_index);
 
 #endif

@@ -3,15 +3,15 @@
 	.assume	adl=1
 
 	section	.text, "ax", @progbits
-	.global	_usb_get_device_type
+	.global	_ez80_usb_get_device_type
 
-; usb_device_t usb_get_device_type(uint8_t dev_index);
+; usb_device_t ez80_usb_get_device_type(uint8_t dev_index);
 ; Inputs
 ;  C -> Device Index
 ;
 ; Outputs
 ;   A -> device_type (-1 is no device at dev_index)
-_usb_get_device_type:
+_ez80_usb_get_device_type:
 	push	ix
 	ld	ix, 0
 	add	ix, sp
