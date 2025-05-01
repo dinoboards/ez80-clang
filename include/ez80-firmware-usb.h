@@ -155,11 +155,11 @@ extern uint8_t ez80_usb_mse_init(uint8_t dev_index);
 
 typedef struct {
   uint8_t buttons;
-  int8_t  x;
-  int8_t  y;
-} ez80_usb_mse_report_t;
+  int24_t x;
+  int24_t y;
+} ez80_usb_mse_report_ex_t;
 
-extern uint8_t ez80_usb_mse_read(ez80_usb_mse_report_t *rpt);
+extern uint8_t ez80_usb_mse_read(ez80_usb_mse_report_ex_t *rpt);
 
 extern usb_device_t ez80_usb_get_device_type(uint8_t dev_index);
 
