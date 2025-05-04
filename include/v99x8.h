@@ -291,14 +291,14 @@ vdp_cmd_move_vram_to_vram(uint16_t x, uint16_t y, uint16_t to_x, uint16_t to_y, 
  * @param length the number of bytes to be copied (width * height)
  * @param operation the logical operation to be performed (CMD_LOGIC_IMP, CMD_LOGIC_AND, ...)
  */
-extern void vdp_cmd_logical_move_cpu_to_vram(const uint8_t *source,
-                                             uint16_t       x,
-                                             uint16_t       y,
-                                             uint16_t       width,
-                                             uint16_t       height,
-                                             uint8_t        direction,
-                                             uint24_t       length,
-                                             uint8_t        operation);
+extern void vdp_cmd_logical_move_cpu_to_vram(const uint8_t *const source,
+                                             uint16_t             x,
+                                             uint16_t             y,
+                                             uint16_t             width,
+                                             uint16_t             height,
+                                             uint8_t              direction,
+                                             uint24_t             length,
+                                             uint8_t              operation);
 
 /**
  * @brief VDP Command 'Logical Move VRAM to CPU'
@@ -393,8 +393,17 @@ extern uint8_t vdp_cmd_point(uint16_t x, uint16_t y);
 #define CMD_YMMM  0xE0
 #define CMD_HMMC  0xF0
 
-#define CMD_LOGIC_IMP 0x00
-#define CMD_LOGIC_AND 0x01
+#define CMD_LOGIC_IMP 0x00 /* DC =  SC */
+#define CMD_LOGIC_AND 0x01 /* DC &= SC*/
+#define CMD_LOGIC_OR  0x02 /* DC |= SC */
+#define CMD_LOGIC_EOR 0x03 /* DC ^= SC*/
+#define CMD_LOGIC_NOT 0x04 /* DC = !SC */
+
+#define CMD_LOGIC_TIMP 0x08 /* if SC != 0 then DC =  SC */
+#define CMD_LOGIC_TAND 0x09 /* if SC != 0 then DC &= SC*/
+#define CMD_LOGIC_TOR  0x10 /* if SC != 0 then DC |= SC*/
+#define CMD_LOGIC_TEOR 0x11 /* if SC != 0 then DC ^= SC*/
+#define CMD_LOGIC_TNOT 0x12 /* if SC != 0 then DC != SC*/
 
 // deprecated
 extern void vdp_cmd(void);
