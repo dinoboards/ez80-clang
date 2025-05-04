@@ -300,6 +300,15 @@ extern void vdp_cmd_logical_move_cpu_to_vram(const uint8_t *const source,
                                              uint24_t             length,
                                              uint8_t              operation);
 
+extern void vdp_cmd_logical_move_data_to_vram(uint8_t  first_byte,
+                                              uint16_t x,
+                                              uint16_t y,
+                                              uint16_t width,
+                                              uint16_t height,
+                                              uint8_t  direction,
+                                              uint24_t length,
+                                              uint8_t  operation);
+
 /**
  * @brief VDP Command 'Logical Move VRAM to CPU'
  *
