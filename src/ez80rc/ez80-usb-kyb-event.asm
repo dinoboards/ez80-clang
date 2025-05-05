@@ -6,10 +6,10 @@
 KEYBOARD_BUFFER_SIZE_MASK      EQU     15
 KEYBOARD_BUFFER_SIZE           EQU     16
 
-	.global	_ez80_usb_kyb_event
+	.global	_kyb_event
 
-;  static void _usb_kyb_put_up(uint8_t key_code)
-__usb_kyb_put_up:
+;  static void put_up(uint8_t key_code)
+_put_up:
        ld      iy, 0
        add     iy, sp
 
@@ -55,8 +55,8 @@ __usb_kyb_put_up:
 
        ret
 
-;	static void _usb_kyb_put_down(uint8_t key_code)
-__usb_kyb_put_down:
+;	static void put_down(uint8_t key_code)
+_put_down:
 	ld	iy, 0
 	add	iy, sp
 
@@ -122,7 +122,7 @@ _inject_modified_bits:
 	; previous 0, current 1
 	push	hl
 	exx
-	call	__usb_kyb_put_down
+	call	_put_down
 	exx
 	pop	hl
 	jr	.skip
@@ -134,7 +134,7 @@ _inject_modified_bits:
 	; previous 1, current 0
 	push	hl
 	exx
-	call	__usb_kyb_put_up
+	call	_put_up
 	exx
 	pop	hl
 
@@ -162,7 +162,7 @@ _inject_codes:
 	push	bc
 	exx
 	ex	af, af'
-	call	__usb_kyb_put_up
+	call	_put_up
 	ex	af, af'
 	exx
 	pop	bc
@@ -173,7 +173,7 @@ _inject_codes:
 	ld	c, a
 	push	bc
 	exx
-	call	__usb_kyb_put_down
+	call	_put_down
 	exx
 	pop	bc
 
@@ -205,7 +205,7 @@ _inject:
 
 	ret
 
-_ez80_usb_kyb_event:
+_kyb_event:
 	push	ix
 	ld	ix, 0
 	add	ix, sp
