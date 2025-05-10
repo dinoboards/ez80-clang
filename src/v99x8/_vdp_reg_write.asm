@@ -13,6 +13,7 @@ __vdp_reg_write:
 	add	iy, sp
 
 	DI_AND_SAVE
+	SET_SLOW_IO_SPEED
 
 	ld	hl, (IY+3)
 	ld	bc, (_VDP_IO_ADDR)
@@ -20,9 +21,9 @@ __vdp_reg_write:
 	ld	a, 0x80
 	or	h
 
-	DELAY_1_7US
 	out	(BC), a
 
+	RESTORE_IO_SPEED
 	RESTORE_EI
 	ret
 

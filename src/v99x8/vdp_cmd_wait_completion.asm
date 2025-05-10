@@ -10,22 +10,21 @@ _vdp_cmd_wait_completion:
 	; Set read register to 2
 
 	DI_AND_SAVE
+	SET_SLOW_IO_SPEED
 
 	ld	bc, (_VDP_IO_ADDR)
 
 	ld	a, 2
-	out	(bc), a
-	DELAY_1_7US					; DELAY and LD provde the ~2us required delay
+	out	(bc), a					; DELAY and LD provde the ~2us required delay
 	ld	a, 0x80|15				; measured on CPU running @25Mhz
 	out	(bc), a
 
-	DELAY_1_7US
 
 	ld	de, $100000
 _vdp_cmd_wait_completion_wait:
 	in	a, (BC)
 	rrca
-	jr	nc, .exit ;, _vdp_cmd_wait_completion_ready
+	jr	nc, .exit 				; _vdp_cmd_wait_completion_ready
 	dec	de
 	ld	hl, 0
 	xor	a
@@ -33,5 +32,6 @@ _vdp_cmd_wait_completion_wait:
 	jr	nz, _vdp_cmd_wait_completion_wait
 
 .exit:
+	RESTORE_IO_SPEED
 	RESTORE_EI
 	ret

@@ -237,8 +237,11 @@ extern void vdp_cmd_move_data_to_vram(
  *
  * @param next_byte the data to be sent to the VDP
  */
+#ifdef VDP_SUPER_HDMI
 static inline void vdp_cmd_send_byte(uint8_t next_byte) { VDP_REGS = next_byte; }
-
+#else
+void vdp_cmd_send_byte(uint8_t next_byte);
+#endif
 /**
  * @brief VDP command 'High-speed move VRAM to VRAM, y only'
  *

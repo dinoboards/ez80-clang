@@ -34,51 +34,40 @@ _vdp_cmd_move_cpu_to_vram:
 	add	iy, sp
 
 	DI_AND_SAVE
+	SET_SLOW_IO_SPEED
 
 	ld	bc, (_VDP_IO_ADDR)				;
 	ld	a, 36					; submit 36 with auto increment
 	out	(bc), a
-	DELAY_VDP
 	ld	a, $80|17				; to register 17
 	out	(bc), a
 
 	ld	bc, (_VDP_IO_REGS)
 
 	ld	hl, (iy+6)				; load x
-	DELAY_VDP
 	out	(bc), l					; low byte into #R36
-	DELAY_VDP
 	out	(bc), h					; high byte into #R37
 
 	ld	hl, (iy+9)				; load y
-	DELAY_VDP
 	out	(bc), l					; low byte into #R38
-	DELAY_VDP
 	out	(bc), h					; high byte into #R39
 
 	ld	hl, (iy+12)				; load width
-	DELAY_VDP
 	out	(bc), l					; low byte into #R40
-	DELAY_VDP
 	out	(bc), h					; high byte into #R41
 
 	ld	hl, (iy+15)				; load height
-	DELAY_VDP
 	out	(bc), l					; low byte into #R42
-	DELAY_VDP
 	out	(bc), h					; high byte into #R43
 
-	DELAY_VDP
 	ld	hl, (iy+3)				; load source
 	ld	a, (hl)					; load first byte
 	inc	hl
 	out	(bc), a					; into #R44
 
-	DELAY_VDP
 	ld	a, (iy+18)				; load direction
 	out	(bc), a					; into #R45
 
-	DELAY_VDP
 	ld	a, CMD_HMMC				; submit command
 	out	(bc), a
 
@@ -87,14 +76,12 @@ _vdp_cmd_move_cpu_to_vram:
 	ld	bc, (_VDP_IO_ADDR)			;
 	ld	a, $80|44				; submit 44 without auto increment
 	out	(bc), a
-	DELAY_VDP
 	ld	a, $80|17				; to register 17
 	out	(bc), a
 
 	; SET STATUS REGISTER to #02
 	ld	a, 2
 	out	(BC), a
-	DELAY_1_7US
 	ld	a, 0x80|15
 	out	(BC), a
 
@@ -125,10 +112,10 @@ loop:
 	; RESTORE READ REGISTER TO DEFAULT OF 0
 	xor	a
 	out	(BC), a
-	DELAY_1_7US
 	ld	a, 0x80|15
 	out	(BC), a
 
+	RESTORE_IO_SPEED
 	RESTORE_EI
 
 	ret

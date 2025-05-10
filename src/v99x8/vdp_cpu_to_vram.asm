@@ -14,6 +14,9 @@
 _vdp_cpu_to_vram:
 	ld	iy, 0
 	add	iy, sp
+
+	SET_SLOW_IO_SPEED
+
 	; iy + 3 -> source
 	; iy + 6 -> vdp_address
 	; iy + 9 -> length
@@ -31,13 +34,11 @@ _vdp_cpu_to_vram:
 	rlca				; move 'B16' to B2
 	ld	b, a			; save
 
-
 	ld	a, (iy+7) 		; vdp_address bits 8..15
 	and	%11000000		; extract bits 15 and 14
 	rlca				; move 'B15' to B0, 'B14' to B7
 	rlca				; move 'B15' to B1, 'B14' to B0
 	or	b			; merge with B16 to B18
-
 
 	ld	bc, (_VDP_IO_ADDR)
 	out	(BC), a			; value for reg 14 (B18..B14)
@@ -65,5 +66,6 @@ loop:
 	or	d
 	jr	nz, loop
 
+	RESTORE_IO_SPEED
 	ret
 

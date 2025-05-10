@@ -13,24 +13,25 @@ _vdp_get_status:
 	ld	l, (IY+3)
 	ld	bc, (_VDP_IO_ADDR)
 
-	di
+	DI_AND_SAVE
+	SET_SLOW_IO_SPEED
+
 	; SET READ REGISTER TO 15
 	out	(BC), l
-	DELAY_1_7US
 	ld	a, 0x80|15
 	out	(BC), a
 
 	ld	hl, 0
 	in	l, (BC)					; READ STATUS
 
-	DELAY_1_7US
-
 	; RESTORE READ REGISTER TO DEFAULT OF 0
 	xor	a
-	out	(BC), a
-	DELAY_1_7US					; DELAY and LD provide the ~2us required delay
+	out	(BC), a					; DELAY and LD provide the ~2us required delay
 	ld	a, 0x80|15				; measured on CPU running @25Mhz
 	out	(BC), a
-	ei
+
+	RESTORE_IO_SPEED
+	RESTORE_EI
+
 	ld	a, l
 	ret

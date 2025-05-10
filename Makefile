@@ -75,8 +75,8 @@ $(eval $(call build_lib,cpm))
 $(eval $(call build_lib,malloc))
 $(eval $(call build_lib,io))
 $(eval $(call build_lib,ez80rc))
-$(eval $(call build_lib,v99x8-hdmi,--defsym ENABLE_DELAY=0,-D VDP_SUPER_HDMI))
-$(eval $(call build_lib,v99x8-standard,--defsym ENABLE_DELAY=1,-D VDP_V9958))
+$(eval $(call build_lib,v99x8-hdmi,--defsym VDP_SUPER_HDMI=1,-DVDP_SUPER_HDMI))
+$(eval $(call build_lib,v99x8-standard,--defsym VDP_V9958=1,-DVDP_V9958))
 
 EZ80_CLANG_VERSION := $(shell source ./version.sh && echo $$EZ80_CLANG_VERSION)
 TARGET := ez0-clang-$(EZ80_CLANG_VERSION).tar.gz

@@ -24,52 +24,42 @@ _vdp_cmd_vdp_to_vram:
 	add	iy, sp
 
 	DI_AND_SAVE
+	SET_SLOW_IO_SPEED
 
 	ld	bc, (_VDP_IO_ADDR)
 	ld	a, 36					; submit 36, with auto increment
 	out	(bc), a
-	DELAY_VDP
 	ld	a, 0x80|17				; to register 17
 	out	(bc), a
 
 	ld	bc, (_VDP_IO_REGS)
 
 	ld	hl, (iy+3)				; load x
-	DELAY_VDP
 	out	(bc), l					; low byte into #R36
-	DELAY_VDP
 	out	(bc), h					; high byte into #R37
 
 	ld	hl, (iy+6)				; load y
-	DELAY_VDP
 	out	(bc), l					; low byte into #R38
-	DELAY_VDP
 	out	(bc), h					; high byte into #R39
 
 	ld	hl, (iy+9)				; load width
-	DELAY_VDP
 	out	(bc), l					; low byte into #R40
-	DELAY_VDP
 	out	(bc), h					; high byte into #R41
 
 	ld	hl, (iy+12)				; load height
-	DELAY_VDP
 	out	(bc), l					; low byte into #R42
-	DELAY_VDP
 	out	(bc), h					; high byte into #R43
 
-	DELAY_VDP
 	ld	a, (iy+15)				; load colour
 	out	(bc), a					; into #R44
 
-	DELAY_VDP
 	ld	a, (iy+18)				; load direction
 	out	(bc), a					; into #R45
 
-	DELAY_VDP
 	ld	a, CMD_HMMV				; submit command
 	out	(bc), a
 
+	RESTORE_IO_SPEED
 	RESTORE_EI
 
 	ret
