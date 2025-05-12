@@ -104,6 +104,12 @@
 	EZ80_FN
 .endm
 
+.macro	EZ80_USB_KYB_EVNT
+	ld	a, 6
+	ld	b, 36
+	EZ80_FN
+.endm
+
 .macro	EZ80_USBT_GET_DESC2
 	ld	a, 6
 	ld	b, 133
