@@ -56,7 +56,7 @@ __BEGIN_DECLS
  *
  * @return A pointer to a `FILE` object on success, or `NULL` on failure.
  */
-FILE *fopen(const char *__restrict filename, const char *__restrict mode);
+FILE *fopen(const char *filename, const char *mode);
 
 /**
  * @brief Closes a file.
@@ -125,7 +125,7 @@ void clearerr(FILE *stream);
  *
  * @return A non-negative value on success, EOF on error.
  */
-int fputs(const char *__restrict str, FILE *__restrict stream);
+int fputs(const char *str, FILE *stream);
 
 /**
  * @brief Reads data from a file stream.
@@ -141,7 +141,7 @@ int fputs(const char *__restrict str, FILE *__restrict stream);
  * @return The number of elements successfully read, which may be less than
  * `count` if an error or end-of-file occurs.
  */
-size_t fread(void *ptr, size_t size, size_t count, FILE *__restrict stream);
+size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
 
 /**
  * @brief Writes data to a file stream.
@@ -157,7 +157,7 @@ size_t fread(void *ptr, size_t size, size_t count, FILE *__restrict stream);
  * @return The number of elements successfully written, which may be less than
  * `count` if an error occurs.
  */
-size_t fwrite(const void *__restrict ptr, size_t size, size_t count, FILE *__restrict stream);
+size_t fwrite(const void *ptr, size_t size, size_t count, FILE *stream);
 
 /**
  * @brief Returns the current file position.
@@ -248,7 +248,7 @@ int fputc(int c, FILE *stream);
  *
  * @return `str` on success, NULL on error or when end-of-file occurs while no characters have been read.
  */
-char *fgets(char *__restrict str, int num, FILE *__restrict stream);
+char *fgets(char *str, int num, FILE *stream);
 
 /**
  * @brief Removes a file.
@@ -322,7 +322,7 @@ int puts(const char *str);
  * output to strings). On failure, a negative number is returned.
  *
  */
-int printf(const char *__restrict format, ...) __attribute__((format(__printf__, 1, 2)));
+int printf(const char *format, ...) __attribute__((format(__printf__, 1, 2)));
 
 /**
  * @brief Prints formatted output to the standard output (stdout) using a variable argument list.
@@ -335,7 +335,7 @@ int printf(const char *__restrict format, ...) __attribute__((format(__printf__,
  *
  * @return The number of characters printed, or a negative value on error.
  */
-int vprintf(const char *__restrict format, va_list va) __attribute__((format(__printf__, 1, 0)));
+int vprintf(const char *format, va_list va) __attribute__((format(__printf__, 1, 0)));
 
 /**
  * @brief Prints formatted output to a string using a variable argument list.
@@ -349,7 +349,7 @@ int vprintf(const char *__restrict format, va_list va) __attribute__((format(__p
  *
  * @return The number of characters written, excluding the null terminator, or a negative value on error.
  */
-int vsprintf(char *__restrict buffer, const char *__restrict format, va_list va) __attribute__((format(__printf__, 1, 0)));
+int vsprintf(char *buffer, const char *format, va_list va) __attribute__((format(__printf__, 1, 0)));
 
 /**
  * @brief Prints formatted output to a string with a limit on the number of characters.
@@ -364,7 +364,7 @@ int vsprintf(char *__restrict buffer, const char *__restrict format, va_list va)
  *
  * @return The number of characters that would have been written if count was sufficiently large, not counting the null terminator.
  */
-int snprintf(char *buffer, size_t count, const char *__restrict format, ...) __attribute__((format(__printf__, 3, 4)));
+int snprintf(char *buffer, size_t count, const char *format, ...) __attribute__((format(__printf__, 3, 4)));
 
 /**
  * @brief Prints formatted output to a string with a limit on the number of characters using a variable argument list.
@@ -379,7 +379,7 @@ int snprintf(char *buffer, size_t count, const char *__restrict format, ...) __a
  *
  * @return The number of characters that would have been written if count was sufficiently large, not counting the null terminator.
  */
-int vsnprintf(char *buffer, size_t count, const char *__restrict format, va_list va) __attribute__((format(__printf__, 3, 0)));
+int vsnprintf(char *buffer, size_t count, const char *format, va_list va) __attribute__((format(__printf__, 3, 0)));
 
 /**
  * @brief Prints formatted output to a string.
@@ -393,7 +393,7 @@ int vsnprintf(char *buffer, size_t count, const char *__restrict format, va_list
  *
  * @return The number of characters written, excluding the null terminator.
  */
-int sprintf(char *__restrict buffer, const char *__restrict format, ...) __attribute__((format(__printf__, 2, 3)));
+int sprintf(char *buffer, const char *format, ...) __attribute__((format(__printf__, 2, 3)));
 
 /**
  * @brief Prints formatted output to a file stream.
@@ -407,7 +407,7 @@ int sprintf(char *__restrict buffer, const char *__restrict format, ...) __attri
  *
  * @return The number of characters printed, or a negative value on error.
  */
-int fprintf(FILE *stream, const char *__restrict format, ...) __attribute__((format(__printf__, 2, 3)));
+int fprintf(FILE *stream, const char *format, ...) __attribute__((format(__printf__, 2, 3)));
 
 /**
  * @brief Prints formatted output to a file stream using a variable argument list.
@@ -421,7 +421,7 @@ int fprintf(FILE *stream, const char *__restrict format, ...) __attribute__((for
  *
  * @return The number of characters printed, or a negative value on error.
  */
-int vfprintf(FILE *stream, const char *__restrict format, va_list va) __attribute__((format(__printf__, 2, 0)));
+int vfprintf(FILE *stream, const char *format, va_list va) __attribute__((format(__printf__, 2, 0)));
 
 typedef size_t rsize_t;
 
@@ -436,7 +436,7 @@ typedef size_t rsize_t;
  *
  * @return A pointer to the buffer containing the input string, or NULL on error.
  */
-char *gets_s(char *__restrict str, rsize_t n);
+char *gets_s(char *str, rsize_t n);
 
 /**
  * @brief Reads formatted input from the standard input (stdin).
@@ -494,7 +494,7 @@ int fscanf(FILE *fp, const char *fmt, ...);
  *
  * @return A pointer to the reopened file stream, or NULL on error.
  */
-FILE *freopen(const char *__restrict filename, const char *__restrict mode, FILE *stream);
+FILE *freopen(const char *filename, const char *mode, FILE *stream);
 
 /**
  * @brief Pushes a character back onto a file stream.

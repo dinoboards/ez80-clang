@@ -9,6 +9,8 @@
 typedef struct {
   CPM_FCB cpm_fcb; // Base FCB structure
 
+  uint8_t reserved[4];
+
   /* Below here is used by the library */
   // 7 bytes used by the library
   uint24_t rwptr;   /* read/write pointer in bytes */

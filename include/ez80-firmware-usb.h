@@ -4,6 +4,8 @@
 #include "usb-keyboard.h"
 #include <stdint.h>
 
+/* LOW LEVEL USB FUNCTIONS & TYPES */
+
 typedef enum usb_device_e : uint8_t {
   USB_NOT_FOUND       = -1,
   USB_NOT_SUPPORTED   = 0,
@@ -128,7 +130,45 @@ usb_control_transfer(setup_packet_t *const cmd_packet, void *const buffer, uint8
 extern usb_error_t usb_data_in_transfer(
     uint8_t *buffer, uint16_t buffer_size, uint8_t device_address, uint8_t number, uint8_t max_packet_size, uint8_t *toggle);
 
+/* HIGH LEVEL USB FUNCTIONS */
+
+extern usb_device_t ez80_usb_get_device_type(uint8_t dev_index);
+
+extern uint8_t ez80_usb_find_device_index(usb_device_t dev_type);
+
+extern uint8_t ez80_usb_get_device_address(uint8_t dev_index);
+
+extern usb_error_t ez80_usb_get_manufacturer(uint8_t dev_index, char *buffer, uint8_t buffer_size);
+
+extern usb_error_t ez80_usb_get_product(uint8_t dev_index, char *buffer, uint8_t buffer_size);
+
+/* USB KEYBOARD FUNCTIONS */
+
 extern uint8_t ez80_usb_kyb_report(usb_keyboard_report_t *rpt);
+
+typedef struct {
+  uint8_t key_ascii; /* ascii char encoding, if applicable */
+  uint8_t key_code;  /* Modifier keys state bitmap in high byte, code in low byte */
+  uint8_t key_down;  /* true key pressed down event, false, key up event */
+} usb_kyb_event_t;
+
+/**
+ * @brief Retrieve buffered keyboard key events
+ *
+ * @param usb_key Pointer to receive the next key event data
+ * @return uint8_t Number of events remaining in buffer (including current),
+ *         or 0 if buffer is empty
+ *
+ * @details Processes the USB keyboard state buffer using ez80_usb_kyb_report to extract
+ * individual key press and release events. Returns immediately if no events are
+ * available.
+ *
+ * @note Modifier keys (Ctrl, Shift, Alt, etc.) are mapped to special key codes
+ * ranging from E0-E7, corresponding to USB_KEY_LCTRL through to USB_KEY_RMETA
+ */
+extern uint8_t usb_kyb_event(usb_kyb_event_t *key);
+
+/* USB MOUSE FUNCTIONS */
 
 extern uint8_t ez80_usb_mse_init(uint8_t dev_index);
 
@@ -141,15 +181,5 @@ typedef struct {
 extern uint8_t ez80_usb_mse_read(ez80_usb_mse_report_ex_t *rpt);
 
 extern uint8_t ez80_usb_mse_state(ez80_usb_mse_report_ex_t *rpt);
-
-extern usb_device_t ez80_usb_get_device_type(uint8_t dev_index);
-
-extern uint8_t ez80_usb_find_device_index(usb_device_t dev_type);
-
-extern uint8_t ez80_usb_get_device_address(uint8_t dev_index);
-
-extern usb_error_t ez80_usb_get_manufacturer(uint8_t dev_index, char *buffer, uint8_t buffer_size);
-
-extern usb_error_t ez80_usb_get_product(uint8_t dev_index, char *buffer, uint8_t buffer_size);
 
 #endif

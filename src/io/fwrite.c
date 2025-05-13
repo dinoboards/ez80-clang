@@ -51,7 +51,7 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) {
     }
 
     bytes_written += bytes_to_copy;
-    file_fcb->rwptr += bytes_to_copy;
+    file_fcb->rwptr += (uint32_t)bytes_to_copy;
   }
 
   return bytes_written / size;

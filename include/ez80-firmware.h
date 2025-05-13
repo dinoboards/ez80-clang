@@ -150,26 +150,4 @@ extern uint8_t ez80_uart_out(const char ch);
 
 extern uint8_t ez80_uart_in();
 
-typedef struct {
-  uint8_t key_ascii; /* ascii char encoding, if applicable */
-  uint8_t key_code;  /* Modifier keys state bitmap in high byte, code in low byte */
-  uint8_t key_down;  /* true key pressed down event, false, key up event */
-} usb_kyb_event_t;
-
-/**
- * @brief Retrieve buffered keyboard key events
- *
- * @param usb_key Pointer to receive the next key event data
- * @return uint8_t Number of events remaining in buffer (including current),
- *         or 0 if buffer is empty
- *
- * @details Processes the USB keyboard state buffer using ez80_usb_kyb_report to extract
- * individual key press and release events. Returns immediately if no events are
- * available.
- *
- * @note Modifier keys (Ctrl, Shift, Alt, etc.) are mapped to special key codes
- * ranging from E0-E7, corresponding to USB_KEY_LCTRL through to USB_KEY_RMETA
- */
-extern uint8_t usb_kyb_event(usb_kyb_event_t *key);
-
 #endif
