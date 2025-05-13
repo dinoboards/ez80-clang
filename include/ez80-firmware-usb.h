@@ -144,6 +144,13 @@ extern usb_error_t ez80_usb_get_product(uint8_t dev_index, char *buffer, uint8_t
 
 /* USB KEYBOARD FUNCTIONS */
 
+/**
+ * @brief Purged all buffered/queued/events.
+ *
+ * @return uint8_t 0 for success
+ */
+extern uint8_t ez80_usb_kyb_flush();
+
 extern uint8_t ez80_usb_kyb_report(usb_keyboard_report_t *rpt);
 
 typedef struct {
@@ -166,7 +173,7 @@ typedef struct {
  * @note Modifier keys (Ctrl, Shift, Alt, etc.) are mapped to special key codes
  * ranging from E0-E7, corresponding to USB_KEY_LCTRL through to USB_KEY_RMETA
  */
-extern uint8_t usb_kyb_event(usb_kyb_event_t *key);
+extern uint8_t ez80_usb_kyb_event(usb_kyb_event_t *key);
 
 /* USB MOUSE FUNCTIONS */
 

@@ -98,6 +98,12 @@
 	EZ80_FN
 .endm
 
+.macro	EZ80_USB_KYB_FLUSH
+	ld	a, 6
+	ld	b, 34
+	EZ80_FN
+.endm
+
 .macro	EZ80_USB_KYB_RPT
 	ld	a, 6
 	ld	b, 35
