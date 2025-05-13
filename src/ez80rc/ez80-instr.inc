@@ -86,6 +86,12 @@
 	EZ80_FN
 .endm
 
+.macro	EZ80_UTIL_TMR_TICK_SET
+	ld	a, 2
+	ld	b, 2
+	EZ80_FN
+.endm
+
 .macro	EZ80_UART_OUT
 	ld	a, 3
 	ld	b, 1
