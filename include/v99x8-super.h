@@ -222,9 +222,9 @@ extern void vdp_set_super_graphic_8();
  * @brief Sets the VDP to Super Graphics Mode 9
  *
  * Super Graphics Mode 9 characteristics:
- * - Resolution: 720 x 512 @ 50Hz
+ * - Resolution: 640 x 512 @ 50Hz
  * - Colors: Uses 256 palette colors
- * - VRAM Usage: 368,640 bytes
+ * - VRAM Usage: 327, 680 bytes
  *
  * Memory organization:
  * - Each pixel uses one byte to specify its color
@@ -234,6 +234,23 @@ extern void vdp_set_super_graphic_8();
  *       custom kit with the SUPER_RES extensions enabled.
  */
 extern void vdp_set_super_graphic_9();
+
+/**
+ * @brief Sets the VDP to Super Graphics Mode 9
+ *
+ * Super Graphics Mode 10 characteristics:
+ * - Resolution: 640 x 256 @ 60Hz
+ * - Colors: Uses 256 palette colors
+ * - VRAM Usage:  bytes
+ *
+ * Memory organization:
+ * - Each pixel uses one byte to specify its color
+ * - Colors are selected from palette registers
+ *
+ * @note Only supported on the Super HDMI Tang Nano 20K
+ *       custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_10();
 
 extern void vdp_set_super_graphic(uint8_t mode);
 #endif

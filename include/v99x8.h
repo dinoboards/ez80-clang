@@ -104,6 +104,8 @@ extern void vdp_set_extended_palette_entry(uint8_t index, RGB palette_entry);
 
 extern void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh_rate);
 
+static inline uint8_t vdp_get_mode() { return vdp_current_mode; }
+
 /**
  * @brief Switches between VRAM pages in supported graphics modes
  *
