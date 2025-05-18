@@ -33,6 +33,9 @@ __start:
 
 	ld	a, MB
 	ld	(_cpm_mbase+2), a
+	ld	(_CPM_SYS_FCB+2), a
+	ld	a, $5C
+	ld	(_CPM_SYS_FCB), a
 
 	pop	hl				; discard return address
 
@@ -113,5 +116,9 @@ _get_memory_end:
 
 	section	bss_crt, "ax", @progbits
 	global	_cpm_mbase
+	global	_CPM_SYS_FCB
+
 _cpm_mbase:
 	d24	0	;CP/M base address
+_CPM_SYS_FCB:
+	d24	0

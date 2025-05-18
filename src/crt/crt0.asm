@@ -44,6 +44,7 @@ require_eZ80:
 	global	__call_main
 	global	_exit
 	global	_cpm_mbase
+	global	_CPM_SYS_FCB
 
 __start:
 	ld	((__restore_sps_onexit+1) & $FFFF), sp	; Save SPS stack
@@ -124,6 +125,9 @@ crt0_init:
 
 	ld	a, MB
 	ld	(_cpm_mbase+2), a
+	ld	(_CPM_SYS_FCB+2), a
+	ld	a, $5C
+	ld	(_CPM_SYS_FCB), a
 
 	section	code_crt_init_exit, "ax", @progbits
 	ret
@@ -196,3 +200,5 @@ defltdsk:
 	defb	0	;Default disc
 _cpm_mbase:
 	d24	0	;CP/M base address
+_CPM_SYS_FCB:
+	d24	0

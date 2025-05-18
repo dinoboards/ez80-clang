@@ -18,10 +18,10 @@ typedef struct cpm_fcb {
   uint24_t ranrec;      /* random record number (24 bit no. ) */
 } CPM_FCB;
 
-extern CPM_FCB CPM_SYS_FCB; // 0x30005C;
-extern CPM_FCB CPM_DMABUF;  // 0x300080;
+extern CPM_FCB *const CPM_SYS_FCB; // typically 0x03005C;
+// extern CPM_FCB CPM_DMABUF;  // typically 0x030080;
 
-// assigned to the start of the 64k CPM page (0x030000)
+// assigned to the start of the 64k CPM page (typically 0x030000)
 extern void const *const cpm_mbase;
 
 #define __MBASE (((uint8_t *)&cpm_mbase)[2])
