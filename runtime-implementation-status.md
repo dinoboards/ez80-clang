@@ -304,6 +304,7 @@
 | sprintf       | ✓  |
 | sqrt          | ✓ |
 | srand         | ✓  |
+| scanf        | ✓  |
 | sscanf        | ✓  |
 | strcat        | ✓ |
 | strchr        | ✓  |
