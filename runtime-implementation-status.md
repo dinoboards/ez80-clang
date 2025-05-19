@@ -52,6 +52,7 @@
 | Redirection                          | ✗  |
 | exit                                 | ✓          |
 | atexit                               | ✓          |
+| _atol                                | ✓ |
 | _bbitrev                             | ✓  |
 | _bctlz                               | ✓  |
 | _bdivs                               | ✓  |
