@@ -68,6 +68,12 @@
 	EZ80_FN
 .endm
 
+.macro SYSUTL_EMULSTAT_GET
+	xor	a
+	ld	b, 19
+	EZ80_FN
+.endm
+
 .macro	EZ80_UTIL_TMR_FREQTICK_GET
 	ld	a, 2
 	ld	b, 4
@@ -161,6 +167,12 @@
 .macro	EZ80_USB_MSE_READ
 	ld	a, 6
 	ld	b, 49
+	EZ80_FN
+.endm
+
+.macro	EZ80_EMULATOR_INVOKE addr
+	ld	a, 7
+	ld	iy, \addr
 	EZ80_FN
 .endm
 

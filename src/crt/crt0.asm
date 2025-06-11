@@ -3,10 +3,20 @@
 ;	C RUNTIME FUNCTION
 ;	For the eZ80 Clang cross compiler
 ;
-;  Original file source: https://github.com/CE-Programming/toolchain
-;  License: https://github.com/CE-Programming/toolchain?tab=LGPL-3.0-1-ov-file
+; This startup code is designed to run in a Z80-compatible environment,
+; to start a COM executable under CP/M on an eZ80 CPU with firmware support
 ;
-; Modified to comply with GNU AS assembler (ez80-none-elf-as) syntax
+; It will transition execution to the _main function in eZ80's ADL mode.
+; And upon return, execution will return to CP/M.
+;
+; Startup will exit with an error message, unless detection an eZ80 CPU
+; is successful.
+;
+; It also detects if executing under an emulator or native eZ80's Z80 compatibility
+; mode.  If the code was started in an emulation environment, then cpm_bdos_adl
+; will be modified to ensure BDOS is also executed under the emulator.
+;
+; As the code will be loaded via CP/M its maximum size is still limited to 64K.
 ;
 ;--------------------------------------------------------------
 
@@ -14,6 +24,8 @@
 
 	extern	_main
 	extern	__push_cpm_cmdline_args
+
+	include	"src/ez80rc/ez80-instr.inc"
 
 	section	.header_z80, "ax", @progbits
 	global	_get_memory_start
@@ -45,6 +57,9 @@ require_eZ80:
 	global	_exit
 	global	_cpm_mbase
 	global	_CPM_SYS_FCB
+	extern	cpm_bdos_adl
+	extern	cpm_bdos_adl_emulator
+	extern	cpm_bdos_adl_emulator_size
 
 __start:
 	ld	((__restore_sps_onexit+1) & $FFFF), sp	; Save SPS stack
@@ -56,6 +71,7 @@ __start:
 	call	5
 	ld	(defltdsk & $FFFF), a
 
+	SYSUTL_EMULSTAT_GET
 	call.lil	__startadl
 
 	; Restore default disc
@@ -99,6 +115,18 @@ do_exit_v3:
 __startadl:
 	ld	(__restore_spl_onexit+1), sp	; Save SPL stack
 
+	; determine if we are emulated or native
+	; if emulated update (cpm_bdos_adl+1) <= cpm_bdos_adl_emulator
+	cp	2	; is emulated?
+	jr	nz,	native_z80_exeuction
+
+	; ensure calls to bdos will be executed with the emulator
+	ld	de, cpm_bdos_adl
+	ld	hl, cpm_bdos_adl_emulator
+	ld	bc, cpm_bdos_adl_emulator_size
+	ldir
+
+native_z80_exeuction:
 	call	crt0_init
 	jp	__push_cpm_cmdline_args
 
