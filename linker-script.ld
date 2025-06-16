@@ -25,6 +25,8 @@ SECTIONS
     start_of_startup = . ;
     .startup  : {
         *(.startup_z80)
+        *(.startup_z80_init)
+        *(.startup_z80_init_exit)
         *(.startup_adl)
         *(code_crt_init)
         *(code_crt_init_exit)
@@ -35,6 +37,7 @@ SECTIONS
 
     start_of_text = . ;
     .text : {
+         *(.text64k)
          *(.text)
          *(.text.*)
           } > RAM

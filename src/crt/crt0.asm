@@ -51,18 +51,24 @@ require_eZ80:
 	global	_exit
 	global	_cpm_mbase
 	global	_CPM_SYS_FCB
+	extern	__startz80
 
 __start:
 	ld	((__restore_sps_onexit+1) & $FFFF), sp	; Save SPS stack
 
-	call.lil	.bss_init
+	call.il	.bss_init
+
+	section	.startup_z80_init, "ax", @progbits
+
+
+	section	.startup_z80_init_exit, "ax", @progbits
 
 	; SAVE DEFAULT DISC
 	ld	c, 25
 	call	5
 	ld	(defltdsk & $FFFF), a
 
-	call.lil	__startadl
+	call.il	__startadl
 
 	; Restore default disc
 	push	hl
