@@ -112,7 +112,7 @@ extern int8_t hbios_vda_krd(uint8_t video_unit, vda_keyrd_info_t *info);
  * @brief Gets the number of pending keystrokes in the keyboard buffer
  *
  * @param video_unit The video unit to check for pending keystrokes
- * @return int8_t Number of pending keystrokes (≥0) or HBIOS error code (<0)
+ * @return int8_t Number of pending keystrokes (>=0) or HBIOS error code (<0)
  *
  * @details If the exact count cannot be determined, returns 1 to indicate keys
  * are available or 0 if the buffer is empty. Negative return values indicate

@@ -34,7 +34,7 @@ typedef uint8_t cpm_f_error_t;
  * @brief Call the BDOS function with specified register values.
  *
  * This function calls the BDOS with register pair BC set to `bc` and DE set to `de`.
- * The value returned in register A is the return value of the function/
+ * The value returned in register A is the return value of the function
  *
  * @param[in] bc The value to set in the BC register pair.
  * @param[in] de The value to set in the DE register pair.
