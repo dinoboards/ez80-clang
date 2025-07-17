@@ -146,8 +146,24 @@ extern uint8_t ez80_flash_wait_cycles_get(void);
  */
 extern void ez80_flash_wait_cycles_set(const uint8_t cycles);
 
-extern uint8_t ez80_uart_out(const char ch);
+/**
+ * @brief sends character to the eZ80's uart
+ *
+ * Invokes firmware function A=3, B=1 UART_OUT
+ *
+ * @param ch the character to be sent
+ */
+extern void ez80_uart_out(const char ch);
 
+/**
+ * @brief reads the next character received on the eZ80's uart
+ *
+ * Invokes firmware function A=3, B=0 UART_IN
+ *
+ * @return uint8_t the received character
+ *
+ * @note blocks until a character is received
+ */
 extern uint8_t ez80_uart_in();
 
 #endif

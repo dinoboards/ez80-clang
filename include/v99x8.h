@@ -1,6 +1,17 @@
 #ifndef __V9958
 #define __V9958
 
+/**
+ * @file v99x8.h
+ * @brief Functions and supporting structures to access the V9958/V9938 on-chip functions.
+ *
+ * The V9958 and V9938 Video Display Process from YAMAHA has many on chip features.  It
+ * is recommended you familiarise yourself with the V9958/V9938 spec docs from YAMAHA.
+ *
+ * * [V9938 Datasheet](https://github.com/dinoboards/yellow-msx-series-for-rc2014/blob/main/datasheets/yamaha_v9938.pdf)
+ * * [V9938 Datasheet](https://github.com/dinoboards/yellow-msx-series-for-rc2014/blob/main/datasheets/yamaha_v9958.pdf)
+ */
+
 #include <ez80.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -9,6 +20,10 @@
 #define PAL  1
 #define NTSC 2
 
+/**
+ * @brief an 8Bit per color RGB colour code
+ *
+ */
 typedef struct {
   uint8_t red;
   uint8_t green;
@@ -31,7 +46,13 @@ extern uint8_t registers_mirror[REGISTER_COUNT]; /* private */
 #define VDP_PALT PORT_IO(VDP_IO_PALT)
 #define VDP_REGS PORT_IO(VDP_IO_REGS)
 
-#define vdp_out_cmd(v)      port_out(VDP_IO_ADDR, v)
+/**
+ * @brief Write byte to the VDP's COMMAND port
+ *
+ * @param v byte to be sent to the COMMAND port
+ */
+static inline void vdp_out_cmd(const uint8_t v) { port_out(VDP_IO_ADDR, v); }
+
 #define vdp_out_dat(v)      port_out(VDP_IO_DATA, v)
 #define vdp_out_pal(v)      port_out(VDP_IO_PALT, v)
 #define vdp_out_reg_byte(v) port_out(VDP_IO_REGS, v)
@@ -234,16 +255,23 @@ extern void vdp_cmd_move_cpu_to_vram(
 extern void vdp_cmd_move_data_to_vram(
     uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
 
+#ifdef VDP_SUPER_HDMI
 /**
  * @brief transmit the next data byte to the VDP for the current pending command
  *
  * @param next_byte the data to be sent to the VDP
  */
-#ifdef VDP_SUPER_HDMI
 static inline void vdp_cmd_send_byte(uint8_t next_byte) { VDP_REGS = next_byte; }
 #else
+
+/**
+ * @brief transmit the next data byte to the VDP for the current pending command
+ *
+ * @param next_byte the data to be sent to the VDP
+ */
 void vdp_cmd_send_byte(uint8_t next_byte);
 #endif
+
 /**
  * @brief VDP command 'High-speed move VRAM to VRAM, y only'
  *

@@ -109,4 +109,11 @@ format:
 	@./clang-format.sh
 
 docs:
-	@doxygen Doxyfile
+	@mkdir -p ./docs
+	@sed '/^#include/d' include/v99x8.h | gcc -E -C -P -  | ./mdcdoc/mdcdoc.js -p c -o ./docs/v99x8.md
+	@sed '/^#include/d' include/v99x8-super.h | gcc -E -C -P -  | ./mdcdoc/mdcdoc.js -p c -o ./docs/v99x8-super.md
+	@sed '/^#include/d' include/cpm.h | gcc -E -C -P -  | ./mdcdoc/mdcdoc.js -p c -o ./docs/cpm.md
+	@sed '/^#include/d' include/hbios.h | gcc -E -C -P -  | ./mdcdoc/mdcdoc.js -p c -o ./docs/hbios.md
+	@sed '/^#include/d' include/ez80.h | gcc -E -C -P -  | ./mdcdoc/mdcdoc.js -p c -o ./docs/ez80.md
+	@sed '/^#include/d' include/ez80-firmware.h | gcc -E -C -P -  | ./mdcdoc/mdcdoc.js -p c -o ./docs/ez80-firmware.md
+	@cat docs/api.md docs/v99x8.md docs/v99x8-super.md docs/cpm.md docs/hbios.md docs/ez80.md docs/ez80-firmware.md  > library-apis.md

@@ -44,7 +44,7 @@ It will also add the file `~/.ez80-clang` containing  required environment varia
 
 Your `~/.bashrc` file will be updated to source this file.
 
-## Building an CP/M eZ80 Application
+## Building a CP/M eZ80 Application
 
 Once installed, you can use the `ez80-cc` wrapper command to compile, assemble and link an application.
 
@@ -56,6 +56,7 @@ ez80-cc HELOWRLD.COM hello-world.c
 
 ## ez80-cc
 
+```
 Usage: ez80-cc [--output-dir dir] [--iquote dir] [--optimise type] [output] source-files...
 Options:
   --output-dir dir  Specify the output directory for the binary file.
@@ -72,10 +73,22 @@ Arguments:
                     .asm or .c files
 
 * 2MB files should have extension of .EXE to indicate non standard CP/M application.
+```
 
 For loading and executing EXE files, see within the `ez80-for-RC` github repo, the `EXE.COM` application: [https://github.com/dinoboards/ez80-for-rc/tree/main/apps/exe](https://github.com/dinoboards/ez80-for-rc/tree/main/apps/exe)
 
-## Building
+You can also find many example applications implemented in that project also: [https://github.com/dinoboards/ez80-for-rc/tree/main/apps](https://github.com/dinoboards/ez80-for-rc/tree/main/apps)
+
+
+## Libraries/API reference
+
+Most of the standard c libraries (crt, libc, file io, malloc, etc) are implemented.  There are also libraries included specific to the eZ80 and associated hardware.
+
+See the seperate document for references: [Library API](./library-apis.md)
+
+---
+
+## Building the Tool chain
 
 ```
 make package-local
@@ -87,7 +100,3 @@ make package-local
 sudo make install
 ```
 
-
-## C Runtime Status
-
-[List of ported/implemented c runtime function](./runtime-implementation-status.md)

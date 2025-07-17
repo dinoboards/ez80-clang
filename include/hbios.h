@@ -20,12 +20,13 @@
 #define HBIOS_ERROR_CONFIG         -12 /* Invalid configuration */
 
 /**
+ * @hide
  * @brief Marshalling function to invoke HBIOS CIOOUT
  *
  * @param ce Combined parameter where:
- *           - High byte: character unit
- *           - Low byte: character to be sent
- * @return int8_t Standard HBIOS result code
+ * @param ce:high-byte: character unit
+ * @param ce:low-byte: character to be sent
+ * @return Standard HBIOS result code
  */
 extern int8_t _hbios_cio_out(uint16_t ce);
 
@@ -34,9 +35,8 @@ extern int8_t _hbios_cio_out(uint16_t ce);
  *
  * @param video_unit The video unit to send the character to
  * @param ch The character to be sent
- * @return int8_t Standard HBIOS result code
- * @note If there is no space available in the unit's output buffer,
- *       the function will wait indefinitely
+ * @return Standard HBIOS result code
+ * @note If there is no space available in the unit's output buffer, the function will wait indefinitely
  */
 static inline int8_t hbios_cio_out(uint8_t video_unit, uint8_t ch) { return _hbios_cio_out(((uint16_t)(video_unit)) << 8 | (ch)); }
 
@@ -55,19 +55,19 @@ typedef struct {
  *
  * @param video_unit The video unit to query
  * @param new_font_map Pointer to buffer in upper 32K of MBASE to store font bitmap data.
- *                     Must be set to NULL if not used to avoid memory corruption.
  * @param info Pointer to vda_info_t structure to receive the query results
  *
  * @return Standard HBIOS result code
  *
- * @details Returns current video mode and display dimensions (rows/columns) for the
- *          specified video unit. The rows and columns values represent the total count,
- *          not the maximum index values.
+ * Returns current video mode and display dimensions (rows/columns) for the
+ * specified video unit. The rows and columns values represent the total count,
+ * not the maximum index values.
  *
- * @note If new_font_map is provided, it must point to a suitably sized buffer in the
- *       upper 32K of MBASE address space. The buffer will be filled with the current
- *       character bitmap data if supported by the video driver. If bitmap retrieval
- *       is not supported, the font_map field in info will be set to zero.
+ * > ***new_font_map*** must be set to NULL if not used, to avoid memory corruption.
+ * > If ***new_font_map*** is provided, it must point to a suitably sized buffer in the
+ * > upper 32K of MBASE address space. The buffer will be filled with the current
+ * > character bitmap data if supported by the video driver. If bitmap retrieval
+ * > is not supported, the font_map field in info will be set to zero.
  */
 extern int8_t hbios_vda_qry(uint8_t video_unit, uint8_t *new_font_map, vda_info_t *info);
 
@@ -87,8 +87,8 @@ typedef struct {
  * @param info Pointer to vda_keyrd_info_t structure to receive the key data
  * @return Standard HBIOS result code
  *
- * @details Returns the next available key data from the keyboard buffer.
- *          If no key data is available, blocks indefinitely until a key is pressed.
+ * Returns the next available key data from the keyboard buffer.
+ * If no key data is available, blocks indefinitely until a key is pressed.
  *
  * The returned data includes:
  * - scan_code: Raw PS/2 scancode (set 2 standard)
@@ -103,8 +103,8 @@ typedef struct {
  *   - Bit 0: Shift key state
  * - key_code: ASCII value for standard keys, special codes for function/arrow keys
  *
- * @note Keyboard driver compatibility varies. Refer to specific driver documentation
- *       in the RomWBW HBIOS source code for detailed behavior.
+ * > Keyboard driver compatibility varies. Refer to specific driver documentation
+ * > in the RomWBW HBIOS source code for detailed behavior.
  */
 extern int8_t hbios_vda_krd(uint8_t video_unit, vda_keyrd_info_t *info);
 
@@ -112,9 +112,9 @@ extern int8_t hbios_vda_krd(uint8_t video_unit, vda_keyrd_info_t *info);
  * @brief Gets the number of pending keystrokes in the keyboard buffer
  *
  * @param video_unit The video unit to check for pending keystrokes
- * @return int8_t Number of pending keystrokes (>=0) or HBIOS error code (<0)
+ * @return the number of pending keystrokes (>=0) or HBIOS error code (<0)
  *
- * @details If the exact count cannot be determined, returns 1 to indicate keys
+ * If the exact count cannot be determined, returns 1 to indicate keys
  * are available or 0 if the buffer is empty. Negative return values indicate
  * HBIOS errors (bit 7 set).
  */

@@ -5,6 +5,28 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+/**
+ * @file cpm.h
+ * @brief CP/M system calls and data structures.
+ *
+ * The cpm library provides structures, constants, and function declarations for
+ * interacting with the CP/M operating system on the eZ80 platform. It includes
+ * definitions for the File Control Block (FCB), BDOS calls, IOBYTE handling,
+ * and various CP/M error codes and macros.
+ *
+ * All functions will be marshalled from eZ80's ADL execution environment to
+ * the Z80 compatibility environment.  All pointers supplied to functions must reference
+ * an address within the Z80 compatibility segement - for the `eZ80 for RC` module
+ * this is typically at address range: 0x03XXXX.
+ *
+ * To ensure any structure if within this segment, you can allocate variables/arrays within
+ * the `bss_z80` segment.
+ */
+
+/**
+ * @brief CP/M's File Control Block structure
+ *
+ */
 typedef struct cpm_fcb {
   // 36 bytes of standard FCB
   uint8_t  drive;       /* drive code 0*/
@@ -36,8 +58,8 @@ typedef uint8_t cpm_f_error_t;
  * This function calls the BDOS with register pair BC set to `bc` and DE set to `de`.
  * The value returned in register A is the return value of the function
  *
- * @param[in] bc The value to set in the BC register pair.
- * @param[in] de The value to set in the DE register pair.
+ * @param bc The value to set in the BC register pair.
+ * @param de The value to set in the DE register pair.
  *
  * @return The value returned in register A.
  */
@@ -605,7 +627,7 @@ extern cpm_f_error_t cpm_f_size(near_ptr_t fcb);
 #define __STDIO_CRLF      1  /* Automatically convert between CR and CRLF */
 
 #define CPM_ERR_OK               0
-#define CPM_ERR_DIR_FULL         1
+#define CPM_ERR_DIR_FULL_        1
 #define CPM_ERR_EOF              1
 #define CPM_ERR_UNWRITTEN        1
 #define CPM_ERR_DISC_FULL        2
