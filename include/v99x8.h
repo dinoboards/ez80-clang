@@ -257,6 +257,7 @@ extern void vdp_cmd_move_data_to_vram(
 
 #ifdef VDP_SUPER_HDMI
 /**
+ * @hide
  * @brief transmit the next data byte to the VDP for the current pending command
  *
  * @param next_byte the data to be sent to the VDP

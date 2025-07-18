@@ -29,6 +29,11 @@ Additional local changes made by Dean Netherton (c) 2025
 */
 exports.applyToGenerator = function (g) {
 
+    g.addCodePattern(/^#define/, t => {
+        //set t.header to the 2nd word from t.code
+        const words = t.code.trim().split(/\s+/);
+        t.header = words[1] || '';
+    })
     g.addCodePattern(/^Functions/, t => t.header = "Functions");
 
     g.addCodePattern(/^typedef/, (t) => {

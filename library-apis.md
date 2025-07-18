@@ -74,6 +74,13 @@ The linker configuration used by both memory models provide the following sectio
 
 ## Library V99X8
 
+*Functions and supporting structures to access the V9958/V9938 on-chip functions.*
+
+The V9958 and V9938 Video Display Process from YAMAHA has many on chip features.  It
+is recommended you familiarise yourself with the V9958/V9938 spec docs from YAMAHA.
+
+* [V9938 Datasheet](https://github.com/dinoboards/yellow-msx-series-for-rc2014/blob/main/datasheets/yamaha_v9938.pdf)
+* [V9938 Datasheet](https://github.com/dinoboards/yellow-msx-series-for-rc2014/blob/main/datasheets/yamaha_v9958.pdf)
 
 
 ### V99X8 Functions
@@ -806,6 +813,66 @@ typedef struct {
 
 
 
+#### WS2812_LEDIDX
+
+*Assign LED strip pixel read/write zero based index*
+
+```cpp
+#define WS2812_LEDIDX PORT_IO(0xFF30)
+```
+
+
+Assign to this port the index of an RGB pixel you wish to write,
+or read the discrete RGB values. Values are exchanged with the
+`WS2812_LEDVAL` port.
+
+> Writable only
+
+
+---
+
+
+
+#### WS2812_LEDVAL
+
+*Read or Write the 3 separate RGB values for current pixel*
+
+```cpp
+#define WS2812_LEDVAL PORT_IO(0xFF31)
+```
+
+
+After assigning the index with port `WS2812_LEDIDX`, three bytes
+are expected to be written or read on this port.
+
+The three bytes represent the current pixel's Red, Green and Blue 8 bit values.
+
+After the 3 bytes are exchanged, the index is auto incremented.
+
+> Readable and Writable
+
+
+---
+
+
+
+#### WS2812_LEDCNT
+
+*Define the current maximum number of pixels available on the attached strip.*
+
+```cpp
+#define WS2812_LEDCNT PORT_IO(0xFF32)
+```
+
+
+ When auto indexing reaches the end (as per this setting), the index is automatically reset back to 0.
+
+> Writable only
+
+---
+
+
+
 #### vdp_set_command_page
 
 *Sets the base VRAM page for VDP command operations*
@@ -1174,6 +1241,20 @@ Memory organization:
 
 ## Library CPM
 
+*CP/M system calls and data structures.*
+
+The cpm library provides structures, constants, and function declarations for
+interacting with the CP/M operating system on the eZ80 platform. It includes
+definitions for the File Control Block (FCB), BDOS calls, IOBYTE handling,
+and various CP/M error codes and macros.
+
+All functions will be marshalled from eZ80's ADL execution environment to
+the Z80 compatibility environment.  All pointers supplied to functions must reference
+an address within the Z80 compatibility segement - for the `eZ80 for RC` module
+this is typically at address range: 0x03XXXX.
+
+To ensure any structure if within this segment, you can allocate variables/arrays within
+the `bss_z80` segment.
 
 
 ### CPM Functions
@@ -2113,15 +2194,15 @@ otherwise, returns A=0.
 ```cpp
 typedef struct cpm_fcb {
   // 36 bytes of standard FCB
-  uint8_t drive; /* drive code 0*/
-  char name[8]; /* file name 1*/
-  char ext[3]; /* file type 9*/
-  uint8_t extent; /* file extent 12*/
-  char filler[2]; /* not used 14*/
-  char records; /* number of records in present extent 15*/
-  char discmap[16]; /* CP/M disc map 16 */
-  char next_record; /* next record to read or write 32*/
-  uint24_t ranrec; /* random record number (24 bit no. ) */
+  uint8_t  drive;       /* drive code 0*/
+  char     name[8];     /* file name 1*/
+  char     ext[3];      /* file type 9*/
+  uint8_t  extent;      /* file extent 12*/
+  char     filler[2];   /* not used 14*/
+  char     records;     /* number of records in present extent 15*/
+  char     discmap[16]; /* CP/M disc map 16 */
+  char     next_record; /* next record to read or write 32*/
+  uint24_t ranrec;      /* random record number (24 bit no. ) */
 } CPM_FCB;
 ```
 
@@ -2276,10 +2357,10 @@ HBIOS errors (bit 7 set).
 
 ```cpp
 typedef struct {
-  uint8_t video_mode; /* Current video mode (driver specific value) */
-  uint8_t rows; /* Number of character rows in current mode */
-  uint8_t columns; /* Number of character columns in current mode */
-  uint8_t *font_map; /* Pointer to font bitmap data, or NULL if not available */
+  uint8_t  video_mode; /* Current video mode (driver specific value) */
+  uint8_t  rows;       /* Number of character rows in current mode */
+  uint8_t  columns;    /* Number of character columns in current mode */
+  uint8_t *font_map;   /* Pointer to font bitmap data, or NULL if not available */
 } vda_info_t;
 ```
 
@@ -2296,7 +2377,7 @@ typedef struct {
 typedef struct {
   uint8_t scan_code; /* Raw PS/2 scan code (set 2) from keyboard */
   uint8_t key_state; /* Modifier and lock state flags (shift, ctrl, etc.) */
-  uint8_t key_code; /* ASCII value or special code for function/arrow keys */
+  uint8_t key_code;  /* ASCII value or special code for function/arrow keys */
 } vda_keyrd_info_t;
 ```
 
@@ -2309,6 +2390,29 @@ typedef struct {
 
 
 ### EZ80 Functions
+
+
+
+#### PORT_IO(c)
+
+*Helper to define clang compliant ez80 I/O PORT access*
+
+```cpp
+#define PORT_IO(c) (*((volatile uint8_t IO_SPACE *)((uint24_t)c)))
+```
+
+
+The `PORT_IO` helper defines a `uint8_t` constant such that reads/writes will be
+translated to appropriate eZ80 in/out instructions.
+
+example:
+> ```c
+>   #define FRONT_PANEL_LEDS PORT_IO(0xFF00)
+>
+>   FRONT_PANEL_LEDS = 0x80;  ; Send 0x80 to IO port @ 0xFF00
+> ```
+
+---
 
 
 

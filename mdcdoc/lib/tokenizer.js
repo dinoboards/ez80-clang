@@ -117,13 +117,23 @@ function parseCode(text, docName) {
 function trimCode(code, nextLine) {
   if (!code) return code;
 
+  if (code.startsWith('#define')) {
+    while (code.trim().endsWith('\\')) {
+      code = code.trim().slice(0,-1).trim() + " " + nextLine().trim();
+    }
+
+    return code.trim();
+  }
+
+
   //if code does not have then ending ), consume nextLine until it does
   while (!code.includes(')'))
     code += " " + nextLine().trim();
 
   //replace "( " with "("
   code = code.replace(/\(\s+/g, '(');
-
+  //replace all multiple spaces with single space
+  code = code.replace(/\s{2,}/g, ' ');
   // Remove 'extern', 'static', and 'inline' at the start (with optional whitespace)
   code = code.replace(/^\s*(extern|static|inline)\b\s*/g, '');
   // Remove any remaining 'inline' or 'static' elsewhere (just in case)

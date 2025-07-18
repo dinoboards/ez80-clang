@@ -3,6 +3,42 @@
 
 #include "v99x8.h"
 
+/**
+ * @brief Assign LED strip pixel read/write zero based index
+ *
+ * Assign to this port the index of an RGB pixel you wish to write,
+ * or read the discrete RGB values. Values are exchanged with the
+ * `WS2812_LEDVAL` port.
+ *
+ * > Writable only
+ *
+ */
+#define WS2812_LEDIDX PORT_IO(0xFF30)
+
+/**
+ * @brief Read or Write the 3 separate RGB values for current pixel
+ *
+ * After assigning the index with port `WS2812_LEDIDX`, three bytes
+ * are expected to be written or read on this port.
+ *
+ * The three bytes represent the current pixel's Red, Green and Blue 8 bit values.
+ *
+ * After the 3 bytes are exchanged, the index is auto incremented.
+ *
+ * > Readable and Writable
+ *
+ */
+#define WS2812_LEDVAL PORT_IO(0xFF31)
+
+/**
+ * @brief Define the current maximum number of pixels available on the attached strip.
+ *
+ *  When auto indexing reaches the end (as per this setting), the index is automatically reset back to 0.
+ *
+ * > Writable only
+ */
+#define WS2812_LEDCNT PORT_IO(0xFF32)
+
 extern uint8_t register_31_mirror;
 
 /**

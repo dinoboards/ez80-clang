@@ -20,10 +20,18 @@ extern void _port_out(const uint24_t data);
 /* The address space for eZ80's I/O 64k PORT addresses */
 #define IO_SPACE __attribute__((address_space(3)))
 
-/* I/O PORT definition for eZ80
- * The following defines a uint8_t VDP_ADDR constant
- * such that reads/writes will be translated to appropriate
- * eZ80 in/out instructions.
+/**
+ * @brief Helper to define clang compliant ez80 I/O PORT access
+ *
+ * The `PORT_IO` helper defines a `uint8_t` constant such that reads/writes will be
+ * translated to appropriate eZ80 in/out instructions.
+ *
+ * example:
+ * > ```c
+ * >   #define FRONT_PANEL_LEDS PORT_IO(0xFF00)
+ * >
+ * >   FRONT_PANEL_LEDS = 0x80;  ; Send 0x80 to IO port @ 0xFF00
+ * > ```
  */
 #define PORT_IO(c) (*((volatile uint8_t IO_SPACE *)((uint24_t)c)))
 
