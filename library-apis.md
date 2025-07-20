@@ -199,6 +199,10 @@ from 0-255.
 
 
 
+**See also:**
+
+* [vdp_set_extended_palette](#vdp_set_extended_palette)
+
 **Params:**
 
 - `index` - The palette entry to update (0-255)
@@ -206,9 +210,6 @@ from 0-255.
 
 > This feature is only available with the Super HDMI Tang Nano FPGA module
 
-**See also:**
-
-* [vdp_set_extended_palette](#vdp_set_extended_palette)
 
 ---
 
@@ -873,6 +874,26 @@ After the 3 bytes are exchanged, the index is auto incremented.
 
 
 
+#### ws2812_set_pixel
+
+*Set a specific WS2812 LED strip pixel's RGB colour*
+
+```cpp
+void ws2812_set_pixel(const uint8_t index, const RGB rgb)
+```
+
+
+
+**Params:**
+
+- `index` - index of pixel
+- `rgb` - the red, green, and blue components of the LEDs
+
+
+---
+
+
+
 #### vdp_set_command_page
 
 *Sets the base VRAM page for VDP command operations*
@@ -888,6 +909,10 @@ different VRAM pages without changing the display page.
 
 
 
+**See also:**
+
+* [vdp_set_page](#vdp_set_page)
+
 **Params:**
 
 - `page` - The VRAM page number to used.
@@ -896,9 +921,6 @@ different VRAM pages without changing the display page.
 
 > Does not change which page is being displayed
 
-**See also:**
-
-* [vdp_set_page](#vdp_set_page)
 
 ---
 
@@ -949,6 +971,10 @@ from 0-255.
 
 
 
+**See also:**
+
+* [vdp_set_extended_palette](#vdp_set_extended_palette)
+
 **Params:**
 
 - `index` - The palette entry to update (0-255)
@@ -956,9 +982,6 @@ from 0-255.
 
 > This feature is only available with the Super HDMI Tang Nano FPGA module
 
-**See also:**
-
-* [vdp_set_extended_palette](#vdp_set_extended_palette)
 
 ---
 
@@ -2794,6 +2817,102 @@ Invokes firmware function A=3, B=0 UART_IN
 
 - uint8_t the received character
 > blocks until a character is received
+
+
+---
+
+
+
+#### start_sync_ms
+
+*calculate a future timer tick point*
+
+```cpp
+int24_t start_sync_ms(uint24_t period_ms)
+```
+
+
+Supply the return value of this function to the `wait_sync_ms` function,
+to block `period_ms` milliseconds after the invocation of this call.
+
+> function will handle timer tick wrap around
+
+
+> The effective resolution of this wait period is limited
+> by the timer tick's frequency
+
+
+
+**See also:**
+
+* [ez80_timers_freq_tick_get](#ez80_timers_freq_tick_get)
+
+**Params:**
+
+- `period_ms` - number of milliseconds in the future to apply to current timer tick
+
+**Returns:**
+
+- `int24_t` of the future timer tick
+
+---
+
+
+
+#### wait_sync_ms
+
+*block and wait until future time has arrived*
+
+```cpp
+void wait_sync_ms(int24_t future)
+```
+
+
+Retrieve the future time from the `start_sync_ms` function.
+
+> function will handle timer tick wrap around
+
+
+> The effective resolution of this wait period is limited
+> by the timer tick's frequency
+
+
+**See also:**
+
+* [ez80_timers_freq_tick_get](#ez80_timers_freq_tick_get)
+
+**Params:**
+
+- `future` - the future time to wait
+
+
+---
+
+
+
+#### sleep_ms
+
+*Wait for a number of milliseconds*
+
+```cpp
+void sleep_ms(uint24_t period_ms)
+```
+
+
+Function blocks for the specified number of milliseconds.
+
+
+> The effective resolution of this wait period is limited
+> by the timer tick's frequency
+
+
+**See also:**
+
+* [ez80_timers_freq_tick_get](#ez80_timers_freq_tick_get)
+
+**Params:**
+
+- `period_ms` - number of milliseconds to wait
 
 
 ---

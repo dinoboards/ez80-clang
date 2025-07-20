@@ -39,6 +39,20 @@
  */
 #define WS2812_LEDCNT PORT_IO(0xFF32)
 
+/**
+ * @brief Set a specific WS2812 LED strip pixel's RGB colour
+ *
+ * @param index index of pixel
+ * @param rgb the red, green, and blue components of the LEDs
+ */
+static inline void ws2812_set_pixel(const uint8_t index, const RGB rgb) {
+  WS2812_LEDIDX = index;
+
+  WS2812_LEDVAL = rgb.red;
+  WS2812_LEDVAL = rgb.green;
+  WS2812_LEDVAL = rgb.blue;
+}
+
 extern uint8_t register_31_mirror;
 
 /**

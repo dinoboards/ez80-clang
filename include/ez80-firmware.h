@@ -166,4 +166,53 @@ extern void ez80_uart_out(const char ch);
  */
 extern uint8_t ez80_uart_in();
 
+/**
+ * @brief calculate a future timer tick point
+ *
+ * Supply the return value of this function to the `wait_sync_ms` function,
+ * to block `period_ms` milliseconds after the invocation of this call.
+ *
+ * > function will handle timer tick wrap around
+ *
+ * @see ez80_timers_freq_tick_get
+ *
+ * > The effective resolution of this wait period is limited
+ * > by the timer tick's frequency
+ *
+ * @param period_ms number of milliseconds in the future to apply to current timer tick
+ * @return `int24_t` of the future timer tick
+ *
+ */
+int24_t start_sync_ms(uint24_t period_ms);
+
+/**
+ * @brief block and wait until future time has arrived
+ *
+ * Retrieve the future time from the `start_sync_ms` function.
+ *
+ * > function will handle timer tick wrap around
+ *
+ * @see ez80_timers_freq_tick_get
+ *
+ * > The effective resolution of this wait period is limited
+ * > by the timer tick's frequency
+ *
+ * @param future the future time to wait
+ */
+void wait_sync_ms(int24_t future);
+
+/**
+ * @brief Wait for a number of milliseconds
+ *
+ * Function blocks for the specified number of milliseconds.
+ *
+ * @see ez80_timers_freq_tick_get
+ *
+ * > The effective resolution of this wait period is limited
+ * > by the timer tick's frequency
+ *
+ * @param period_ms number of milliseconds to wait
+ */
+void sleep_ms(uint24_t period_ms);
+
 #endif

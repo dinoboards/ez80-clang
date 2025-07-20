@@ -79,10 +79,10 @@ class Generator {
       if (token.brief.length !== 0) this.addBriefLine(token.brief);
       this.addCodeLine(token);
       this.addLines(token.text, true);
+      if (token.seealso.length !== 0) this.addSeeAlsoLink(token.seealso);
       if (token.params.length !== 0) this.addParamLines(token.params);
       if (token.return != undefined) this.addReturnsLine(token.return);
       if (token.notes.length !== 0) this.addNoteLine(token.notes);
-      if (token.seealso.length !== 0) this.addSeeAlsoLink(token.seealso);
       this.addLine("\n---\n")
     }
     else {
@@ -118,7 +118,7 @@ class Generator {
   }
 
   addSeeAlsoLink(links) {
-    this.doc.push('**See also:**\n')
+    this.doc.push('\n**See also:**\n')
 
     for (let link of links)
       this.doc.push(`* [${link}](#${link})`)
