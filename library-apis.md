@@ -1007,9 +1007,8 @@ Memory organization:
 - Colors are selected from palette registers
 - Border colour as per Register #7
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1035,9 +1034,8 @@ Memory organization:
 - Colors are selected from palette registers
 - Border colour as per Register #7
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1062,9 +1060,8 @@ Memory organization:
 - Each pixel uses one byte to specify its color
 - Colors are selected from palette registers
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1089,9 +1086,8 @@ Memory organization:
 - Each pixel uses one byte to specify its color
 - Colors are selected from palette registers
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1117,9 +1113,8 @@ Memory organization:
 - Colors are selected from palette registers
 - Border colour as per Register #7
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1145,9 +1140,8 @@ Memory organization:
 - Colors are selected from palette registers
 - Border colour as per Register #7
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1172,9 +1166,8 @@ Memory organization:
 - Each pixel uses one byte to specify its color
 - Colors are selected from palette registers
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1199,9 +1192,8 @@ Memory organization:
 - Each pixel uses one byte to specify its color
 - Colors are selected from palette registers
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1225,9 +1217,8 @@ Memory organization:
 - Each pixel uses one byte to specify its color
 - Colors are selected from palette registers
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
@@ -1243,7 +1234,7 @@ void vdp_set_super_graphic_10()
 
 
 Super Graphics Mode 10 characteristics:
-- Resolution: 640 x 256 @ 60Hz
+- Resolution: 640 x 256 @ 50Hz
 - Colors: Uses 256 palette colors
 - VRAM Usage:  bytes
 
@@ -1251,9 +1242,8 @@ Memory organization:
 - Each pixel uses one byte to specify its color
 - Colors are selected from palette registers
 
-      custom kit with the SUPER_RES extensions enabled.
 > Only supported on the Super HDMI Tang Nano 20K
-
+> custom kit with the SUPER_RES extensions enabled.
 
 ---
 
