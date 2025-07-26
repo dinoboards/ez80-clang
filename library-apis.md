@@ -287,6 +287,28 @@ Returns the height in pixels of the current video mode:
 
 
 
+#### vdp_get_screen_max_unique_colours
+
+*Return current maximum number of unique colours that can be displayed*
+
+```cpp
+uint24_t vdp_get_screen_max_unique_colours()
+```
+
+
+For all modes other than Graphics Mode 7, return the palette depth look up - typically
+256, 16 or 4 unique colours
+
+For Graphics mode 7, return 256
+
+**Returns:**
+
+- uint24_t the max number of unique colours
+
+---
+
+
+
 #### vdp_cpu_to_vram
 
 *copy data from CPU to VRAM*
@@ -648,6 +670,60 @@ long and short sides of a triangle are defined. The two sides are defined as dis
 
 
 
+#### vdp_set_refresh
+
+*Set the refresh rate of the display output*
+
+```cpp
+void vdp_set_refresh(const uint8_t refresh_rate)
+```
+
+
+Refresh can be set to 50Hz or 60Hz
+
+Apply this setting before setting a standard graphics mode
+
+This function is not applicable for super res modes as
+each super graphics mode already configures a specific refresh
+rate
+
+Possible values are:
+`PAL` or 50 to select 50Hz, and `NTSC` or 60 to select 60Hz
+
+
+**Params:**
+
+- `refresh_rate` - to be applied
+
+
+---
+
+
+
+#### vdp_get_refresh
+
+*Return the current refresh rate*
+
+```cpp
+vdp_get_refresh()
+```
+
+
+
+
+**Params:**
+
+- `refresh_rate` - the actual refresh rate
+
+> the return value is one of 50 or 60
+
+> will never equate to PAL or NTSC
+
+
+---
+
+
+
 #### vdp_set_graphic_7
 
 *Sets the VDP to Graphics Mode 7 (G7)*
@@ -785,6 +861,49 @@ Controls:
 
 
 
+#### vdp_get_graphic_mode
+
+*Retrieve the current activated graphics mode*
+
+```cpp
+uint8_t vdp_get_graphic_mode()
+```
+
+
+Super graphics mode are indicated with high bit set
+
+**Returns:**
+
+- uint8_t the current graphics mode
+
+---
+
+
+
+#### vdp_set_graphic_mode
+
+*Set the graphics or super graphics mode*
+
+```cpp
+void vdp_set_graphic_mode(uint8_t mode)
+```
+
+
+If high bit set, then a super graphics mode is selected
+
+> Super graphics modes are only supported on the Super HDMI Tang Nano 20K
+> custom kit with the SUPER_RES extensions enabled.
+
+
+**Params:**
+
+- `mode` - the graphic mode to enable
+
+
+---
+
+
+
 ### V99X8 Types
 
 
@@ -807,6 +926,27 @@ typedef struct {
 
 
 ## Library V99X8-SUPER
+
+*Functions to support extended feature beyond stock V9958 interface of the HDMI for RC kit*
+
+The HDMI for RC kit supports, if flashed with appropriate firmware supports extended graphics mode
+and ability to manage a WS8212 led strip
+
+**Extended Graphics Modes**
+
+| Super Mode | Resolution | Memory Size (bytes) | Refresh Rate | Palette Size |
+| :--------: | :--------: | :-----------------: | :----------: | :----------: |
+|    1       | 320x200    | 64000               |     60Hz     |     256      |
+|    2       | 320x240    | 76800               |     60Hz     |     256      |
+|    3       | 360x240    | 86400               |     60Hz     |     256      |
+|    4       | 360x288    | 103780              |     50Hz     |     256      |
+|    5       | 640x400    | 256000              |     60Hz     |     256      |
+|    6       | 640x480    | 307200              |     50Hz     |     256      |
+|    7       | 720x480    | 345600              |     60Hz     |     256      |
+|    8       | 720x576    | 414720              |     60Hz     |     256      |
+|    9       | 640x512    | 327680              |     50Hz     |     256      |
+|    10      | 640x256    | 163840              |     50Hz     |     256      |
+
 
 
 
@@ -1236,7 +1376,7 @@ void vdp_set_super_graphic_10()
 Super Graphics Mode 10 characteristics:
 - Resolution: 640 x 256 @ 50Hz
 - Colors: Uses 256 palette colors
-- VRAM Usage:  bytes
+- VRAM Usage: 163,840 bytes
 
 Memory organization:
 - Each pixel uses one byte to specify its color
@@ -1244,6 +1384,77 @@ Memory organization:
 
 > Only supported on the Super HDMI Tang Nano 20K
 > custom kit with the SUPER_RES extensions enabled.
+
+---
+
+
+
+#### vdp_set_super_graphic_11
+
+*Sets the VDP to Super Graphics Mode 11*
+
+```cpp
+void vdp_set_super_graphic_11()
+```
+
+
+Super Graphics Mode 11 characteristics:
+- Resolution: 720 x 480 @ 60Hz
+- Colors: Uses 16 palette colors
+- VRAM Usage: 172,800
+- This mode will fill the entire screen space
+
+Memory organization:
+- Each pixel uses 4 bits to specify its color - 2 pixels per byte
+- Most significant 4 bits of each byte represent the left most pixel
+- Colors are selected from palette registers
+
+> Only supported on the Super HDMI Tang Nano 20K
+> custom kit with the SUPER_RES extensions enabled.
+
+---
+
+
+
+#### vdp_get_super_graphic_mode
+
+*Retrieve the current activated super graphics mode*
+
+```cpp
+uint8_t vdp_get_super_graphic_mode()
+```
+
+
+If a super graphics mode is not enabled, return 0
+
+**Returns:**
+
+- uint8_t the current super graphics mode (1 based)
+
+---
+
+
+
+#### vdp_set_super_graphic_mode
+
+*Set the super graphics mode*
+
+```cpp
+void vdp_set_super_graphic_mode(uint8_t mode)
+```
+
+
+Delegated to one of the vdp_set_super_graphics_xx function.
+Should not have the high bit set
+
+> Only supported on the Super HDMI Tang Nano 20K
+> custom kit with the SUPER_RES extensions enabled.
+
+
+**Params:**
+
+- `mode` - super graphics mode to select (1 base)
+
 
 ---
 

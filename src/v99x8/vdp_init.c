@@ -11,8 +11,8 @@ uint8_t vdp_init() {
 
   if (r & (32 + 4)) {
     vdp_reg_write(29, 255);
-    vdp_reg_write(30, 7); // reset viewport and base addr
-    vdp_reg_write(31, 0); // disable SUPER_RES mode
+    vdp_reg_write(30, 255); // reset viewport and base addr and palette depth
+    vdp_reg_write(31, 0);   // disable SUPER_RES mode
 
     return VDP_SUPER;
   }

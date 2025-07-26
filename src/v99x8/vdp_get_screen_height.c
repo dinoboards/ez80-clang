@@ -36,6 +36,9 @@ uint24_t vdp_get_screen_height() {
   case 128 + 10:
     return 256;
 
+  case 128 + 11:
+    return 480;
+
   default:
     return (registers_mirror[9] & 0x80) ? 212 : 192;
   }

@@ -7,8 +7,8 @@ void vdp_set_super_graphic_8() {
   vdp_set_refresh(50);
   vdp_set_graphic_7();
   vdp_current_mode   = 128 + 8;
-  register_31_mirror = 5;
+  register_31_mirror = 4;
   vdp_reg_write(29, 255);
-  vdp_reg_write(30, 7); // reset viewport and base addr
+  vdp_reg_write(30, 255); // reset VIEW PORT and BASE ADDR and PALETTE_DEPTH
   vdp_reg_write(31, register_31_mirror);
 }

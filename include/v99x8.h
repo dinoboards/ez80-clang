@@ -176,6 +176,18 @@ extern uint24_t vdp_get_screen_width();
 extern uint24_t vdp_get_screen_height();
 
 /**
+ * @brief Return current maximum number of unique colours that can be displayed
+ *
+ * For all modes other than Graphics Mode 7, return the palette depth look up - typically
+ * 256, 16 or 4 unique colours
+ *
+ * For Graphics mode 7, return 256
+ *
+ * @return uint24_t the max number of unique colours
+ */
+extern uint24_t vdp_get_screen_max_unique_colours();
+
+/**
  * @brief copy data from CPU to VRAM
  *
  * @param source the byte data to be copied
@@ -480,7 +492,34 @@ extern void vdp_draw_line(uint16_t from_x, uint16_t from_y, uint16_t to_x, uint1
   vdp_cmd()
 
 extern void vdp_set_lines(const uint8_t lines);
+
+/**
+ * @brief Set the refresh rate of the display output
+ *
+ * Refresh can be set to 50Hz or 60Hz
+ *
+ * Apply this setting before setting a standard graphics mode
+ *
+ * This function is not applicable for super res modes as
+ * each super graphics mode already configures a specific refresh
+ * rate
+ *
+ * Possible values are:
+ * `PAL` or 50 to select 50Hz, and `NTSC` or 60 to select 60Hz
+ *
+ * @param refresh_rate to be applied
+ */
 extern void vdp_set_refresh(const uint8_t refresh_rate);
+
+/**
+ * @brief Return the current refresh rate
+ *
+ * @note the return value is one of 50 or 60
+ * @note will never equate to PAL or NTSC
+ *
+ * @param refresh_rate the actual refresh rate
+ */
+static inline vdp_get_refresh() { return registers_mirror[9] & 0x02 ? 50 : 60; }
 
 /**
  * @brief Sets the VDP to Graphics Mode 7 (G7)
@@ -584,5 +623,26 @@ extern void vdp_set_graphic_5();
  *       for each pixel pair
  */
 extern void vdp_set_graphic_4();
+
+/**
+ * @brief Retrieve the current activated graphics mode
+ *
+ * Super graphics mode are indicated with high bit set
+ *
+ * @return uint8_t the current graphics mode
+ */
+static inline uint8_t vdp_get_graphic_mode() { return vdp_current_mode; }
+
+/**
+ * @brief Set the graphics or super graphics mode
+ *
+ * If high bit set, then a super graphics mode is selected
+ *
+ * > Super graphics modes are only supported on the Super HDMI Tang Nano 20K
+ * > custom kit with the SUPER_RES extensions enabled.
+ *
+ * @param mode the graphic mode to enable
+ */
+extern void vdp_set_graphic_mode(uint8_t mode);
 
 #endif

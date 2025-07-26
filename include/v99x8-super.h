@@ -3,6 +3,32 @@
 
 #include "v99x8.h"
 
+
+/**
+ * @file v99x8-super.h
+ * @brief Functions to support extended feature beyond stock V9958 interface of the HDMI for RC kit
+ *
+ * The HDMI for RC kit supports, if flashed with appropriate firmware supports extended graphics mode
+ * and ability to manage a WS8212 led strip
+ *
+ * **Extended Graphics Modes**
+ *
+ * | Super Mode | Resolution | Memory Size (bytes) | Refresh Rate | Palette Size |
+ * | :--------: | :--------: | :-----------------: | :----------: | :----------: |
+ * |    1       | 320x200    | 64000               |     60Hz     |     256      |
+ * |    2       | 320x240    | 76800               |     50Hz     |     256      |
+ * |    3       | 360x240    | 86400               |     60Hz     |     256      |
+ * |    4       | 360x288    | 103780              |     50Hz     |     256      |
+ * |    5       | 640x400    | 256000              |     60Hz     |     256      |
+ * |    6       | 640x480    | 307200              |     50Hz     |     256      |
+ * |    7       | 720x480    | 345600              |     60Hz     |     256      |
+ * |    8       | 720x576    | 414720              |     50Hz     |     256      |
+ * |    9       | 640x512    | 327680              |     50Hz     |     256      |
+ * |    10      | 640x256    | 163840              |     50Hz     |     256      |
+ *
+ *
+ */
+
 /**
  * @brief Assign LED strip pixel read/write zero based index
  *
@@ -143,7 +169,7 @@ extern void vdp_set_super_graphic_1();
  * @brief Sets the VDP to Super Graphics Mode 2
  *
  * Super Graphics Mode 2 characteristics:
- * - Resolution: 320 x 240 pixels @ 60Hz
+ * - Resolution: 320 x 240 pixels @ 50Hz
  * - Colors: Uses 256 palette colors
  * - VRAM Usage: 76,800 bytes
  * - This mode has a small border around the main view
@@ -291,7 +317,7 @@ extern void vdp_set_super_graphic_9();
  * Super Graphics Mode 10 characteristics:
  * - Resolution: 640 x 256 @ 50Hz
  * - Colors: Uses 256 palette colors
- * - VRAM Usage:  bytes
+ * - VRAM Usage: 163,840 bytes
  *
  * Memory organization:
  * - Each pixel uses one byte to specify its color
@@ -302,5 +328,45 @@ extern void vdp_set_super_graphic_9();
  */
 extern void vdp_set_super_graphic_10();
 
-extern void vdp_set_super_graphic(uint8_t mode);
+/**
+ * @brief Sets the VDP to Super Graphics Mode 11
+ *
+ * Super Graphics Mode 11 characteristics:
+ * - Resolution: 720 x 480 @ 60Hz
+ * - Colors: Uses 16 palette colors
+ * - VRAM Usage: 172,800
+ * - This mode will fill the entire screen space
+ *
+ * Memory organization:
+ * - Each pixel uses 4 bits to specify its color - 2 pixels per byte
+ * - Most significant 4 bits of each byte represent the left most pixel
+ * - Colors are selected from palette registers
+ *
+ * > Only supported on the Super HDMI Tang Nano 20K
+ * > custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_11();
+
+/**
+ * @brief Retrieve the current activated super graphics mode
+ *
+ * If a super graphics mode is not enabled, return 0
+ *
+ * @return uint8_t the current super graphics mode (1 based)
+ */
+static inline uint8_t vdp_get_super_graphic_mode() { return vdp_current_mode >= 0x80 ? vdp_current_mode & 0x7F : 0; }
+
+/**
+ * @brief Set the super graphics mode
+ *
+ * Delegated to one of the vdp_set_super_graphics_xx function.
+ * Should not have the high bit set
+ *
+ * > Only supported on the Super HDMI Tang Nano 20K
+ * > custom kit with the SUPER_RES extensions enabled.
+ *
+ * @param mode super graphics mode to select (1 base)
+ */
+extern void vdp_set_super_graphic_mode(uint8_t mode);
+
 #endif
