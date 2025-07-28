@@ -6,38 +6,56 @@
 // TODO: interlaced double line not applied in result
 uint24_t vdp_get_screen_height() {
   switch (vdp_current_mode) {
-  case 128 + 1:
+  case 0x80 | 0x01:
     return 200;
 
-  case 128 + 2:
+  case 0x80 | 0x02:
     return 240;
 
-  case 128 + 3:
+  case 0x80 | 0x03:
     return 240;
 
-  case 128 + 4:
+  case 0x80 | 0x04:
     return 288;
 
-  case 128 + 5:
+  case 0x80 | 0x05:
     return 400;
 
-  case 128 + 6:
+  case 0x80 | 0x06:
     return 480;
 
-  case 128 + 7:
+  case 0x80 | 0x07:
     return 480;
 
-  case 128 + 8:
+  case 0x80 | 0x08:
     return 576;
 
-  case 128 + 9:
+  case 0x80 | 0x09:
     return 512;
 
-  case 128 + 10:
+  case 0x80 | 0x0A:
     return 256;
 
-  case 128 + 11:
+  case 0x80 | 0x0B:
+    return 240;
+
+  case 0x80 | 0x0C:
+    return 288;
+
+  case 0x80 | 0x10 | 0x05:
+    return 400;
+
+  case 0x80 | 0x10 | 0x06:
     return 480;
+
+  case 0x80 | 0x10 | 0x07:
+    return 480;
+
+  case 0x80 | 0x10 | 0x08:
+    return 576;
+
+  case 0x80 | 0x10 | 0x09:
+    return 512;
 
   default:
     return (registers_mirror[9] & 0x80) ? 212 : 192;
