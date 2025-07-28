@@ -53,6 +53,15 @@ extern void vdp_set_super_graphic_mode(uint8_t mode) {
   case 0x19:
     vdp_set_super_graphic_25();
     return;
+  case 0x1A:
+    vdp_set_super_graphic_26();
+    return;
+  case 0x1B:
+    vdp_set_super_graphic_27();
+    return;
+  case 0x1C:
+    vdp_set_super_graphic_28();
+    return;
 
   default:
     return;

@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <v99x8.h>
 
-// TODO: interlaced double line not applied in result
 uint24_t vdp_get_screen_height() {
   switch (vdp_current_mode) {
   case 0x80 | 0x01:
@@ -56,6 +55,15 @@ uint24_t vdp_get_screen_height() {
 
   case 0x80 | 0x10 | 0x09:
     return 512;
+
+  case 0x80 | 0x10 | 0x0A:
+    return 256;
+
+  case 0x80 | 0x10 | 0x0B:
+    return 240;
+
+  case 0x80 | 0x10 | 0x0C:
+    return 288;
 
   default:
     return (registers_mirror[9] & 0x80) ? 212 : 192;

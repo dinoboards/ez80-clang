@@ -31,7 +31,9 @@
  * |  23 (0x17)   | 720x480    | 172800            |     60Hz     |      16      |
  * |  24 (0x18)   | 720x576    | 172800            |     50Hz     |      16      |
  * |  25 (0x19)   | 640x512    | 172800            |     50Hz     |      16      |
- *
+ * |  26 (0x1A)   | 640x256    | 81920             |     50Hz     |      16      |
+ * |  27 (0x1B)   | 720x240    | 86400             |     60Hz     |      16      |
+ * |  28 (0x1C)   | 720x288    | 103680            |     50Hz     |      16      |
 
  */
 
@@ -467,6 +469,60 @@ extern void vdp_set_super_graphic_24();
  * > custom kit with the SUPER_RES extensions enabled.
  */
 extern void vdp_set_super_graphic_25();
+
+/**
+ * @brief Sets the VDP to Super Graphics Mode 26
+ *
+ * Super Graphics Mode 26 characteristics:
+ * - Resolution: 640 x 256 @ 50Hz
+ * - Colors: Uses 16 palette colors
+ * - VRAM Usage:  bytes
+ *
+ * Memory organization:
+ * - Each pixel uses 4 bits to specify its color - 2 pixels per byte
+ * - Most significant 4 bits of each byte represent the left most pixel
+ * - Colors are selected from the palette registers
+ *
+ * > Only supported on the Super HDMI Tang Nano 20K
+ * > custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_26();
+
+/**
+ * @brief Sets the VDP to Super Graphics Mode 27
+ *
+ * Super Graphics Mode 27 characteristics:
+ * - Resolution: 720 x 240 @ 60Hz
+ * - Colors: Uses 16 palette colors
+ * - VRAM Usage:  bytes
+ *
+ * Memory organization:
+ * - Each pixel uses 4 bits to specify its color - 2 pixels per byte
+ * - Most significant 4 bits of each byte represent the left most pixel
+ * - Colors are selected from the palette registers
+ *
+ * > Only supported on the Super HDMI Tang Nano 20K
+ * > custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_27();
+
+/**
+ * @brief Sets the VDP to Super Graphics Mode 28
+ *
+ * Super Graphics Mode 28 characteristics:
+ * - Resolution: 720 x 288 @ 50Hz
+ * - Colors: Uses 16 palette colors
+ * - VRAM Usage:  bytes
+ *
+ * Memory organization:
+ * - Each pixel uses 4 bits to specify its color - 2 pixels per byte
+ * - Most significant 4 bits of each byte represent the left most pixel
+ * - Colors are selected from the palette registers
+ *
+ * > Only supported on the Super HDMI Tang Nano 20K
+ * > custom kit with the SUPER_RES extensions enabled.
+ */
+extern void vdp_set_super_graphic_28();
 
 /**
  * @brief Retrieve the current activated super graphics mode
