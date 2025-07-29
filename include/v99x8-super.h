@@ -7,33 +7,55 @@
  * @file v99x8-super.h
  * @brief Functions to support extended feature beyond stock V9958 interface of the HDMI for RC kit
  *
- * The HDMI for RC kit supports, if flashed with appropriate firmware supports extended graphics mode
- * and ability to manage a WS8212 led strip
+ * The HDMI for RC kit supports, if flashed with appropriate firmware, it will support extended graphics modes
+ * and the ability to manage a WS8212 LED strip.
  *
- * **Extended Graphics Modes**
+ * **Extended Graphics**
  *
- * | Super Mode | Resolution | Memory Size (bytes) | Refresh Rate | Palette Size |
- * | :--------: | :--------: | :-----------------: | :----------: | :----------: |
- * |  1  (0x01)   | 320x200    | 64000             |     60Hz     |     256      |
- * |  2  (0x02)   | 320x240    | 76800             |     50Hz     |     256      |
- * |  3  (0x03)   | 360x240    | 86400             |     60Hz     |     256      |
- * |  4  (0x04)   | 360x288    | 103780            |     50Hz     |     256      |
- * |  5  (0x05)   | 640x400    | 256000            |     60Hz     |     256      |
- * |  6  (0x06)   | 640x480    | 307200            |     50Hz     |     256      |
- * |  7  (0x07)   | 720x480    | 345600            |     60Hz     |     256      |
- * |  8  (0x08)   | 720x576    | 414720            |     50Hz     |     256      |
- * |  9  (0x09)   | 640x512    | 327680            |     50Hz     |     256      |
- * |  10 (0x0A)   | 640x256    | 163840            |     50Hz     |     256      |
- * |  11 (0x0B)   | 720x240    | 172800            |     60Hz     |     256      |
- * |  12 (0x0C)   | 720x288    | 207360            |     50Hz     |     256      |
- * |  21 (0x15)   | 640x400    | 128000            |     60Hz     |      16      |
- * |  22 (0x16)   | 640x480    | 153600            |     50Hz     |      16      |
- * |  23 (0x17)   | 720x480    | 172800            |     60Hz     |      16      |
- * |  24 (0x18)   | 720x576    | 172800            |     50Hz     |      16      |
- * |  25 (0x19)   | 640x512    | 172800            |     50Hz     |      16      |
- * |  26 (0x1A)   | 640x256    | 81920             |     50Hz     |      16      |
- * |  27 (0x1B)   | 720x240    | 86400             |     60Hz     |      16      |
- * |  28 (0x1C)   | 720x288    | 103680            |     50Hz     |      16      |
+ * The *HDMI for RC* offers three base graphics modes, with modifiers for viewport sizing, colour palette depth and refresh rate.
+ *
+ * The 3 base modes are as follows:
+ *
+ * | Base Mode | Native HDMI Resolution | Rendered Resolution | Refresh Rate |
+ * | :-------: | :--------:             | :-----------------: | :----------: |
+ * |   Half    |   720x480              | 720x240             |      60Hz    |
+ * |   Half    |   720x576              | 720x288             |      50Hz    |
+ * |   Mid     |   720x480              | 360x240             |      60Hz    |
+ * |   Mid     |   720x576              | 360x288             |      50Hz    |
+ * |   High    |   720x480              | 720x480             |      60Hz    |
+ * |   High    |   720x576              | 720x576             |      50Hz    |
+ *
+ * Each of the above base modes can be adjusted to have a border applied, reducing the effective rendered resolution.
+ * Modes with lower resolutions have reduced memory needs and offer faster command processing.
+ *
+ * **Super Graphics Modes**
+ *
+ * One of the following pre-configured Super Graphics Modes can be selected by invoking the appropriate library
+ * function: `vdp_set_super_graphic_XX` or  `vdp_set_super_graphic(mode)`.
+ *
+ *
+ * | Super Mode | Resolution | Memory Size (bytes) | Refresh Rate | Palette Size | Base Mode | Full/Bordered |
+ * | :--------: | :--------: | :-----------------: | :----------: | :----------: | :-------: | :-----------: |
+ * |  1  (0x01)   | 320x200    | 64000             |     60Hz     |     256      |   mid     |   Bordered    |
+ * |  2  (0x02)   | 320x240    | 76800             |     50Hz     |     256      |   mid     |   Bordered    |
+ * |  3  (0x03)   | 360x240    | 86400             |     60Hz     |     256      |   mid     |  Full screen  |
+ * |  4  (0x04)   | 360x288    | 103780            |     50Hz     |     256      |   mid     |  Full Screen  |
+ * |  5  (0x05)   | 640x400    | 256000            |     60Hz     |     256      |   high    |   Bordered    |
+ * |  6  (0x06)   | 640x480    | 307200            |     50Hz     |     256      |   high    |   Bordered    |
+ * |  7  (0x07)   | 720x480    | 345600            |     60Hz     |     256      |   high    |  Full Screen  |
+ * |  8  (0x08)   | 720x576    | 414720            |     50Hz     |     256      |   high    |  Full Screen  |
+ * |  9  (0x09)   | 640x512    | 327680            |     50Hz     |     256      |   high    |   Bordered    |
+ * |  10 (0x0A)   | 640x256    | 163840            |     50Hz     |     256      |   half    |   Bordered    |
+ * |  11 (0x0B)   | 720x240    | 172800            |     60Hz     |     256      |   half    |  Full Screen  |
+ * |  12 (0x0C)   | 720x288    | 207360            |     50Hz     |     256      |   half    |  Full Screen  |
+ * |  21 (0x15)   | 640x400    | 128000            |     60Hz     |      16      |   high    |   Bordered    |
+ * |  22 (0x16)   | 640x480    | 153600            |     50Hz     |      16      |   high    |   Bordered    |
+ * |  23 (0x17)   | 720x480    | 172800            |     60Hz     |      16      |   high    |  Full Screen  |
+ * |  24 (0x18)   | 720x576    | 172800            |     50Hz     |      16      |   high    |  Full Screen  |
+ * |  25 (0x19)   | 640x512    | 172800            |     50Hz     |      16      |   high    |   Bordered    |
+ * |  26 (0x1A)   | 640x256    | 81920             |     50Hz     |      16      |   half    |   Bordered    |
+ * |  27 (0x1B)   | 720x240    | 86400             |     60Hz     |      16      |   half    |  Full Screen  |
+ * |  28 (0x1C)   | 720x288    | 103680            |     50Hz     |      16      |   half    |  Full Screen  |
 
  */
 
