@@ -6,7 +6,7 @@
 #include <v99x8-super.h>
 #endif
 
-uint8_t vdp_init() {
+uint8_t vdp_init(void) {
   uint8_t r = vdp_get_status(1);
 
   if (r & (32 + 4)) {

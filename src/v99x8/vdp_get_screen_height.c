@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <v99x8.h>
 
-uint24_t vdp_get_screen_height() {
+screen_size_t vdp_get_screen_height(void) {
   switch (vdp_current_mode) {
   case 0x80 | 0x01:
     return 200;

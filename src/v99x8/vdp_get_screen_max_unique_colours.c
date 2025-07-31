@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <v99x8.h>
 
-uint24_t vdp_get_screen_max_unique_colours() {
+uint16_t vdp_get_screen_max_unique_colours(void) {
   switch (vdp_current_mode) {
   case 1:
   case 2:

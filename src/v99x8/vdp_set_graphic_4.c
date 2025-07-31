@@ -6,7 +6,7 @@
 #include <v99x8-super.h>
 #endif
 
-void vdp_set_graphic_4() {
+void vdp_set_graphic_4(void) {
   uint8_t *r = registers_mirror;
 
   *r++ = 0x06; // R0: N/A, DG = 0, IE2 =0, IE1 =0, M5 = 0, M4 = 1, M3 = 1, N/A

@@ -1,6 +1,6 @@
 #include <v99x8-super.h>
 
-extern void vdp_set_super_graphic_mode(uint8_t mode) {
+void vdp_set_super_graphic_mode(uint8_t mode) {
   switch (mode) {
   case 0x01:
     vdp_set_super_graphic_1();

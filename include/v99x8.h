@@ -20,6 +20,16 @@
 #define PAL  1
 #define NTSC 2
 
+#ifdef _EZ80_CLANG
+typedef uint24_t screen_size_t;
+typedef uint24_t screen_addr_t;
+#define MAX_SCREEN_BYTES 0x20000
+#else
+typedef uint16_t screen_size_t;
+typedef uint32_t screen_addr_t;
+#define MAX_SCREEN_BYTES 0x20000
+#endif
+
 /**
  * @brief an 8Bit per color RGB colour code
  *
@@ -30,21 +40,34 @@ typedef struct {
   uint8_t blue;
 } RGB;
 
+#ifdef _EZ80_CLANG
+
 extern uint16_t VDP_IO_DATA;
 extern uint16_t VDP_IO_ADDR;
-extern uint16_t VDP_IO_STAT;
 extern uint16_t VDP_IO_PALT;
 extern uint16_t VDP_IO_REGS;
-
-extern uint8_t vdp_current_mode; /* private */
-
-#define REGISTER_COUNT 12
-extern uint8_t registers_mirror[REGISTER_COUNT]; /* private */
 
 #define VDP_DATA PORT_IO(VDP_IO_DATA)
 #define VDP_ADDR PORT_IO(VDP_IO_ADDR)
 #define VDP_PALT PORT_IO(VDP_IO_PALT)
 #define VDP_REGS PORT_IO(VDP_IO_REGS)
+#else
+
+#define VDP_IO_DATA 0xFF98
+#define VDP_IO_ADDR 0xFF99
+#define VDP_IO_PALT 0xFF9A
+#define VDP_IO_REGS 0xFF9B
+
+__sfr __banked __at VDP_IO_DATA VDP_DATA;
+__sfr __banked __at VDP_IO_ADDR VDP_ADDR;
+__sfr __banked __at VDP_IO_PALT VDP_PALT;
+__sfr __banked __at VDP_IO_REGS VDP_REGS;
+#endif
+
+extern uint8_t vdp_current_mode; /* private */
+
+#define REGISTER_COUNT 12
+extern uint8_t registers_mirror[REGISTER_COUNT]; /* private */
 
 /**
  * @brief Write byte to the VDP's COMMAND port
@@ -68,9 +91,9 @@ static inline void vdp_out_cmd(const uint8_t v) { port_out(VDP_IO_ADDR, v); }
  * @note does not enable any specific graphics mode
  * @note should be called before any vdp operations
  */
-extern uint8_t vdp_init();
+extern uint8_t vdp_init(void);
 
-extern void set_base_registers(); /* private */
+extern void set_base_registers(void); /* private */
 
 extern void vdp_clear_all_memory(void);
 
@@ -125,7 +148,7 @@ extern void vdp_set_extended_palette_entry(uint8_t index, RGB palette_entry);
 
 extern void vdp_set_mode(const uint8_t mode, const uint8_t lines, const uint8_t refresh_rate);
 
-static inline uint8_t vdp_get_mode() { return vdp_current_mode; }
+static inline uint8_t vdp_get_mode(void) { return vdp_current_mode; }
 
 /**
  * @brief Switches between VRAM pages in supported graphics modes
@@ -161,7 +184,7 @@ extern uint8_t vdp_get_status(uint8_t r);
  *
  * @return uint24_t The current screen width in pixels
  */
-extern uint24_t vdp_get_screen_width();
+extern screen_size_t vdp_get_screen_width(void);
 
 /**
  * @brief Get the current screen height
@@ -173,7 +196,7 @@ extern uint24_t vdp_get_screen_width();
  *
  * @return uint24_t The current screen height in pixels
  */
-extern uint24_t vdp_get_screen_height();
+extern screen_size_t vdp_get_screen_height(void);
 
 /**
  * @brief Return current maximum number of unique colours that can be displayed
@@ -185,7 +208,7 @@ extern uint24_t vdp_get_screen_height();
  *
  * @return uint24_t the max number of unique colours
  */
-extern uint24_t vdp_get_screen_max_unique_colours();
+extern uint16_t vdp_get_screen_max_unique_colours(void);
 
 /**
  * @brief copy data from CPU to VRAM
@@ -194,7 +217,7 @@ extern uint24_t vdp_get_screen_max_unique_colours();
  * @param vdp_address to destination address in VRAM
  * @param length the number of bytes to be copied
  */
-extern void vdp_cpu_to_vram(const uint8_t *const source, uint24_t vdp_address, uint16_t length);
+extern void vdp_cpu_to_vram(const uint8_t *const source, screen_addr_t vdp_address, uint16_t length);
 
 /**
  * @brief copy data from CPU to VRAM address 0x000000
@@ -248,7 +271,7 @@ extern void vdp_cmd_vdp_to_vram(uint16_t x, uint16_t y, uint16_t width, uint16_t
  * @param length the number of bytes to be copied (width * height)
  */
 extern void vdp_cmd_move_cpu_to_vram(
-    const uint8_t *source, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
+    const uint8_t *source, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, screen_addr_t length);
 
 /**
  * @brief Prepare VDP command 'High-speed move CPU to VRAM'
@@ -265,7 +288,7 @@ extern void vdp_cmd_move_cpu_to_vram(
  * @param length the number of bytes to be copied (width * height)
  */
 extern void vdp_cmd_move_data_to_vram(
-    uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
+    uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, screen_addr_t length);
 
 #ifdef VDP_SUPER_HDMI
 /**
@@ -343,17 +366,17 @@ extern void vdp_cmd_logical_move_cpu_to_vram(const uint8_t *const source,
                                              uint16_t             width,
                                              uint16_t             height,
                                              uint8_t              direction,
-                                             uint24_t             length,
+                                             screen_addr_t        length,
                                              uint8_t              operation);
 
-extern void vdp_cmd_logical_move_data_to_vram(uint8_t  first_byte,
-                                              uint16_t x,
-                                              uint16_t y,
-                                              uint16_t width,
-                                              uint16_t height,
-                                              uint8_t  direction,
-                                              uint24_t length,
-                                              uint8_t  operation);
+extern void vdp_cmd_logical_move_data_to_vram(uint8_t       first_byte,
+                                              uint16_t      x,
+                                              uint16_t      y,
+                                              uint16_t      width,
+                                              uint16_t      height,
+                                              uint8_t       direction,
+                                              screen_addr_t length,
+                                              uint8_t       operation);
 
 /**
  * @brief VDP Command 'Logical Move VRAM to CPU'
@@ -371,7 +394,7 @@ extern void vdp_cmd_logical_move_data_to_vram(uint8_t  first_byte,
  * @param length the number of bytes to be copied (width * height)
  */
 extern void vdp_cmd_logical_move_vram_to_cpu(
-    uint8_t *destination, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
+    uint8_t *destination, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, screen_addr_t length);
 
 /**
  * @brief VDP Command 'Logical Move VRAM to VRAM'
@@ -519,7 +542,7 @@ extern void vdp_set_refresh(const uint8_t refresh_rate);
  *
  * @param refresh_rate the actual refresh rate
  */
-static inline vdp_get_refresh() { return registers_mirror[9] & 0x02 ? 50 : 60; }
+static inline uint8_t vdp_get_refresh(void) { return registers_mirror[9] & 0x02 ? 50 : 60; }
 
 /**
  * @brief Sets the VDP to Graphics Mode 7 (G7)
@@ -545,7 +568,7 @@ static inline vdp_get_refresh() { return registers_mirror[9] & 0x02 ? 50 : 60; }
  * - Sprites: Uses VRAM sprite attribute table and sprite pattern table
  *
  */
-extern void vdp_set_graphic_7();
+extern void vdp_set_graphic_7(void);
 
 /**
  * @brief Sets the VDP to Graphics Mode 6 (G6)
@@ -565,7 +588,7 @@ extern void vdp_set_graphic_7();
  * - Background color: Set by low-order four bits of Register 7
  * - Sprites: Uses VRAM sprite attribute table and sprite pattern table
  */
-extern void vdp_set_graphic_6();
+extern void vdp_set_graphic_6(void);
 
 /**
  * @brief Sets the VDP to Graphics Mode 5 (G5)
@@ -597,7 +620,7 @@ extern void vdp_set_graphic_6();
  * @note Sprites in this mode are twice the width of graphics dots but can
  *       show two colors per dot when using the tiling function
  */
-extern void vdp_set_graphic_5();
+extern void vdp_set_graphic_5(void);
 
 /**
  * @brief Sets the VDP to Graphics Mode 4 (G4)
@@ -622,7 +645,7 @@ extern void vdp_set_graphic_5();
  * @note This is a bit-mapped graphics mode with direct color specification
  *       for each pixel pair
  */
-extern void vdp_set_graphic_4();
+extern void vdp_set_graphic_4(void);
 
 /**
  * @brief Retrieve the current activated graphics mode
@@ -631,7 +654,7 @@ extern void vdp_set_graphic_4();
  *
  * @return uint8_t the current graphics mode
  */
-static inline uint8_t vdp_get_graphic_mode() { return vdp_current_mode; }
+static inline uint8_t vdp_get_graphic_mode(void) { return vdp_current_mode; }
 
 /**
  * @brief Set the graphics or super graphics mode

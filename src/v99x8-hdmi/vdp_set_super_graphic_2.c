@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <v99x8-super.h>
 
-void vdp_set_super_graphic_2() {
+void vdp_set_super_graphic_2(void) {
   vdp_set_refresh(50);
   vdp_set_graphic_7();
-  vdp_current_mode   = 128 + 2;
+  vdp_current_mode   = 130; // 128 + 2
   register_31_mirror = 2;
   vdp_reg_write(29, 255);
   vdp_reg_write(30, 255);                // reset VIEW PORT and BASE ADDR and PALETTE_DEPTH

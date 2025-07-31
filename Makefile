@@ -18,7 +18,7 @@ CLANG := ez80-clang
 
 # Define the assembler flags
 ASFLAGS := -march=ez80+full
-CFLAGS  := -ffunction-sections -fdata-sections -nostdinc -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S -Oz
+CFLAGS  := -D_EZ80_CLANG -ffunction-sections -fdata-sections -nostdinc -Wall -Wextra -Wunreachable-code -Werror -mllvm -z80-print-zero-offset -S -Oz
 
 
 # $1 -> library name & directory name

@@ -59,6 +59,7 @@
 
  */
 
+#ifdef _EZ80_CLANG
 /**
  * @brief Assign LED strip pixel read/write zero based index
  *
@@ -94,6 +95,12 @@
  * > Writable only
  */
 #define WS2812_LEDCNT PORT_IO(0xFF32)
+
+#else
+__sfr __banked __at 0xFF30 WS2812_LEDIDX;
+__sfr __banked __at 0xFF31 WS2812_LEDVAL;
+__sfr __banked __at 0xFF32 WS2812_LEDCNT;
+#endif
 
 /**
  * @brief Set a specific WS2812 LED strip pixel's RGB colour
@@ -193,7 +200,7 @@ extern void vdp_set_extended_palette_entry(uint8_t index, RGB palette_entry);
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_1();
+extern void vdp_set_super_graphic_1(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 2
@@ -212,7 +219,7 @@ extern void vdp_set_super_graphic_1();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_2();
+extern void vdp_set_super_graphic_2(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 3
@@ -230,7 +237,7 @@ extern void vdp_set_super_graphic_2();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_3();
+extern void vdp_set_super_graphic_3(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 4
@@ -248,7 +255,7 @@ extern void vdp_set_super_graphic_3();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_4();
+extern void vdp_set_super_graphic_4(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 5
@@ -267,7 +274,7 @@ extern void vdp_set_super_graphic_4();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_5();
+extern void vdp_set_super_graphic_5(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 6
@@ -286,7 +293,7 @@ extern void vdp_set_super_graphic_5();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_6();
+extern void vdp_set_super_graphic_6(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 7
@@ -304,7 +311,7 @@ extern void vdp_set_super_graphic_6();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_7();
+extern void vdp_set_super_graphic_7(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 8
@@ -322,7 +329,7 @@ extern void vdp_set_super_graphic_7();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_8();
+extern void vdp_set_super_graphic_8(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 9
@@ -339,7 +346,7 @@ extern void vdp_set_super_graphic_8();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_9();
+extern void vdp_set_super_graphic_9(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 10
@@ -356,7 +363,7 @@ extern void vdp_set_super_graphic_9();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_10();
+extern void vdp_set_super_graphic_10(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 11
@@ -373,7 +380,7 @@ extern void vdp_set_super_graphic_10();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_11();
+extern void vdp_set_super_graphic_11(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 12
@@ -390,7 +397,7 @@ extern void vdp_set_super_graphic_11();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_12();
+extern void vdp_set_super_graphic_12(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 21
@@ -412,7 +419,7 @@ extern void vdp_set_super_graphic_12();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_21();
+extern void vdp_set_super_graphic_21(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 22
@@ -432,7 +439,7 @@ extern void vdp_set_super_graphic_21();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_22();
+extern void vdp_set_super_graphic_22(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 23
@@ -453,7 +460,7 @@ extern void vdp_set_super_graphic_22();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_23();
+extern void vdp_set_super_graphic_23(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 24
@@ -472,7 +479,7 @@ extern void vdp_set_super_graphic_23();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_24();
+extern void vdp_set_super_graphic_24(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 25
@@ -490,7 +497,7 @@ extern void vdp_set_super_graphic_24();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_25();
+extern void vdp_set_super_graphic_25(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 26
@@ -508,7 +515,7 @@ extern void vdp_set_super_graphic_25();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_26();
+extern void vdp_set_super_graphic_26(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 27
@@ -526,7 +533,7 @@ extern void vdp_set_super_graphic_26();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_27();
+extern void vdp_set_super_graphic_27(void);
 
 /**
  * @brief Sets the VDP to Super Graphics Mode 28
@@ -544,7 +551,7 @@ extern void vdp_set_super_graphic_27();
  * > Only supported on the Super HDMI Tang Nano 20K
  * > custom kit with the SUPER_RES extensions enabled.
  */
-extern void vdp_set_super_graphic_28();
+extern void vdp_set_super_graphic_28(void);
 
 /**
  * @brief Retrieve the current activated super graphics mode
@@ -553,7 +560,7 @@ extern void vdp_set_super_graphic_28();
  *
  * @return uint8_t the current super graphics mode (1 based)
  */
-static inline uint8_t vdp_get_super_graphic_mode() { return vdp_current_mode >= 0x80 ? vdp_current_mode & 0x7F : 0; }
+static inline uint8_t vdp_get_super_graphic_mode(void) { return vdp_current_mode >= 0x80 ? vdp_current_mode & 0x7F : 0; }
 
 /**
  * @brief Set the super graphics mode

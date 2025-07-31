@@ -22,7 +22,7 @@ uint8_t registers_mirror[REGISTER_COUNT] = {
 uint8_t register_31_mirror = 0;
 uint8_t vdp_current_mode   = 255;
 
-void set_base_registers() {
+void set_base_registers(void) {
   DI;
   uint8_t *pReg = registers_mirror;
 
@@ -39,7 +39,7 @@ void vdp_clear_all_memory(void) {
   vdp_reg_write(14, 0);
   vdp_out_cmd(0);
   vdp_out_cmd(0x40);
-  for (int i = 0; i < 0x20000; i++)
+  for (screen_addr_t i = 0; i < MAX_SCREEN_BYTES; i++)
     vdp_out_dat(0);
   EI;
 }

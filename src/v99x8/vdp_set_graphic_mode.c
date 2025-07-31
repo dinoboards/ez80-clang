@@ -3,7 +3,7 @@
 #endif
 #include <v99x8.h>
 
-extern void vdp_set_graphic_mode(uint8_t mode) {
+void vdp_set_graphic_mode(uint8_t mode) {
   switch (mode) {
   case 4:
     vdp_set_graphic_4();
