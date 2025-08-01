@@ -17,7 +17,7 @@ To install, for linux or for windows, use WSL:
 \`\`\`
 wget https://github.com/dinoboards/ez80-clang/releases/download/${EZ80_CLANG_VERSION}/ez80-clang-${EZ80_CLANG_VERSION}.tar.gz
 tar -xzvf ez80-clang-${EZ80_CLANG_VERSION}.tar.gz
-cd ${EZ80_CLANG_VERSION}
+cd ez80-clang-${EZ80_CLANG_VERSION}
 sudo ./install.sh
 \`\`\`
 
