@@ -24,11 +24,12 @@ jobs:
       - name: Source version.sh and set environment variables
         id: set-env-vars
         run: |
-          source ./version.sh
+          source ./releases/version.sh
           echo "EZ80_CLANG_TOOLCHAIN_VERSION=$EZ80_CLANG_TOOLCHAIN_VERSION" >> $GITHUB_ENV
           echo "EZ80_CLANG_VERSION=$EZ80_CLANG_VERSION" >> $GITHUB_ENV
-          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
-          echo VERSION: $EZ80_CLANG_VERSION
+          echo "PREVIOUS_EZ80_CLANG_VERSION=$PREVIOUS_EZ80_CLANG_VERSION" >> $GITHUB_ENV
+          echo PREVIOUS_EZ80_CLANG_VERSION: $PREVIOUS_EZ80_CLANG_VERSION
+          echo EZ80_CLANG_VERSION: $EZ80_CLANG_VERSION
 
       - name: download llvm for ez80
         run: make download-llvm-release
@@ -39,15 +40,19 @@ jobs:
       - name: package clang and runtime
         run: make package
 
+      - name: Archive apps
+        uses: actions/upload-artifact@v4
+        with:
+          compression-level: 0
+          name: package
+          path: ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz
+
       - name: Install GitHub CLI
         run: sudo apt-get install -y gh
 
-      - name: Create Release
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Create Draft Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
-          RELEASE_NAME="Clang Release $TAG_NAME"
-          CHANGELOG_URL="https://github.com/dinoboards/ez80-clang/compare/${LATEST_TAG}...${TAG_NAME}"
-          gh release create $TAG_NAME "ez80-clang-${{ env.EZ80_CLANG_VERSION }}.tar.gz" --repo ${{ github.repository }} --title "$RELEASE_NAME" --prerelease --notes "**Full Changelog**: $CHANGELOG_URL"
+          (cd ./releases && ./create-release-notes.sh)
+          (cd ./releases && ./create-draft-release.sh)

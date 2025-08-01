@@ -5,7 +5,7 @@ set -e
 SCRIPT_DIR=$(dirname "$0")
 SCRIPT_DIR=$(cd "${SCRIPT_DIR}/" && pwd)/
 
-source "$SCRIPT_DIR/version.sh"
+source "$SCRIPT_DIR/releases/version.sh"
 
 export DOCKER_BUILDKIT=1
 
@@ -50,6 +50,7 @@ function make_direct_tar() {
 
   cd ..
 
+  echo EZ80_CLANG_VERSION: ${EZ80_CLANG_VERSION}
   if command -v pigz &> /dev/null; then
     tar -cf - ez80-clang-${EZ80_CLANG_VERSION}/* | pigz  > ../../ez80-clang-${EZ80_CLANG_VERSION}.tar.gz
   else

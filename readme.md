@@ -25,16 +25,9 @@ The compiler has been built for a Debian/ubuntu environment - other linux enviro
 
 ## Installing
 
-A build for ubuntu/debian can be installed from github's releases.
+A build for ubuntu/debian can be installed from github's releases.  For windows users, please use Windows Subsystem for Linux.
 
-To install:
-
-```
-wget https://github.com/dinoboards/ez80-clang/releases/download/v0.0.13-rc.116/ez80-clang-v0.0.13-rc.116.tar.gz
-tar -xzvf ez80-clang-v0.0.13-rc.116.tar.gz
-cd ez80-clang-v0.0.13-rc.116
-sudo ./install.sh
-```
+Binary downloads and instructions can be found at [https://github.com/dinoboards/ez80-clang/releases](https://github.com/dinoboards/ez80-clang/releases).
 
 > Change version as per current release
 
