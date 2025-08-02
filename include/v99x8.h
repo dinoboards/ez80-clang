@@ -172,7 +172,11 @@ extern void vdp_out_reg_int16(uint16_t b);
 
 extern uint8_t vdp_get_status(uint8_t r);
 
-#define vdp_reg_write(reg_num, value) _vdp_reg_write((reg_num)*256 + (value))
+#define vdp_reg_write(reg_num, value)                                                                                              \
+  {                                                                                                                                \
+    VDP_ADDR = value;                                                                                                              \
+    VDP_ADDR = reg_num | 0x80;                                                                                                     \
+  }
 
 /**
  * @brief Get the current screen width
@@ -486,6 +490,11 @@ extern uint8_t vdp_cmd_point(uint16_t x, uint16_t y);
 // deprecated
 extern void vdp_cmd(void);
 
+/**
+ * @brief wait for any pending command to complete
+ *
+ * Will eventually time out (conducts upto status $100000 tests, before timing out)
+ */
 extern void vdp_cmd_wait_completion(void);
 
 extern uint16_t vdp_cmdp_r36;

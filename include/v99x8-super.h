@@ -59,6 +59,8 @@
 
  */
 
+#define CMD_LOGIC_REMAP 0x05 /* DC = (SC == 0 ?) REMAP_BACK_COLOUR : REMAP_FORE_COLOUR */
+
 #ifdef _EZ80_CLANG
 /**
  * @brief Assign LED strip pixel read/write zero based index
@@ -574,5 +576,13 @@ static inline uint8_t vdp_get_super_graphic_mode(void) { return vdp_current_mode
  * @param mode super graphics mode to select (1 base)
  */
 extern void vdp_set_super_graphic_mode(uint8_t mode);
+
+/**
+ * @brief Configures the colours applied for logical REMAP operation
+ *
+ * @param background_colour the palette index for background (zero) colour
+ * @param foreground_colour the palette index for foreground (non zero) colour
+ */
+extern void vdp_set_remap(uint8_t background_colour, uint8_t foreground_colour);
 
 #endif
