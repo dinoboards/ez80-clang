@@ -35,8 +35,8 @@ extern void _port_out(const uint24_t data);
  */
 #define PORT_IO(c) (*((volatile uint8_t IO_SPACE *)((uint24_t)c)))
 
-#define DI __asm__("DI")
-#define EI __asm__("EI")
+#define DI() __asm__("DI")
+#define EI() __asm__("EI")
 
 extern uint8_t _heap[];
 extern void   *_get_spl();

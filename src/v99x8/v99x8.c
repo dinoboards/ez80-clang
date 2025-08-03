@@ -23,7 +23,7 @@ uint8_t register_31_mirror = 0;
 uint8_t vdp_current_mode   = 255;
 
 void set_base_registers(void) {
-  DI;
+  DI();
   uint8_t *pReg = registers_mirror;
 
   for (uint8_t i = 0; i < REGISTER_COUNT; i++) {
@@ -31,17 +31,17 @@ void set_base_registers(void) {
     pReg++;
   }
 
-  EI;
+  EI();
 }
 
 void vdp_clear_all_memory(void) {
-  DI;
+  DI();
   vdp_reg_write(14, 0);
   vdp_out_cmd(0);
   vdp_out_cmd(0x40);
   for (screen_addr_t i = 0; i < MAX_SCREEN_BYTES; i++)
     vdp_out_dat(0);
-  EI;
+  EI();
 }
 
 extern void delay(void);
@@ -49,7 +49,7 @@ extern void delay(void);
 void vdp_erase_bank0(uint8_t color) {
   vdp_cmd_wait_completion();
 
-  DI;
+  DI();
   // Clear bitmap data from 0x0000 to 0x3FFF
 
   vdp_reg_write(17, 36);                // Set Indirect register Access
@@ -60,13 +60,13 @@ void vdp_erase_bank0(uint8_t color) {
   vdp_out_reg_byte(color * 16 + color); // COLOUR for both pixels (assuming G7 mode)
   vdp_out_reg_byte(0);                  // Direction: VRAM, Right, Down
   vdp_out_reg_byte(CMD_HMMV);
-  EI;
+  EI();
 }
 
 void vdp_erase_bank1(uint8_t color) {
   vdp_cmd_wait_completion();
 
-  DI;
+  DI();
   // Clear bitmap data from 0x0000 to 0x3FFF
 
   vdp_reg_write(17, 36);                // Set Indirect register Access
@@ -77,5 +77,5 @@ void vdp_erase_bank1(uint8_t color) {
   vdp_out_reg_byte(color * 16 + color); // COLOUR for both pixels (assuming G7 mode)
   vdp_out_reg_byte(0x0);                // Direction: ExpVRAM, Right, Down
   vdp_out_reg_byte(CMD_HMMV);
-  EI;
+  EI();
 }

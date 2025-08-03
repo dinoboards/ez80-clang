@@ -4,7 +4,7 @@
 #include <v99x8-super.h>
 
 void vdp_set_extended_palette(RGB *pPalette) {
-  DI;
+  DI();
   register_31_mirror |= 0x08;
   vdp_reg_write(31, register_31_mirror);
   for (uint16_t c = 0; c < 256; c++) {
@@ -18,5 +18,5 @@ void vdp_set_extended_palette(RGB *pPalette) {
   register_31_mirror &= ~0x08;
   vdp_reg_write(31, register_31_mirror);
 
-  EI;
+  EI();
 }
