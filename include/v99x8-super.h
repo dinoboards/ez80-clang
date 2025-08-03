@@ -51,8 +51,8 @@
  * |  21 (0x15)   | 640x400    | 128000            |     60Hz     |      16      |   high    |   Bordered    |
  * |  22 (0x16)   | 640x480    | 153600            |     50Hz     |      16      |   high    |   Bordered    |
  * |  23 (0x17)   | 720x480    | 172800            |     60Hz     |      16      |   high    |  Full Screen  |
- * |  24 (0x18)   | 720x576    | 172800            |     50Hz     |      16      |   high    |  Full Screen  |
- * |  25 (0x19)   | 640x512    | 172800            |     50Hz     |      16      |   high    |   Bordered    |
+ * |  24 (0x18)   | 720x576    | 207360            |     50Hz     |      16      |   high    |  Full Screen  |
+ * |  25 (0x19)   | 640x512    | 163840            |     50Hz     |      16      |   high    |   Bordered    |
  * |  26 (0x1A)   | 640x256    | 81920             |     50Hz     |      16      |   half    |   Bordered    |
  * |  27 (0x1B)   | 720x240    | 86400             |     60Hz     |      16      |   half    |  Full Screen  |
  * |  28 (0x1C)   | 720x288    | 103680            |     50Hz     |      16      |   half    |  Full Screen  |
@@ -409,7 +409,7 @@ extern void vdp_set_super_graphic_12(void);
  * Super Graphics Mode 21 characteristics:
  * - Resolution: 640 x 400 @ 60Hz
  * - Colors: Uses 16 palette colors
- * - VRAM Usage: 256,000
+ * - VRAM Usage: 128,000
  * - This mode has a small border around the main view
  *
  * Memory organization:
@@ -489,7 +489,7 @@ extern void vdp_set_super_graphic_24(void);
  * Super Graphics Mode 25 characteristics:
  * - Resolution: 640 x 512 @ 50Hz
  * - Colors: Uses 256 palette colors
- * - VRAM Usage:  bytes
+ * - VRAM Usage: 163,840 bytes
  *
  * Memory organization:
  * - Each pixel uses 4 bits to specify its color - 2 pixels per byte
@@ -507,7 +507,7 @@ extern void vdp_set_super_graphic_25(void);
  * Super Graphics Mode 26 characteristics:
  * - Resolution: 640 x 256 @ 50Hz
  * - Colors: Uses 16 palette colors
- * - VRAM Usage:  bytes
+ * - VRAM Usage: 81,920 bytes
  *
  * Memory organization:
  * - Each pixel uses 4 bits to specify its color - 2 pixels per byte
@@ -525,7 +525,7 @@ extern void vdp_set_super_graphic_26(void);
  * Super Graphics Mode 27 characteristics:
  * - Resolution: 720 x 240 @ 60Hz
  * - Colors: Uses 16 palette colors
- * - VRAM Usage:  bytes
+ * - VRAM Usage: 86,400 bytes
  *
  * Memory organization:
  * - Each pixel uses 4 bits to specify its color - 2 pixels per byte
@@ -543,7 +543,7 @@ extern void vdp_set_super_graphic_27(void);
  * Super Graphics Mode 28 characteristics:
  * - Resolution: 720 x 288 @ 50Hz
  * - Colors: Uses 16 palette colors
- * - VRAM Usage:  bytes
+ * - VRAM Usage: 103,680 bytes
  *
  * Memory organization:
  * - Each pixel uses 4 bits to specify its color - 2 pixels per byte
