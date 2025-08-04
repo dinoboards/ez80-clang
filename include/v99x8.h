@@ -487,9 +487,6 @@ extern uint8_t vdp_cmd_point(uint16_t x, uint16_t y);
 #define CMD_LOGIC_TEOR 0x11 /* if SC != 0 then DC ^= SC*/
 #define CMD_LOGIC_TNOT 0x12 /* if SC != 0 then DC != SC*/
 
-// deprecated
-extern void vdp_cmd(void);
-
 /**
  * @brief wait for any pending command to complete
  *
@@ -497,31 +494,7 @@ extern void vdp_cmd(void);
  */
 extern void vdp_cmd_wait_completion(void);
 
-extern uint16_t vdp_cmdp_r36;
-extern uint16_t vdp_cmdp_r38;
-extern uint16_t vdp_cmdp_r40;
-extern uint16_t vdp_cmdp_r42;
-extern uint8_t  vdp_cmdp_r44;
-extern uint8_t  vdp_cmdp_r45;
-extern uint8_t  vdp_cmdp_r46;
-
-#define vdp_cmdp_dx        vdp_cmdp_r36
-#define vdp_cmdp_dy        vdp_cmdp_r38
-#define vdp_cmdp_nx        vdp_cmdp_r40
-#define vdp_cmdp_ny        vdp_cmdp_r42
-#define vdp_cmdp_color     vdp_cmdp_r44
-#define vdp_cmdp_dir       vdp_cmdp_r45
-#define vdp_cmdp_operation vdp_cmdp_r46
-
 extern void vdp_draw_line(uint16_t from_x, uint16_t from_y, uint16_t to_x, uint16_t to_y, uint8_t colour, uint8_t operation);
-
-// deprecated
-#define pointSet(x, y, color, operation)                                                                                           \
-  vdp_cmdp_dx        = (x);                                                                                                        \
-  vdp_cmdp_dy        = (y);                                                                                                        \
-  vdp_cmdp_color     = (color);                                                                                                    \
-  vdp_cmdp_operation = CMD_PSET((operation));                                                                                      \
-  vdp_cmd()
 
 extern void vdp_set_lines(const uint8_t lines);
 

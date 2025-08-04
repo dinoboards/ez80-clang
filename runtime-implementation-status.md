@@ -347,5 +347,4 @@
 | vdp_reg_write                        | ✓          |
 | vdp_get_status                       | ✓          |
 | vdp_cmd_wait_completion              | ✓          |
-| vdp_cmd                              | ✓          |
 | vdp_draw_line                        | ✓          |
