@@ -34,7 +34,7 @@ _vdp_cmd_send_byte:
 
 	.global	_vdp_cmd_move_data_to_vram
 
-; extern void vdp_cmd_move_data_to_vram(uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length);
+; extern void vdp_cmd_move_data_to_vram(uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction);
 
 	; first_byte => iy + 3
 	; x => iy + 6
@@ -42,13 +42,11 @@ _vdp_cmd_send_byte:
 	; width => iy + 12
 	; height => iy + 15
 	; direction => iy + 18
-	; length => iy + 21
 
 _vdp_cmd_move_data_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
-	DI_AND_SAVE
 	SET_SLOW_IO_SPEED
 
 	ld	bc, (_VDP_IO_ADDR)
@@ -84,15 +82,18 @@ _vdp_cmd_move_data_to_vram:
 	ld	a, CMD_HMMC				; submit command
 	out	(bc), a
 
-	ld	de, (iy+21)				; load length
-
-	ld	bc, (_VDP_IO_ADDR)				;
-	ld	a, $80|44				; submit 44 without auto increment
+	ld	bc, (_VDP_IO_ADDR)			;
+	ld	a, $80|44				; submit data to R#44 without auto increment
 	out	(bc), a
 	ld	a, $80|17				; to register 17
 	out	(bc), a
 
+	; SET STATUS REGISTER to #02
+	ld	a, 2
+	out	(BC), a
+	ld	a, 0x80|15
+	out	(BC), a
+
 	RESTORE_IO_SPEED
-	RESTORE_EI
 
 	ret

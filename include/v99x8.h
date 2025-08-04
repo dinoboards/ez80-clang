@@ -286,16 +286,33 @@ extern void vdp_cmd_move_cpu_to_vram(
  * This function issues the same command as vdp_cmd_move_cpu_to_vram. The difference is that it expects
  * the data to be sent via the vdp_cmd_send_byte function.
  *
+ * Interrupts are recommended to be disabled before starting the data transfer
+ * After data transfer with vdp_cmd_send_byte is completed you must call vdp_reset_status_reg and then re-enable
+ * interrupts
+ *
  * @param first_byte the first data byte to be sent to the VDP
  * @param x the starting x-coordinate of the rectangle
  * @param y the starting y-coordinate of the rectangle
  * @param width the width of the rectangle in pixels
  * @param height the height of the rectangle in pixels
  * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
- * @param length the number of bytes to be copied (width * height)
  */
-extern void vdp_cmd_move_data_to_vram(
-    uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, screen_addr_t length);
+extern void
+vdp_cmd_move_data_to_vram(uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction);
+
+/**
+ * @brief Restore the current select status register to S#0
+ *
+ * Interrupt handlers will typically expect the status register to
+ * be 0 for detecting the interrupt flag
+ *
+ * If the selected status register is changed, it must be done while interrupts
+ * are disabled, and before re-enabling interrupts, this function should be called.
+ */
+static inline void vdp_reset_status_reg() {
+  VDP_ADDR = 0;
+  VDP_ADDR = 0x80 | 15;
+}
 
 #ifdef VDP_SUPER_HDMI
 /**
@@ -304,7 +321,11 @@ extern void vdp_cmd_move_data_to_vram(
  *
  * @param next_byte the data to be sent to the VDP
  */
-static inline void vdp_cmd_send_byte(uint8_t next_byte) { VDP_REGS = next_byte; }
+static inline void vdp_cmd_send_byte(uint8_t next_byte) {
+  while ((VDP_ADDR & 0x80) == 0)
+    ;
+  VDP_REGS = next_byte;
+}
 #else
 
 /**

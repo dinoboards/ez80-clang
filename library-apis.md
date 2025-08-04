@@ -248,7 +248,7 @@ The number of pages available are dependant on the available memory and the mode
 *Get the current screen width*
 
 ```cpp
-uint24_t vdp_get_screen_width()
+screen_size_t vdp_get_screen_width()
 ```
 
 
@@ -270,7 +270,7 @@ Returns the width in pixels of the current video mode:
 *Get the current screen height*
 
 ```cpp
-uint24_t vdp_get_screen_height()
+screen_size_t vdp_get_screen_height()
 ```
 
 
@@ -292,7 +292,7 @@ Returns the height in pixels of the current video mode:
 *Return current maximum number of unique colours that can be displayed*
 
 ```cpp
-uint24_t vdp_get_screen_max_unique_colours()
+uint16_t vdp_get_screen_max_unique_colours()
 ```
 
 
@@ -314,7 +314,7 @@ For Graphics mode 7, return 256
 *copy data from CPU to VRAM*
 
 ```cpp
-void vdp_cpu_to_vram(const uint8_t *const source, uint24_t vdp_address, uint16_t length)
+void vdp_cpu_to_vram(const uint8_t *const source, screen_addr_t vdp_address, uint16_t length)
 ```
 
 
@@ -388,7 +388,7 @@ Since the data to be transferred is done in units of one byte, there is a limita
 *VDP command 'High-speed move CPU to VRAM'*
 
 ```cpp
-void vdp_cmd_move_cpu_to_vram(const uint8_t *source, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length)
+void vdp_cmd_move_cpu_to_vram(const uint8_t *source, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, screen_addr_t length)
 ```
 
 
@@ -421,12 +421,16 @@ Since the data to be transferred is done in units of one byte, there is a limita
 *Prepare VDP command 'High-speed move CPU to VRAM'*
 
 ```cpp
-void vdp_cmd_move_data_to_vram(uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length)
+void vdp_cmd_move_data_to_vram(uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction)
 ```
 
 
 This function issues the same command as vdp_cmd_move_cpu_to_vram. The difference is that it expects
 the data to be sent via the vdp_cmd_send_byte function.
+
+Interrupts are recommended to be disabled before starting the data transfer
+After data transfer with vdp_cmd_send_byte is completed you must call vdp_reset_status_reg and then re-enable
+interrupts
 
 
 **Params:**
@@ -437,8 +441,26 @@ the data to be sent via the vdp_cmd_send_byte function.
 - `width` - the width of the rectangle in pixels
 - `height` - the height of the rectangle in pixels
 - `direction` - the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
-- `length` - the number of bytes to be copied (width * height)
 
+
+---
+
+
+
+#### vdp_reset_status_reg
+
+*Restore the current select status register to S#0*
+
+```cpp
+void vdp_reset_status_reg()
+```
+
+
+Interrupt handlers will typically expect the status register to
+be 0 for detecting the interrupt flag
+
+If the selected status register is changed, it must be done while interrupts
+are disabled, and before re-enabling interrupts, this function should be called.
 
 ---
 
@@ -527,7 +549,7 @@ for x.
 *VDP Command 'Logical Move CPU to VRAM'*
 
 ```cpp
-void vdp_cmd_logical_move_cpu_to_vram(const uint8_t *const source, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length, uint8_t operation)
+void vdp_cmd_logical_move_cpu_to_vram(const uint8_t *const source, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, screen_addr_t length, uint8_t operation)
 ```
 
 
@@ -557,7 +579,7 @@ The LMMC command transfers data from the CPU to the Video or expansion RAM in a 
 *VDP Command 'Logical Move VRAM to CPU'*
 
 ```cpp
-void vdp_cmd_logical_move_vram_to_cpu(uint8_t *destination, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint24_t length)
+void vdp_cmd_logical_move_vram_to_cpu(uint8_t *destination, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, screen_addr_t length)
 ```
 
 
@@ -670,6 +692,21 @@ long and short sides of a triangle are defined. The two sides are defined as dis
 
 
 
+#### vdp_cmd_wait_completion
+
+*wait for any pending command to complete*
+
+```cpp
+void vdp_cmd_wait_completion()
+```
+
+
+Will eventually time out (conducts upto status $100000 tests, before timing out)
+
+---
+
+
+
 #### vdp_set_refresh
 
 *Set the refresh rate of the display output*
@@ -705,7 +742,7 @@ Possible values are:
 *Return the current refresh rate*
 
 ```cpp
-vdp_get_refresh()
+uint8_t vdp_get_refresh()
 ```
 
 
@@ -973,8 +1010,8 @@ function: `vdp_set_super_graphic_XX` or  `vdp_set_super_graphic(mode)`.
 |  21 (0x15)   | 640x400    | 128000            |     60Hz     |      16      |   high    |   Bordered    |
 |  22 (0x16)   | 640x480    | 153600            |     50Hz     |      16      |   high    |   Bordered    |
 |  23 (0x17)   | 720x480    | 172800            |     60Hz     |      16      |   high    |  Full Screen  |
-|  24 (0x18)   | 720x576    | 172800            |     50Hz     |      16      |   high    |  Full Screen  |
-|  25 (0x19)   | 640x512    | 172800            |     50Hz     |      16      |   high    |   Bordered    |
+|  24 (0x18)   | 720x576    | 207360            |     50Hz     |      16      |   high    |  Full Screen  |
+|  25 (0x19)   | 640x512    | 163840            |     50Hz     |      16      |   high    |   Bordered    |
 |  26 (0x1A)   | 640x256    | 81920             |     50Hz     |      16      |   half    |   Bordered    |
 |  27 (0x1B)   | 720x240    | 86400             |     60Hz     |      16      |   half    |  Full Screen  |
 |  28 (0x1C)   | 720x288    | 103680            |     50Hz     |      16      |   half    |  Full Screen  |
@@ -1483,7 +1520,7 @@ Same as Super Graphics Mode 5, but with reduced colour palette size
 Super Graphics Mode 21 characteristics:
 - Resolution: 640 x 400 @ 60Hz
 - Colors: Uses 16 palette colors
-- VRAM Usage: 256,000
+- VRAM Usage: 128,000
 - This mode has a small border around the main view
 
 Memory organization:
@@ -1595,7 +1632,7 @@ void vdp_set_super_graphic_25()
 Super Graphics Mode 25 characteristics:
 - Resolution: 640 x 512 @ 50Hz
 - Colors: Uses 256 palette colors
-- VRAM Usage:  bytes
+- VRAM Usage: 163,840 bytes
 
 Memory organization:
 - Each pixel uses 4 bits to specify its color - 2 pixels per byte
@@ -1621,7 +1658,7 @@ void vdp_set_super_graphic_26()
 Super Graphics Mode 26 characteristics:
 - Resolution: 640 x 256 @ 50Hz
 - Colors: Uses 16 palette colors
-- VRAM Usage:  bytes
+- VRAM Usage: 81,920 bytes
 
 Memory organization:
 - Each pixel uses 4 bits to specify its color - 2 pixels per byte
@@ -1647,7 +1684,7 @@ void vdp_set_super_graphic_27()
 Super Graphics Mode 27 characteristics:
 - Resolution: 720 x 240 @ 60Hz
 - Colors: Uses 16 palette colors
-- VRAM Usage:  bytes
+- VRAM Usage: 86,400 bytes
 
 Memory organization:
 - Each pixel uses 4 bits to specify its color - 2 pixels per byte
@@ -1673,7 +1710,7 @@ void vdp_set_super_graphic_28()
 Super Graphics Mode 28 characteristics:
 - Resolution: 720 x 288 @ 50Hz
 - Colors: Uses 16 palette colors
-- VRAM Usage:  bytes
+- VRAM Usage: 103,680 bytes
 
 Memory organization:
 - Each pixel uses 4 bits to specify its color - 2 pixels per byte
@@ -1725,6 +1762,26 @@ Should not have the high bit set
 **Params:**
 
 - `mode` - super graphics mode to select (1 base)
+
+
+---
+
+
+
+#### vdp_set_remap
+
+*Configures the colours applied for logical REMAP operation*
+
+```cpp
+void vdp_set_remap(uint8_t background_colour, uint8_t foreground_colour)
+```
+
+
+
+**Params:**
+
+- `background_colour` - the palette index for background (zero) colour
+- `foreground_colour` - the palette index for foreground (non zero) colour
 
 
 ---
