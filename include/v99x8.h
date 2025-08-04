@@ -74,11 +74,14 @@ extern uint8_t registers_mirror[REGISTER_COUNT]; /* private */
  *
  * @param v byte to be sent to the COMMAND port
  */
-static inline void vdp_out_cmd(const uint8_t v) { port_out(VDP_IO_ADDR, v); }
+static inline void vdp_out_cmd(const uint8_t v) { VDP_ADDR = v; }
 
-#define vdp_out_dat(v)      port_out(VDP_IO_DATA, v)
-#define vdp_out_pal(v)      port_out(VDP_IO_PALT, v)
-#define vdp_out_reg_byte(v) port_out(VDP_IO_REGS, v)
+#define vdp_out_dat(v)                                                                                                             \
+  { VDP_DATA = v; }
+#define vdp_out_pal(v)                                                                                                             \
+  { VDP_PALT = v; }
+#define vdp_out_reg_byte(v)                                                                                                        \
+  { VDP_REGS = v; }
 
 #define VDP_TMS   1
 #define VDP_V9938 2
