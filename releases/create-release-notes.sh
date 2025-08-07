@@ -12,7 +12,7 @@ cat >> ${relfile}<< EOF
 ## Release ${EZ80_CLANG_VERSION}
 -----------------------------
 
-To install, for linux or for windows, use WSL:
+To install, for linux or windows' WSL:
 
 \`\`\`
 wget https://github.com/dinoboards/ez80-clang/releases/download/${EZ80_CLANG_VERSION}/ez80-clang-${EZ80_CLANG_VERSION}.tar.gz
