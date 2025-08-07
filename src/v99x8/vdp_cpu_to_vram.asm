@@ -15,7 +15,21 @@ _vdp_cpu_to_vram:
 	ld	iy, 0
 	add	iy, sp
 
+	DI_AND_SAVE
 	SET_SLOW_IO_SPEED
+
+	; SET STATUS REGISTER to #02
+	ld	bc, (_VDP_IO_ADDR)
+	ld	a, 2
+	out	(BC), a
+	ld	a, 0x80|15
+	out	(BC), a
+
+.waitb4:
+	in	a, (bc)
+	bit	2, a
+	jr	z, .waitb4
+
 
 	; iy + 3 -> source
 	; iy + 6 -> vdp_address
@@ -55,9 +69,20 @@ _vdp_cpu_to_vram:
 
 	ld	de, (iy+9)		; length
 	ld	hl, (iy+3)		; source
-	ld	bc, (_VDP_IO_DATA)
+	ld      bc, (_VDP_IO_DATA)
 
+	exx
+	ld	bc, (_VDP_IO_ADDR)
+	exx
 loop:
+	exx
+.wait:
+	in	a, (bc)
+	bit	2, a
+	jr	z, .wait
+
+	exx
+
 	ld	a, (hl)
 	inc	hl
 	out	(BC), a
@@ -66,6 +91,14 @@ loop:
 	or	d
 	jr	nz, loop
 
+	ld	bc, (_VDP_IO_ADDR)
+	xor	a
+	out	(BC), a
+	ld	a, 0x80|15
+	out	(BC), a
+
 	RESTORE_IO_SPEED
+	RESTORE_EI
+
 	ret
 
