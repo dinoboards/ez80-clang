@@ -471,7 +471,7 @@ are disabled, and before re-enabling interrupts, this function should be called.
 *transmit the next data byte to the VDP for the current pending command*
 
 ```cpp
-void vdp_cmd_send_byte(uint8_t next_byte)
+bool vdp_cmd_send_byte(const uint8_t next_byte)
 ```
 
 
@@ -480,6 +480,9 @@ void vdp_cmd_send_byte(uint8_t next_byte)
 
 - `next_byte` - the data to be sent to the VDP
 
+**Returns:**
+
+- false timeout waiting for VDP to accept bye
 
 ---
 
@@ -567,6 +570,40 @@ The LMMC command transfers data from the CPU to the Video or expansion RAM in a 
 - `height` - the height of the rectangle in pixels
 - `direction` - the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
 - `length` - the number of bytes to be copied (width * height)
+- `operation` - the logical operation to be performed (CMD_LOGIC_IMP, CMD_LOGIC_AND, ...)
+
+
+---
+
+
+
+#### vdp_cmd_logical_move_data_to_vram
+
+*Prepare VDP command 'Logical Move CPU to VRAM'*
+
+```cpp
+void vdp_cmd_logical_move_data_to_vram(uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint8_t operation)
+```
+
+
+Command Code: CMD_LMMC 0xB0
+
+This function issues the same command as vdp_cmd_move_vram_to_vram. The difference is that it expects
+the data to be sent via the vdp_cmd_send_byte function.
+
+Interrupts are recommended to be disabled before starting the data transfer
+After data transfer with vdp_cmd_send_byte is completed, you must call vdp_reset_status_reg and then re-enable
+interrupts
+
+
+**Params:**
+
+- `first_byte` - the first data byte to be sent to the VDP
+- `x` - the starting x-coordinate of the rectangle
+- `y` - the starting y-coordinate of the rectangle
+- `width` - the width of the rectangle in pixels
+- `height` - the height of the rectangle in pixels
+- `direction` - the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
 - `operation` - the logical operation to be performed (CMD_LOGIC_IMP, CMD_LOGIC_AND, ...)
 
 

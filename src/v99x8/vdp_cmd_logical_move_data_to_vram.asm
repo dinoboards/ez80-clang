@@ -17,7 +17,6 @@
 ;			    const uint16_t width,
 ;			    const uint16_t height,
 ;			    const uint8_t direction,
-;			    const uint24_t length,
 ;			    const uint8_t operation)
 
 	; first byte => iy + 3
@@ -26,15 +25,13 @@
 	; width => iy + 12
 	; height => iy + 15
 	; direction => iy + 18
-	; length => iy + 21
-	; operation => iy + 24
+	; operation => iy + 21
 
 _vdp_cmd_logical_move_data_to_vram:
 	;backup interrupt
 	ld	iy, 0
 	add	iy, sp
 
-	DI_AND_SAVE
 	SET_SLOW_IO_SPEED
 
 	ld	bc, (_VDP_IO_ADDR)			;
@@ -67,11 +64,9 @@ _vdp_cmd_logical_move_data_to_vram:
 	ld	a, (iy+18)				; load direction
 	out	(bc), a					; into #R45
 
-	ld	a, (iy+24)				; load operation
+	ld	a, (iy+21)				; load operation
 	or	CMD_LMMC				; submit command
 	out	(bc), a					; into #R46
-
-	ld	de, (iy+21)				; load length
 
 	ld	bc, (_VDP_IO_ADDR)			;
 	ld	a, $80|44				; submit 44 without auto increment
@@ -80,6 +75,11 @@ _vdp_cmd_logical_move_data_to_vram:
 	out	(bc), a
 
 	RESTORE_IO_SPEED
-	RESTORE_EI
+
+	; SET STATUS REGISTER to #02
+	ld	a, 2
+	out	(BC), a
+	ld	a, 0x80|15
+	out	(BC), a
 
 	ret

@@ -314,27 +314,14 @@ static inline void vdp_reset_status_reg() {
   VDP_ADDR = 0x80 | 15;
 }
 
-#ifdef VDP_SUPER_HDMI
-/**
- * @hide
- * @brief transmit the next data byte to the VDP for the current pending command
- *
- * @param next_byte the data to be sent to the VDP
- */
-static inline void vdp_cmd_send_byte(uint8_t next_byte) {
-  while ((VDP_ADDR & 0x80) == 0)
-    ;
-  VDP_REGS = next_byte;
-}
-#else
-
 /**
  * @brief transmit the next data byte to the VDP for the current pending command
  *
  * @param next_byte the data to be sent to the VDP
+ * @return true the byte was transmitted
+ * @return false timeout waiting for VDP to accept bye
  */
-void vdp_cmd_send_byte(uint8_t next_byte);
-#endif
+bool vdp_cmd_send_byte(const uint8_t next_byte);
 
 /**
  * @brief VDP command 'High-speed move VRAM to VRAM, y only'
@@ -397,14 +384,28 @@ extern void vdp_cmd_logical_move_cpu_to_vram(const uint8_t *const source,
                                              screen_addr_t        length,
                                              uint8_t              operation);
 
-extern void vdp_cmd_logical_move_data_to_vram(uint8_t       first_byte,
-                                              uint16_t      x,
-                                              uint16_t      y,
-                                              uint16_t      width,
-                                              uint16_t      height,
-                                              uint8_t       direction,
-                                              screen_addr_t length,
-                                              uint8_t       operation);
+/**
+ * @brief Prepare VDP command 'Logical Move CPU to VRAM'
+ *
+ * Command Code: CMD_LMMC 0xB0
+ *
+ * This function issues the same command as vdp_cmd_move_vram_to_vram. The difference is that it expects
+ * the data to be sent via the vdp_cmd_send_byte function.
+ *
+ * Interrupts are recommended to be disabled before starting the data transfer
+ * After data transfer with vdp_cmd_send_byte is completed, you must call vdp_reset_status_reg and then re-enable
+ * interrupts
+ *
+ * @param first_byte the first data byte to be sent to the VDP
+ * @param x the starting x-coordinate of the rectangle
+ * @param y the starting y-coordinate of the rectangle
+ * @param width the width of the rectangle in pixels
+ * @param height the height of the rectangle in pixels
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param operation the logical operation to be performed (CMD_LOGIC_IMP, CMD_LOGIC_AND, ...)
+ */
+extern void vdp_cmd_logical_move_data_to_vram(
+    uint8_t first_byte, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint8_t operation);
 
 /**
  * @brief VDP Command 'Logical Move VRAM to CPU'
