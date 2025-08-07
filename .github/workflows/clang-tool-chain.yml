@@ -40,7 +40,7 @@ jobs:
       - name: package clang and runtime
         run: make package
 
-      - name: Archive apps
+      - name: Archive
         uses: actions/upload-artifact@v4
         with:
           compression-level: 0
