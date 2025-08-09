@@ -223,6 +223,8 @@ extern uint16_t vdp_get_screen_max_unique_colours(void);
  * @param source the byte data to be copied
  * @param vdp_address to destination address in VRAM
  * @param length the number of bytes to be copied
+ *
+ * @note For super hdmi and when a super graphics mode is selected, source can be upto a 20 bit address
  */
 extern void vdp_cpu_to_vram(const uint8_t *const source, screen_addr_t vdp_address, uint16_t length);
 

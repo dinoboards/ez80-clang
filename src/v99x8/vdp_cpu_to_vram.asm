@@ -43,7 +43,7 @@ _vdp_cpu_to_vram:
 
 	ld	a, (iy+8) 		; vdp_address bits 16..23
 
-	and	%00000111		; extract bit 16..18 (super supports upto 18bit address)
+	and	%00001111		; extract bit 16..19 (super supports up to 20bit address)
 	rlca				; move 'B16' to B1
 	rlca				; move 'B16' to B2
 	ld	b, a			; save
