@@ -100,7 +100,7 @@ $(TARGET):
 
 package: $(TARGET)
 
-package-local: format extract-llvm-release all $(TARGET)
+package-local: format extract-llvm-release all $(TARGET) docs
 
 install:
 	@cd tmp/direct/ez80-clang-${EZ80_CLANG_VERSION} && ./install.sh

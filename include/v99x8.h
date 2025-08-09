@@ -492,7 +492,7 @@ extern uint8_t vdp_cmd_point(uint16_t x, uint16_t y);
 #define CMD_POINT 0x40
 #define CMD_PSET  0x50
 #define CMD_SRCH  0x60
-#define _CMD_LINE 0x70
+#define CMD_LINE  0x70
 #define CMD_LMMV  0x80
 #define CMD_LMMM  0x90
 #define CMD_LMCM  0xA0

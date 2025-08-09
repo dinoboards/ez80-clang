@@ -578,11 +578,51 @@ static inline uint8_t vdp_get_super_graphic_mode(void) { return vdp_current_mode
 extern void vdp_set_super_graphic_mode(uint8_t mode);
 
 /**
- * @brief Configures the colours applied for logical REMAP operation
+ * @brief Configures the colours applied for logical CMD_LOGIC_REMAP operation
  *
- * @param background_colour the palette index for background (zero) colour
- * @param foreground_colour the palette index for foreground (non zero) colour
+ * @param remap_background_colour the palette index for background (zero) colour
+ * @param remap_foreground_colour the palette index for foreground (non zero) colour
+ *
+ * @see vdp_cmd_move_linear_to_xy
  */
-extern void vdp_set_remap(uint8_t background_colour, uint8_t foreground_colour);
+extern void vdp_set_remap(uint8_t remap_background_colour, uint8_t remap_foreground_colour);
+
+/**
+ * @brief VDP command 'Byte move to X, Y from Linear'
+ *
+ * Command Code: CMD_BMXL 0x30
+ *
+ * The BMXL command transfers data in a specified rectangular area from the linear address in VRAM to the rectangular area.
+ *
+ * This command is similar to `vdp_cmd_logical_move_vram_to_vram` function, but instead of using a data source of a bounded
+ * rectangle, the `vdp_cmd_move_linear_to_xy` function retrieves its source data from the linear address space starting at
+ * `src_addr` within the VRAM.
+ *
+ * When used with logical operation other than `CMD_LOGIC_REMAP`, the function will read a byte for each destination pixel,
+ * regardless of the pixel depths of the destination.  As such, if used on a destination that only support a 4 bit pixel depth, only
+ * the lower 4 bits of each byte are applied to the logical operation.
+ *
+ * When used with logical operation `CMD_LOGIC_REMAP`, the individual bits of the source data are maps to the individual destination
+ * pixels.  As such, the first byte at `src_addr` will be mapped to the first 8 bytes of the destination rectangle.  If the bit is
+ * 0, the `remap_background_colour` is applied to the pixel and if the bit is a 1, then the `remap_foreground_colour` value is
+ * applied.
+ *
+ * > This function is only available with the Super HDMI Tang Nano FPGA module
+ *
+ * @param src_addr the source address in VRAM of bytes to be transferred
+ * @param x the starting x-coordinate of the destination rectangle
+ * @param y the starting y-coordinate of the destination rectangle
+ * @param width the width of the rectangle in pixels to be copied
+ * @param height the height of the rectangle in pixels to be copied
+ * @param direction the direction of the painting (DIX_RIGHT, DIX_LEFT, DIY_DOWN, DIY_UP)
+ * @param operation the logical operation to be performed (CMD_LOGIC_IMP or CMD_LOGIC_REMAP)
+ *
+ *
+ * @see vdp_set_remap
+ * @see vdp_cmd_logical_move_vram_to_vram
+ *
+ */
+extern void vdp_cmd_move_linear_to_xy(
+    screen_addr_t src_addr, uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t direction, uint8_t operation);
 
 #endif
